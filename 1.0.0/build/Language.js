@@ -17,17 +17,19 @@ ELSTR.Language = function(){
     var currentIsLoaded = false;
     var datasource;
     var textFrontend = [];
-    var alertQueue = [];
+    var visibleAlertMessages = [];
     
     var serviceUrl = '../getLanguage.php';
-    
-    var onLoadedEvent = new YAHOO.util.CustomEvent("loadEvent", this);
-    
     
     
     
     // Member Variabless
     var that = this;
+    
+    // Event Declarations
+    that.onAfterLoadEvent = new YAHOO.util.CustomEvent("afterLoadEvent", this);
+    that.onBeforeLoadEvent = new YAHOO.util.CustomEvent("beforeLoadEvent", this);
+    
     
     
     //////////////////////////////////////////////////////////////
@@ -37,10 +39,9 @@ ELSTR.Language = function(){
     this.init = function(){
         // Die als selected markierte Sprache laden
         
-        // widgetElement ist das UL-Element mit der Klasse languageSelection
-        widgetElement = YAHOO.util.Dom.getElementsByClassName("languageSelection", "ul")[0];
         
-        var lang = _getCurrentLanguage();
+        _renderLanguageSelection();
+        
         
         datasource = new YAHOO.util.XHRDataSource(serviceUrl);
         datasource.connMethodPost = true;
@@ -54,7 +55,7 @@ ELSTR.Language = function(){
             // No action                       
         }
         
-        _loadLanguage(lang, callbackLoad);
+        _loadLanguage(_getCurrentLanguage(), callbackLoad);
         
     }
     
@@ -64,31 +65,24 @@ ELSTR.Language = function(){
             _alertMessage(priority, textid);
         }
         else {
-
+        
             var subscribedAlertMessage = function(){
                 _alertMessage(priority, textid);
-                onLoadedEvent.unsubscribe(subscribedAlertMessage);
+                that.onAfterLoadEvent.unsubscribe(subscribedAlertMessage);
             }
-       
-            onLoadedEvent.subscribe(subscribedAlertMessage);
+            
+            that.onAfterLoadEvent.subscribe(subscribedAlertMessage);
             
         }
         
     }
     
     
-    this.change = function(lang, fnChangeComplete){
-    
-        var callbackDraw = function(){
-            fnChangeComplete();
-        }
-        
+    this.change = function(lang){
         var callbackLoad = function(){
-            _draw(callbackDraw);
+            _draw();
         }
-        
         _loadLanguage(lang, callbackLoad);
-        
     }
     
     
@@ -97,6 +91,37 @@ ELSTR.Language = function(){
     
     //////////////////////////////////////////////////////////////    
     // Private functions 
+    
+    var _renderLanguageSelection = function(){
+        // widgetElement ist das UL-Element mit der Klasse languageSelection
+        widgetElement = YAHOO.util.Dom.getElementsByClassName("languageSelection", "ul")[0];
+        
+        var selectionElements = YAHOO.util.Dom.getElementsBy(function(){
+            return true;
+        }, "li", widgetElement);
+        
+        
+        var onClickUpdateLanguage = function(){
+            if (!YAHOO.util.Dom.hasClass(this, "selected")) {
+            
+                var lang = this.getAttribute("name");
+                that.change(lang);
+                
+                for (var i = 0; i < selectionElements.length; i++) {
+                    YAHOO.util.Dom.removeClass (selectionElements[i], "selected");
+                }
+                
+                YAHOO.util.Dom.addClass (this, "selected");
+                
+            }
+        }
+        
+        for (var i = 0; i < selectionElements.length; i++) {
+            YAHOO.util.Event.addListener(selectionElements[i], "click", onClickUpdateLanguage);
+        }
+        
+    }
+    
     var _getCurrentLanguage = function(){
         if (currentLanguage == null) {
             var selectedLiElement = YAHOO.util.Dom.getElementsByClassName("selected", "li", widgetElement)[0];
@@ -107,6 +132,9 @@ ELSTR.Language = function(){
     
     var _loadLanguage = function(lang, fnLoadComplete){
     
+        // Event nach dem Laden
+        that.onBeforeLoadEvent.fire();
+        
         currentIsLoaded = false;
         
         var callback = {
@@ -119,7 +147,9 @@ ELSTR.Language = function(){
                 
                 currentIsLoaded = true;
                 currentLanguage = lang;
-                onLoadedEvent.fire();
+                
+                // Event nach dem Laden
+                that.onAfterLoadEvent.fire();
                 
                 oPayload.fnLoadComplete();
             },
@@ -164,7 +194,6 @@ ELSTR.Language = function(){
             textElements[i].innerHTML = textFrontend[index]
         }
         
-        fnDrawComplete();
     }
     
     // Meldung in der geladenen Sprache ausgeben (Meldung auf UI)
@@ -185,19 +214,19 @@ ELSTR.Language = function(){
         };
         
         var destroyPanel = function(){
+            // Element aus der Liste der Meldungen entferenen
+            for (var i = 0; i < visibleAlertMessages.length; i++) {
+                if (visibleAlertMessages[i] == this.id) {
+                    visibleAlertMessages.splice(i, 1);
+                }
+            }
             this.destroy();
         }
         
         // Die Parameter fuer das Meldungsfenster initialisieren
         var messageId = YAHOO.util.Dom.generateId('', 'elstrLanguage');
         
-        
-        
-        var countVisibleMessages = YAHOO.util.Dom.getChildren('containerDialogAlertMessage').length
-        
-        
-        
-        var coordY = YAHOO.util.Dom.getViewportHeight() / 2 - 100 + (countVisibleMessages * 60);
+        var coordY = YAHOO.util.Dom.getViewportHeight() / 2 - 100 + (visibleAlertMessages.length * 60);
         var coordX = YAHOO.util.Dom.getViewportWidth() / 2 - 150;
         
         // Das Meldungsfenster initialisieren
@@ -207,6 +236,8 @@ ELSTR.Language = function(){
             visible: false,
             draggable: true,
             close: true,
+            underlay: "matte",
+            iframe: true,
             zindex: 900,
             icon: YAHOO.widget.SimpleDialog.ICON_HELP,
             constraintoviewport: true,
@@ -245,15 +276,19 @@ ELSTR.Language = function(){
         if (priority === 'help') {
             var icon = YAHOO.widget.SimpleDialog.ICON_HELP;
         }
+        
         dialogAlertMessage.setHeader(priority.toUpperCase());
         dialogAlertMessage.cfg.queueProperty('icon', icon);
         dialogAlertMessage.cfg.queueProperty('text', messageText);
         dialogAlertMessage.hideEvent.subscribe(destroyPanel);
-        dialogAlertMessage.render('containerDialogAlertMessage');
+        dialogAlertMessage.render(document.body);
         dialogAlertMessage.show();
         dialogAlertMessage.bringToTop()
         
-        return dialogAlertMessage;
+        // Element in die Liste der Meldungen eintragen
+        visibleAlertMessages[visibleAlertMessages.length] = messageId;
+        
+        
     }
     
     
