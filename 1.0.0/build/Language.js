@@ -5,11 +5,13 @@ if (ELSTR == undefined) {
 
 /**
  * Die Language Klasse regelt den Umgang mit Sprachen in einer Webapplikation
- *
+ * 
  * @author egli@intelliact.ch
  * @copyright Intelliact AG, 2009 
  * @namespace ELSTR
  * @class ELSTR.Language
+ * @alias ElstrLanguage
+ * @classDescription Language handling for Elstr applications
  * @constructor
  */
 ELSTR.Language = function(){
@@ -101,7 +103,7 @@ ELSTR.Language = function(){
      *                                            help
      *
      * @method alert
-     * @param {String} priority The priority of the alert Message
+     * @param {String} priority The priority of the alert Message (error, warning, info, tip, help)
      * @param {String} textid The id of the text in the TMX-File OR The text of the message
      * @return {Boolean} True
      */
@@ -281,14 +283,6 @@ ELSTR.Language = function(){
     
     // Meldung in der geladenen Sprache ausgeben (Meldung auf UI)
     var _alertMessage = function(priority, key){
-        /*
-         * priority        Priority of message        error
-         *                                            warning
-         *                                            info
-         *                                            tip
-         *                                            help
-         * key             Key (textid) of message
-         */
         // Die Handler fuer das Meldungsfenster initialisieren
         var handleOk = function(){
             this.hide();
@@ -368,11 +362,8 @@ ELSTR.Language = function(){
         
         // Element in die Liste der Meldungen eintragen
         visibleAlertMessages[visibleAlertMessages.length] = messageId;
-        
-        
+
     }
-    
-    
-    
+
 }
 
