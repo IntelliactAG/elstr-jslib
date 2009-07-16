@@ -18,6 +18,7 @@ ELSTR.Language = function(){
     var datasource;
     var textFrontend = [];
     var visibleAlertMessages = [];
+    var file;
     
     var serviceUrl = '../getLanguage.php';
     
@@ -27,40 +28,53 @@ ELSTR.Language = function(){
     var that = this;
     
     // Event Declarations
+    that.onAfterInitEvent = new YAHOO.util.CustomEvent("afterInitEvent", this);
+    
     that.onAfterLoadEvent = new YAHOO.util.CustomEvent("afterLoadEvent", this);
     that.onBeforeLoadEvent = new YAHOO.util.CustomEvent("beforeLoadEvent", this);
     
+    that.onAfterChangeEvent = new YAHOO.util.CustomEvent("afterChangeEvent", this);
+    that.onBeforeChangeEvent = new YAHOO.util.CustomEvent("beforeChangeEvent", this);
     
     
     //////////////////////////////////////////////////////////////
-    // Privileged functions
+    // Public functions
     
     // Funktion, um die Classe zu initialisieren
-    this.init = function(){
+    this.init = function(filename, drawOnLoaded, fnLoadComplete){
         // Die als selected markierte Sprache laden
-        
-        
-        _renderLanguageSelection();
-        
-        
-        datasource = new YAHOO.util.XHRDataSource(serviceUrl);
-        datasource.connMethodPost = true;
-        datasource.responseType = YAHOO.util.DataSource.TYPE_JSON;
-        datasource.responseSchema = {
-            resultsList: "result"
-        };
-        
-        
-        var callbackLoad = function(){
-            // No action                       
+        if (filename && filename !== undefined) {
+            file = filename;
+            
+            _renderLanguageSelection();
+            
+            datasource = new YAHOO.util.XHRDataSource(serviceUrl);
+            datasource.connMethodPost = true;
+            datasource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+            datasource.maxCacheEntries = 3;
+            datasource.responseSchema = {
+                resultsList: "result"
+            };
+            
+            var callbackLoad = function(){
+                if (drawOnLoaded == true) {
+                    _draw();
+                }
+                that.onAfterInitEvent.fire();
+                
+                if (YAHOO.lang.isFunction(fnLoadComplete) == true) {
+                    fnLoadComplete();
+                }                
+            }
+            
+            _loadLanguage(_getCurrentLanguage(), callbackLoad);
         }
-        
-        _loadLanguage(_getCurrentLanguage(), callbackLoad);
-        
+        else {
+            _alertMessage("error", "init(): No filename specified!");
+        }
     }
     
     this.alert = function(priority, textid){
-    
         if (currentIsLoaded === true) {
             _alertMessage(priority, textid);
         }
@@ -74,18 +88,37 @@ ELSTR.Language = function(){
             that.onAfterLoadEvent.subscribe(subscribedAlertMessage);
             
         }
-        
     }
     
+    this.text = function(textid){
+        var messageText;
+        if (currentIsLoaded === true) {
+            messageText = textFrontend[textid];
+        }
+        else {
+            if (textFrontend[textid]) {
+                messageText = textFrontend[textid];
+            }
+            else {
+                messageText = "";
+            }
+        }
+        return messageText;
+    }
     
     this.change = function(lang){
+        that.onBeforeChangeEvent.fire(lang);
         var callbackLoad = function(){
             _draw();
+            that.onAfterChangeEvent.fire(lang);
         }
         _loadLanguage(lang, callbackLoad);
     }
     
-    
+    this.language = function(){
+        var lang = _getCurrentLanguage()
+        return lang; 
+    }
     
     
     
@@ -108,10 +141,10 @@ ELSTR.Language = function(){
                 that.change(lang);
                 
                 for (var i = 0; i < selectionElements.length; i++) {
-                    YAHOO.util.Dom.removeClass (selectionElements[i], "selected");
+                    YAHOO.util.Dom.removeClass(selectionElements[i], "selected");
                 }
                 
-                YAHOO.util.Dom.addClass (this, "selected");
+                YAHOO.util.Dom.addClass(this, "selected");
                 
             }
         }
@@ -167,8 +200,7 @@ ELSTR.Language = function(){
             "jsonrpc": "2.0",
             "method": "get",
             "params": {
-                "customer": "sulzersms",
-                "file": "qbrowser",
+                "file": "sulzersms/translations/qbrowser.tmx",
                 "lang": lang
             },
             "id": 1
@@ -254,7 +286,7 @@ ELSTR.Language = function(){
         
         var messageText = "";
         if (textFrontend[key]) {
-            messageText = textFrontend[key];
+            messageText = "<div textid='" + key + "'>" + textFrontend[key] + "</div>";
         }
         else {
             messageText = key;
