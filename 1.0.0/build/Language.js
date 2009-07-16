@@ -1,36 +1,262 @@
+
 /**
  * @author egli
  */
-var ELSTR = {};
+// Cerate the Namespace for this application
+if (ELSTR == undefined) {
+    var ELSTR = new Object();
+};
 
-YUI().use("base", function(Y){
 
-    ELSTR.Language = function(config){
+ELSTR.Language = function(){
+
+    /////////////////////////////////////////////////////////////////
+    // Declare all language variables
+    var widgetElement;
+    var currentLanguage = null;
+    var currentIsLoaded = false;
+    var datasource;
+    var textFrontend = [];
+    var alertQueue = [];
     
-        // Invoke Base constructor, passing through arguments
-        ELSTR.Language.superclass.constructor.apply(this, arguments);
-    }
+    var serviceUrl = '../getLanguage.php';
     
-    // Used to identify instances of this class
-    // For example, to prefix event names
-    ELSTR.Language.NAME = "ElstrLanguage";
+    var onLoadedEvent = new YAHOO.util.CustomEvent("loadEvent", this);
     
-    // "Associative Array", used to define the set of attributes 
-    // added by this class. The name of the attribute is the key,
-    // and the object literal value acts as the configuration 
-    // object passed to addAttrs
     
-    ELSTR.Language.ATTRS = {
-        // Attribute "A" configuration
-        A: {
-            value: true
+    
+    
+    // Member Variabless
+    var that = this;
+    
+    
+    //////////////////////////////////////////////////////////////
+    // Privileged functions
+    
+    // Funktion, um die Classe zu initialisieren
+    this.init = function(){
+        // Die als selected markierte Sprache laden
+        
+        // widgetElement ist das UL-Element mit der Klasse languageSelection
+        widgetElement = YAHOO.util.Dom.getElementsByClassName("languageSelection", "ul")[0];
+        
+        var lang = _getCurrentLanguage();
+        
+        datasource = new YAHOO.util.XHRDataSource(serviceUrl);
+        datasource.connMethodPost = true;
+        datasource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+        datasource.responseSchema = {
+            resultsList: "result"
+        };
+        
+        
+        var callbackLoad = function(){
+            // No action                       
         }
+        
+        _loadLanguage(lang, callbackLoad);
+        
+    }
+    
+    this.alert = function(priority, textid){
+    
+        if (currentIsLoaded === true) {
+            _alertMessage(priority, textid);
+        }
+        else {
+
+            var subscribedAlertMessage = function(){
+                _alertMessage(priority, textid);
+                onLoadedEvent.unsubscribe(subscribedAlertMessage);
+            }
+       
+            onLoadedEvent.subscribe(subscribedAlertMessage);
+            
+        }
+        
     }
     
     
-    // Prototype methods for your new class
-    Y.extend(ELSTR.Language, Y.Base, {});
+    this.change = function(lang, fnChangeComplete){
     
-
-});
+        var callbackDraw = function(){
+            fnChangeComplete();
+        }
+        
+        var callbackLoad = function(){
+            _draw(callbackDraw);
+        }
+        
+        _loadLanguage(lang, callbackLoad);
+        
+    }
+    
+    
+    
+    
+    
+    //////////////////////////////////////////////////////////////    
+    // Private functions 
+    var _getCurrentLanguage = function(){
+        if (currentLanguage == null) {
+            var selectedLiElement = YAHOO.util.Dom.getElementsByClassName("selected", "li", widgetElement)[0];
+            currentLanguage = selectedLiElement.getAttribute("name");
+        }
+        return currentLanguage;
+    }
+    
+    var _loadLanguage = function(lang, fnLoadComplete){
+    
+        currentIsLoaded = false;
+        
+        var callback = {
+        
+            //if our XHR call is successful, we want to make use
+            //of the returned data and create child nodes.
+            success: function(oRequest, oParsedResponse, oPayload){
+            
+                textFrontend = oParsedResponse.results[0];
+                
+                currentIsLoaded = true;
+                currentLanguage = lang;
+                onLoadedEvent.fire();
+                
+                oPayload.fnLoadComplete();
+            },
+            failure: function(oRequest, oParsedResponse, oPayload){
+                alert("Request failed!");
+                oPayload.fnLoadComplete();
+            },
+            
+            argument: {
+                "fnLoadComplete": fnLoadComplete
+            }
+        };
+        
+        var oRequestPost = {
+            "jsonrpc": "2.0",
+            "method": "get",
+            "params": {
+                "customer": "sulzersms",
+                "file": "qbrowser",
+                "lang": lang
+            },
+            "id": 1
+        };
+        
+        datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost), callback);
+    }
+    
+    var _draw = function(fnDrawComplete){
+        // Was ist ein Text-Element?
+        var isTextElement = function(el){
+            if (el.getAttribute('textid') != null) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        // Alle Text-Elemente finden
+        var textElements = YAHOO.util.Dom.getElementsBy(isTextElement);
+        for (var i = 0; i < textElements.length; i++) {
+            var index = textElements[i].getAttribute('textid');
+            textElements[i].innerHTML = textFrontend[index]
+        }
+        
+        fnDrawComplete();
+    }
+    
+    // Meldung in der geladenen Sprache ausgeben (Meldung auf UI)
+    var _alertMessage = function(priority, key){
+        /*
+         * priority        Priority of message        error
+         *                                            warning
+         *                                            info
+         *                                            tip
+         *                                            help
+         * key             Key (textid) of message
+         *
+         * return          Objekt der Meldung
+         */
+        // Die Handler fuer das Meldungsfenster initialisieren
+        var handleOk = function(){
+            this.hide();
+        };
+        
+        var destroyPanel = function(){
+            this.destroy();
+        }
+        
+        // Die Parameter fuer das Meldungsfenster initialisieren
+        var messageId = YAHOO.util.Dom.generateId('', 'elstrLanguage');
+        
+        
+        
+        var countVisibleMessages = YAHOO.util.Dom.getChildren('containerDialogAlertMessage').length
+        
+        
+        
+        var coordY = YAHOO.util.Dom.getViewportHeight() / 2 - 100 + (countVisibleMessages * 60);
+        var coordX = YAHOO.util.Dom.getViewportWidth() / 2 - 150;
+        
+        // Das Meldungsfenster initialisieren
+        var dialogAlertMessage = new YAHOO.widget.SimpleDialog(messageId, {
+            width: "300px",
+            xy: [coordX, coordY],
+            visible: false,
+            draggable: true,
+            close: true,
+            zindex: 900,
+            icon: YAHOO.widget.SimpleDialog.ICON_HELP,
+            constraintoviewport: true,
+            effect: {
+                effect: YAHOO.widget.ContainerEffect.FADE,
+                duration: 0.25
+            },
+            buttons: [{
+                text: "Ok",
+                handler: handleOk,
+                isDefault: true
+            }]
+        });
+        
+        var messageText = "";
+        if (textFrontend[key]) {
+            messageText = textFrontend[key];
+        }
+        else {
+            messageText = key;
+        }
+        
+        var icon = YAHOO.widget.SimpleDialog.ICON_HELP;
+        if (priority === 'error') {
+            var icon = YAHOO.widget.SimpleDialog.ICON_BLOCK;
+        }
+        if (priority === 'warning') {
+            var icon = YAHOO.widget.SimpleDialog.ICON_WARN;
+        }
+        if (priority === 'info') {
+            var icon = YAHOO.widget.SimpleDialog.ICON_INFO;
+        }
+        if (priority === 'tip') {
+            var icon = YAHOO.widget.SimpleDialog.ICON_TIP;
+        }
+        if (priority === 'help') {
+            var icon = YAHOO.widget.SimpleDialog.ICON_HELP;
+        }
+        dialogAlertMessage.setHeader(priority.toUpperCase());
+        dialogAlertMessage.cfg.queueProperty('icon', icon);
+        dialogAlertMessage.cfg.queueProperty('text', messageText);
+        dialogAlertMessage.hideEvent.subscribe(destroyPanel);
+        dialogAlertMessage.render('containerDialogAlertMessage');
+        dialogAlertMessage.show();
+        dialogAlertMessage.bringToTop()
+        
+        return dialogAlertMessage;
+    }
+    
+    
+    
+}
 
