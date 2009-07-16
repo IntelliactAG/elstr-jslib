@@ -1,13 +1,17 @@
-
-/**
- * @author egli
- */
-// Cerate the Namespace for this application
+// Create the Namespace for the Framework
 if (ELSTR == undefined) {
     var ELSTR = new Object();
 };
 
-
+/**
+ * Die Language Klasse regelt den Umgang mit Sprachen in einer Webapplikation
+ *
+ * @author egli@intelliact.ch
+ * @copyright Intelliact AG, 2009 
+ * @namespace ELSTR
+ * @class ELSTR.Language
+ * @constructor
+ */
 ELSTR.Language = function(){
 
     /////////////////////////////////////////////////////////////////
@@ -19,8 +23,7 @@ ELSTR.Language = function(){
     var textFrontend = [];
     var visibleAlertMessages = [];
     var file;
-    
-    var serviceUrl = '../getLanguage.php';
+    var serviceUrl;
     
     
     
@@ -41,9 +44,21 @@ ELSTR.Language = function(){
     // Public functions
     
     // Funktion, um die Classe zu initialisieren
-    this.init = function(filename, drawOnLoaded, fnLoadComplete){
+    
+    
+    
+    /**
+     * Initialisiert das Sprachenobjekt
+     * @method init
+     * @param {String} serviceUrl The url to service to load a language
+     * @param {String} filename The path with filename to the translation file on backend
+     * @param {Boolean} drawOnLoaded True, if the initial loaded language must be applied
+     * @param {Function} fnLoadComplete Callback function that is executed when the initialisation ist completed and the language is loaded
+     * @return {Boolean} True, if the values were valid
+     */
+    this.init = function(serviceUrl, filename, drawOnLoaded, fnLoadComplete){
         // Die als selected markierte Sprache laden
-        if (filename && filename !== undefined) {
+        if (serviceUrl && serviceUrl !== undefined && filename && filename !== undefined) {
             file = filename;
             
             _renderLanguageSelection();
@@ -64,16 +79,32 @@ ELSTR.Language = function(){
                 
                 if (YAHOO.lang.isFunction(fnLoadComplete) == true) {
                     fnLoadComplete();
-                }                
+                }
             }
             
             _loadLanguage(_getCurrentLanguage(), callbackLoad);
+            
+            return true;
         }
         else {
-            _alertMessage("error", "init(): No filename specified!");
+            return false;
         }
     }
     
+    
+    /**
+     * Gibt eine Meldung in der geladenen Sprache aus
+     * List of priorities                         error
+     *                                            warning
+     *                                            info
+     *                                            tip
+     *                                            help
+     *
+     * @method alert
+     * @param {String} priority The priority of the alert Message
+     * @param {String} textid The id of the text in the TMX-File OR The text of the message
+     * @return {Boolean} True
+     */
     this.alert = function(priority, textid){
         if (currentIsLoaded === true) {
             _alertMessage(priority, textid);
@@ -84,12 +115,18 @@ ELSTR.Language = function(){
                 _alertMessage(priority, textid);
                 that.onAfterLoadEvent.unsubscribe(subscribedAlertMessage);
             }
-            
             that.onAfterLoadEvent.subscribe(subscribedAlertMessage);
-            
         }
+        return true;
     }
     
+    
+    /**
+     * Gibt den Text in der geladenen Sprache zurueck
+     * @method alert
+     * @param {String} textid The id of the text in the TMX-File OR The text of the message
+     * @return {String} The (translated) text in the current language
+     */
     this.text = function(textid){
         var messageText;
         if (currentIsLoaded === true) {
@@ -106,6 +143,13 @@ ELSTR.Language = function(){
         return messageText;
     }
     
+    
+    /**
+     * Changes the Frontend Language
+     * @method change
+     * @param {String} lang The new language to be loaded (e.g. "de" or "en")     
+     * @return {Boolean} True
+     */    
     this.change = function(lang){
         that.onBeforeChangeEvent.fire(lang);
         var callbackLoad = function(){
@@ -113,11 +157,18 @@ ELSTR.Language = function(){
             that.onAfterChangeEvent.fire(lang);
         }
         _loadLanguage(lang, callbackLoad);
+        return true;
     }
     
+    
+    /**
+     * Gibt die aktuelle Sprache zurueck
+     * @method language
+     * @return {String} The current language
+     */    
     this.language = function(){
         var lang = _getCurrentLanguage()
-        return lang; 
+        return lang;
     }
     
     
@@ -200,7 +251,7 @@ ELSTR.Language = function(){
             "jsonrpc": "2.0",
             "method": "get",
             "params": {
-                "file": "sulzersms/translations/qbrowser.tmx",
+                "file": file,
                 "lang": lang
             },
             "id": 1
@@ -237,8 +288,6 @@ ELSTR.Language = function(){
          *                                            tip
          *                                            help
          * key             Key (textid) of message
-         *
-         * return          Objekt der Meldung
          */
         // Die Handler fuer das Meldungsfenster initialisieren
         var handleOk = function(){
