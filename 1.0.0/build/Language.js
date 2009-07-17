@@ -6,6 +6,18 @@ if (ELSTR == undefined) {
 
 /**
  * Die Language Klasse regelt den Umgang mit Sprachen in einer Webapplikation
+ * 
+ * Beispiel eines Widgets/Markups im HTML. 
+ * Die Liste (UL) muss die Klasse 'languageSelection' haben
+ * Die im Frontend gerenderte Sprache wird mit der Klasse 'selected' markiert
+ *  <ul class="languageSelection">
+ *      <li class="selected" name="de">
+ *          Deutsch 
+ *      </li>
+ *      <li name="en">
+ *          English 
+ *      </li>
+ *  </ul>
  *
  * @author egli@intelliact.ch
  * @copyright Intelliact AG, 2009
