@@ -18,6 +18,9 @@ if (ELSTR == undefined) {
  *          English 
  *      </li>
  *  </ul>
+ *  
+ * Damit diese Komponente verwendet werden kann, muessen folgende Komponenten der YUI geladen sein
+ * requires: ["dom","event","datasource","json","dialog"]
  *
  * @author egli@intelliact.ch
  * @copyright Intelliact AG, 2009
@@ -40,8 +43,7 @@ ELSTR.Language = function(){
     var file;
     var serviceUrl;
     
-    
-    
+
     // Member Variabless
     var that = this;
     
@@ -64,11 +66,12 @@ ELSTR.Language = function(){
      * @method init
      * @param {String} serviceUrl The url to service to load a language
      * @param {String} filename The path with filename to the translation file on backend
-     * @param {Boolean} drawOnLoaded True, if the initial loaded language must be applied
-     * @param {Function} fnLoadComplete Callback function that is executed when the initialisation ist completed and the language is loaded
+     * @param {Boolean} drawOnLoaded True, if the initial loaded language will be applied
+     * @param {Function} fnInitComplete Callback function that is executed when the initialisation ist completed and the language is loaded
      * @return {Boolean} True, if the values were valid
      */
-    this.init = function(serviceUrl, filename, drawOnLoaded, fnLoadComplete){
+    this.init = function(serviceUrl, filename, drawOnLoaded, fnInitComplete){
+
         // Die als selected markierte Sprache laden
         if (serviceUrl && serviceUrl !== undefined && filename && filename !== undefined) {
             file = filename;
@@ -89,8 +92,8 @@ ELSTR.Language = function(){
                 }
                 that.onAfterInitEvent.fire();
                 
-                if (YAHOO.lang.isFunction(fnLoadComplete) == true) {
-                    fnLoadComplete();
+                if (YAHOO.lang.isFunction(fnInitComplete) == true) {
+                    fnInitComplete();
                 }
             }
             
@@ -137,7 +140,7 @@ ELSTR.Language = function(){
      * Gibt den Text in der geladenen Sprache zurueck
      * @method alert
      * @param {String} textid The id of the text in the TMX-File OR The text of the message
-     * @return {String} The (translated) text in the current language
+     * @return {String} The (translated) text in the current language OR undefined, if the textid does not exist
      */
     this.text = function(textid){
         var messageText;
@@ -148,8 +151,8 @@ ELSTR.Language = function(){
             if (textFrontend[textid]) {
                 messageText = textFrontend[textid];
             }
-            else {
-                messageText = "";
+            else {               
+                messageText = undefined;
             }
         }
         return messageText;
