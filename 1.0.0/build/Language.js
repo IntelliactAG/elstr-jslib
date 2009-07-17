@@ -1,3 +1,4 @@
+
 // Create the Namespace for the Framework
 if (ELSTR == undefined) {
     var ELSTR = new Object();
@@ -5,9 +6,9 @@ if (ELSTR == undefined) {
 
 /**
  * Die Language Klasse regelt den Umgang mit Sprachen in einer Webapplikation
- * 
+ *
  * @author egli@intelliact.ch
- * @copyright Intelliact AG, 2009 
+ * @copyright Intelliact AG, 2009
  * @namespace ELSTR
  * @class ELSTR.Language
  * @alias ElstrLanguage
@@ -32,6 +33,7 @@ ELSTR.Language = function(){
     // Member Variabless
     var that = this;
     
+    //////////////////////////////////////////////////////////////
     // Event Declarations
     that.onAfterInitEvent = new YAHOO.util.CustomEvent("afterInitEvent", this);
     
@@ -44,10 +46,6 @@ ELSTR.Language = function(){
     
     //////////////////////////////////////////////////////////////
     // Public functions
-    
-    // Funktion, um die Classe zu initialisieren
-    
-    
     
     /**
      * Initialisiert das Sprachenobjekt
@@ -149,13 +147,14 @@ ELSTR.Language = function(){
     /**
      * Changes the Frontend Language
      * @method change
-     * @param {String} lang The new language to be loaded (e.g. "de" or "en")     
+     * @param {String} lang The new language to be loaded (e.g. "de" or "en")
      * @return {Boolean} True
-     */    
+     */
     this.change = function(lang){
         that.onBeforeChangeEvent.fire(lang);
         var callbackLoad = function(){
             _draw();
+            _drawLanguageSelection();
             that.onAfterChangeEvent.fire(lang);
         }
         _loadLanguage(lang, callbackLoad);
@@ -167,7 +166,7 @@ ELSTR.Language = function(){
      * Gibt die aktuelle Sprache zurueck
      * @method language
      * @return {String} The current language
-     */    
+     */
     this.language = function(){
         var lang = _getCurrentLanguage()
         return lang;
@@ -178,7 +177,7 @@ ELSTR.Language = function(){
     //////////////////////////////////////////////////////////////    
     // Private functions 
     
-    var _renderLanguageSelection = function(){
+    var _getLanguageSelectionElements = function(){
         // widgetElement ist das UL-Element mit der Klasse languageSelection
         widgetElement = YAHOO.util.Dom.getElementsByClassName("languageSelection", "ul")[0];
         
@@ -186,6 +185,12 @@ ELSTR.Language = function(){
             return true;
         }, "li", widgetElement);
         
+        return selectionElements;
+    }
+    
+    var _renderLanguageSelection = function(){
+    
+        var selectionElements = _getLanguageSelectionElements();
         
         var onClickUpdateLanguage = function(){
             if (!YAHOO.util.Dom.hasClass(this, "selected")) {
@@ -193,12 +198,13 @@ ELSTR.Language = function(){
                 var lang = this.getAttribute("name");
                 that.change(lang);
                 
-                for (var i = 0; i < selectionElements.length; i++) {
-                    YAHOO.util.Dom.removeClass(selectionElements[i], "selected");
-                }
-                
-                YAHOO.util.Dom.addClass(this, "selected");
-                
+                /*
+                 for (var i = 0; i < selectionElements.length; i++) {
+                 YAHOO.util.Dom.removeClass(selectionElements[i], "selected");
+                 }
+                 
+                 YAHOO.util.Dom.addClass(this, "selected");
+                 */
             }
         }
         
@@ -206,6 +212,19 @@ ELSTR.Language = function(){
             YAHOO.util.Event.addListener(selectionElements[i], "click", onClickUpdateLanguage);
         }
         
+    }
+    
+    var _drawLanguageSelection = function(){
+    
+        var selectionElements = _getLanguageSelectionElements();
+        
+        for (var i = 0; i < selectionElements.length; i++) {
+            YAHOO.util.Dom.removeClass(selectionElements[i], "selected");
+            
+            if (selectionElements[i].getAttribute("name") == currentLanguage) {
+                YAHOO.util.Dom.addClass(selectionElements[i], "selected");
+            }
+        }               
     }
     
     var _getCurrentLanguage = function(){
@@ -362,8 +381,8 @@ ELSTR.Language = function(){
         
         // Element in die Liste der Meldungen eintragen
         visibleAlertMessages[visibleAlertMessages.length] = messageId;
-
+        
     }
-
+    
 }
 
