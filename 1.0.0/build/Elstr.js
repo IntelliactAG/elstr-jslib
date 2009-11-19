@@ -1,9 +1,12 @@
 /***
  * This is the main Object of ELSTR Framework
- * @param {Object} Params 
- * @param {Object} E Output: The Elstrobject
+ * Here all 
+ * 
+ * ToDo: Initially I inteded to use YUI 3.0 initialization style here, but for now
+ * I'll keep it simple.
  */ 
 
-var ELSTR = function(Params, E) {
-	
-}
+// Build Namespaces
+var ELSTR = {};
+ELSTR.widget = {};
+
