@@ -7,15 +7,15 @@
  *  - Optionally a Menu for each ObjectType (with accoring functions)
  *  - Optionally Eventhandler
  * 
- * Anforderungen: 
- * - Eventtrigger OnNodeClick
- * - Gruppierung (Regeln?)
+ * Anforderungen:
+ * - Eventtrigger OnNodeClick (1)
+ * - Gruppierung (Regeln?) (--> backend)
  *   - Gruppierte Objekte können nicht navigiert werden...
- * - Paging Node?
+ * - Paging Node (3)
  * - Bei Mouseover Kontextmenu
- * - Linientyp (Hierarchisch)
+ * - Linientyp (Hierarchisch) (2)
  * - Breadcrumb (Wunsch --> Einfärben)
- * - Typen Filter (nur bestimmte types anzeigen)
+ * - Typen Filter (nur bestimmte types anzeigen) (1)
  * 
  * Public:
  * - BringNodeToCenter(id)
@@ -111,8 +111,8 @@
 		// Tbd: @Marco:Waht is needed here really? 
 		// Custom events? (Article selected etc...)
         EVENT_TYPES = {
-            "CONTEXT_MOUSE_OVER": "contextMouseOver",
-            "CONTEXT_MOUSE_OUT": "contextMouseOut"
+            "NODE_DBLCLICK": "nodeDblClick",
+            "NODE_CLICK": "nodeClick"
         };
 
     /**
@@ -179,6 +179,16 @@
 
             SphereBrowser.superclass.initEvents.call(this);
             var SIGNATURE = CustomEvent.LIST;
+			
+			/**
+            * CustomEvent fired at nodeClick
+            * @event beforeSubmitEvent
+            */
+            this.nodeClickEvent = this.createEvent(EVENT_TYPES.NODE_CLICK);
+            this.nodeClickEvent.signature = SIGNATURE;
+			
+			this.nodeDblClick = this.createEvent(EVENT_TYPES.NODE_DBLCLICK);
+            this.nodeDblClick.signature = SIGNATURE;
         },
 
         /**
@@ -354,7 +364,7 @@
 			var w = this.cfg.getProperty('sbwidth'), h = this.cfg.getProperty('sbheight');
 			infovis.id = 'elstr_sb_1';
 			Dom.setStyle(infovis.id, 'width', w+'px'); 
-			Dom.setStyle(infovis.id, 'height', h+'px'); 			
+			Dom.setStyle(infovis.id, 'height', h+'px');
 			
 		    //init canvas
 		    //Create new canvas instances.
@@ -451,12 +461,9 @@
 		            domElement.id = node.id;
 					Dom.addClass(domElement, node.data.$type);
 		            domElement.onclick = function() {		                					   	
-						rgraph.onClick(node.id, {
-						hideLabels: false						    						  
-						});
-						// fire the clickevent
-						// updateData
-				 		rgraph._laodData(node.id);
+						rgraph.onClick(node.id, { hideLabels: false	});
+						// fire the clickevent						
+				 		rgraph.widget.nodeClickEvent.fire({node : node, target : this});
 		            };
 					
 					domElement.menu = nodeTypes[node.data.$type].menu;
@@ -597,12 +604,11 @@
 		refresh: function() {
 			rgraph.clear();
 			// load with current id
-			//_laodData();
+			_laodData();
 		},
 		
 		search: function(query) {
 			
 		}
     });
-
 }());
