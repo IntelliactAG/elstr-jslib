@@ -42,6 +42,7 @@
     */
     ELSTR.widget.SphereBrowser = function (el, userConfig) {
         ELSTR.widget.SphereBrowser.superclass.constructor.call(this, el, userConfig);
+		ELSTR.widget.SphereBrowser.instance = this;
     };
 
     var Lang = YAHOO.lang,
@@ -77,27 +78,13 @@
                 key: "nodetypes"
             },
 			
-			"DATASOURCE": { 
-                key: "datasource"
-            },
-			
 			"SBWIDTH": { 
                 key: "sbwidth"
             },
 			
 			"SBHEIGHT": { 
                 key: "sbheight"
-            },
-			
-			"ROOTID": { 
-                key: "rootid"
-            },
-			
-			"SERVERURL": { 
-                key: "serverurl"
             }
-
-
         },
 
         /**
@@ -126,7 +113,8 @@
  
     // "onDOMReady" that renders the SphereBrowser
     function onDOMReady(p_sType, p_aArgs, p_oObject) {
-        this.render(p_oObject);
+        //this.render(p_oObject);
+		this.render();
     }
 
     //  "init" event handler that automatically renders the SphereBrowser
@@ -136,8 +124,8 @@
 
     YAHOO.extend(SphereBrowser, YAHOO.widget.Module, { 
 
-		that : {},
-		rgraph : {},
+		//that : {},
+		//rgraph : {},
         /**
         * The SphereBrowser initialization method. This method is automatically 
         * called by the constructor.
@@ -187,8 +175,8 @@
             this.nodeClickEvent = this.createEvent(EVENT_TYPES.NODE_CLICK);
             this.nodeClickEvent.signature = SIGNATURE;
 			
-			this.nodeDblClick = this.createEvent(EVENT_TYPES.NODE_DBLCLICK);
-            this.nodeDblClick.signature = SIGNATURE;
+			this.nodeDblClickEvent = this.createEvent(EVENT_TYPES.NODE_DBLCLICK);
+            this.nodeDblClickEvent.signature = SIGNATURE;
         },
 
         /**
@@ -235,18 +223,7 @@
             */
             this.cfg.addProperty(DEFAULT_CONFIG.NODETYPES.key, {
                 handler: this.configContainer
-            });
-			
-           /**
-            * 
-            * 
-            * @config disabled
-            * @type Boolean
-            * @default false
-            */
-            this.cfg.addProperty(DEFAULT_CONFIG.DATASOURCE.key, {
-                handler: this.configContainer
-            });		
+            });	
 			
 			/**
             * Height of the brwosing area
@@ -269,30 +246,7 @@
             this.cfg.addProperty(DEFAULT_CONFIG.SBWIDTH.key, {
                 handler: this.configContainer
             });	
-			
-						
-			/**
-            * The ID of the first element to be displayed
-            * 
-            * @config disabled
-            * @type Boolean
-            * @default false
-            */
-            this.cfg.addProperty(DEFAULT_CONFIG.ROOTID.key, {
-                handler: this.configContainer
-            });				
-				
-						
-			/**
-            * The URL of the Webservic to call to revice data (replace later with datasource)
-            * 
-            * @config disabled
-            * @type Boolean
-            * @default false
-            */
-            this.cfg.addProperty(DEFAULT_CONFIG.SERVERURL.key, {
-                handler: this.configContainer
-            });        
+			        
         },
                 
         /**
@@ -358,7 +312,7 @@
         * was fired.
         */
         onRender: function (p_sType, p_aArgs) {
-    
+
 			// Check container.js for examples			
  	        var infovis = this.body;
 			var w = this.cfg.getProperty('sbwidth'), h = this.cfg.getProperty('sbheight');
@@ -382,7 +336,7 @@
 		            'impl': {
 		                'init': function(){},
 		                'plot': function(canvas, ctx){
-		                    var times = 4, d = 100;
+		                    var times = 2, d = 150;
 		                    var pi2 = Math.PI * 2;
 		                    for (var i = 1; i <= times; i++) {
 		                        ctx.beginPath();
@@ -435,7 +389,7 @@
 			RGraph.Plot.NodeTypes.implement(nodeRenders);
 			
 			 //init rgraph
-		    rgraph = new RGraph(canvas, {
+		    this.rgraph = new RGraph(canvas, {
 		        //Add node/edge styles and set
 		        //overridable=true if you want your
 		        //styles to be individually overriden
@@ -445,7 +399,7 @@
 		        Node: {
 		            //set the RGraph rendering function
 		            //as node type
-		           'type': 'nodebg',
+		           'type': 'query',
 				   overridable: true
 		        },
 		        Edge: {
@@ -453,45 +407,59 @@
 					lineWidth: 1
 		        },
 		        //Parent-children distance
-		        levelDistance: 100,
+		        levelDistance: 150,
 				
 		        //Add styles to node labels on label creation
 		        onCreateLabel: function(domElement, node){
-		            domElement.innerHTML = node.name + "<br>Sec line";		            										
+					var label = '';
+					if (!YAHOO.lang.isUndefined(node.data.subType)) {
+						label = label + node.data.subType + ' ' + node.data.number;	
+					}         
+					label = label + '<br>' + node.name;
+					domElement.innerHTML = label;
 		            domElement.id = node.id;
 					Dom.addClass(domElement, node.data.$type);
 		            domElement.onclick = function() {		                					   	
-						rgraph.onClick(node.id, { hideLabels: false	});
+						// ELSTR.widget.SphereBrowser.instance.rgraph.onClick(node.id, { hideLabels: false	});
 						// fire the clickevent						
-				 		rgraph.widget.nodeClickEvent.fire({node : node, target : this});
+				 		ELSTR.widget.SphereBrowser.instance.nodeClickEvent.fire({node : node, target : this});
 		            };
 					
-					domElement.menu = nodeTypes[node.data.$type].menu;
-					domElement.onmouseover = function(e) {
-						// Show the menu						
-						var el = Event.getTarget(e);
-						var oMenu = el.menu;
-						if (oMenu.activated == false) {
-							Dom.removeClass(oMenu.id, 'elstr-sb-menu-show');
-							Dom.removeClass(oMenu.id, 'elstr-sb-menu-hide');
-							Dom.addClass(oMenu.id, 'elstr-sb-menu-half');
-							var xy = Dom.getXY(el.id);
-							xy[1] = xy[1] + 39;
-							oMenu.show();
-							Dom.setXY(oMenu.id, xy);
+					domElement.ondblclick = function() {		                					   	
+						ELSTR.widget.SphereBrowser.instance.rgraph.onClick(node.id, { hideLabels: false	});
+						// fire the clickevent						
+				 		ELSTR.widget.SphereBrowser.instance.nodeDblClickEvent.fire({node : node, target : this});
+		            };
+					
+					// Dangerous --> get menues form array
+					if (!YAHOO.lang.isUndefined(nodeTypes[node.data.$type].menu)) {
+						domElement.menu = nodeTypes[node.data.$type].menu;
+						domElement.onmouseover = function(e){
+							// Show the menu						
+							var el = Event.getTarget(e);
+							var oMenu = el.menu;
+							if (oMenu.activated == false) {
+								Dom.removeClass(oMenu.id, 'elstr-sb-menu-show');
+								Dom.removeClass(oMenu.id, 'elstr-sb-menu-hide');
+								Dom.addClass(oMenu.id, 'elstr-sb-menu-half');
+								var xy = Dom.getXY(el.id);
+								xy[1] = xy[1] + 19;
+								oMenu.show();
+								Dom.setXY(oMenu.id, xy);
+							}
+						}
+						
+						domElement.onmouseout = function(e){
+							// Show the menu					
+							var oMenu = this.menu;
+							
+							if (oMenu.activated == false) {
+								Dom.removeClass(oMenu.id, 'elstr-sb-menu-show');
+								Dom.removeClass(oMenu.id, 'elstr-sb-menu-half');
+								Dom.addClass(oMenu.id, 'elstr-sb-menu-hide');
+							}
 						}
 					}
-					
-					domElement.onmouseout = function(e) {
-						// Show the menu					
-						var oMenu = this.menu;	
-
-						if (oMenu.activated == false) {
-							Dom.removeClass(oMenu.id, 'elstr-sb-menu-show');
-							Dom.removeClass(oMenu.id, 'elstr-sb-menu-half');
-							Dom.addClass(oMenu.id, 'elstr-sb-menu-hide');
-						}
-					}	
 					// Fire Event onNodeCreated(e, node, domelement)				 
 		        },
 		        
@@ -509,44 +477,10 @@
 
 			/////////////////////////////////////////////////////////////////////////
 			// Custom RGraph methods added by Felix Nyffenegger
-			rgraph.widget = that;
-			rgraph._laodData =  function(id) {
-				var handleSuccess = function(o){
-					if(o.responseText !== undefined){
-						// Use the JSON Utility to parse the data returned from the server
-						var jsonResponse =  YAHOO.lang.JSON.parse(o.responseText);
-						//rgraph.loadJSON(YAHOO.lang.JSON.stringify(jsonResponse.result[0]));								
-						//rgraph.loadJSON(jsonResponse.result[0]);
-						//rgraph.refresh();
-						rgraph.refreshTree(jsonResponse.result[0]);
-					}
-				};
-				
-				var handleFailure = function(o){
-					if(o.responseText !== undefined){
-						alert("Request failed");
-					}
-				};
-				
-				var callback =
-				{
-				  success:handleSuccess,
-				  failure:handleFailure,
-				};
-				
-				var sUrl = rgraph.widget.cfg.getProperty('serverurl');
-				var postData = {
-					"jsonrpc": "2.0",
-					"method": 'getdata',
-					"params": {
-						"id": id
-					},
-					"id": 1
-				};
-				var request = YAHOO.util.Connect.asyncRequest('POST', sUrl, callback, YAHOO.lang.JSON.stringify(postData));
-			}
+			this.rgraph.widget = this;
+			
 			// Rearange nodes according to our policy
-			rgraph.refreshTree = function(json) {
+			this.rgraph.updateTree = function(json, node) {
 				// For Demo:
 				// Get root node
 				// Backloop through all nodes and remove grand-grand children
@@ -554,28 +488,67 @@
 				// Push jsondata into an object
 				// find the rootnode
 				// Backloop from here and add all Nodes which are not yet there
-				//var ans = new Graph(this.graphOptions);
-				//setTimeout("w", function(){
-					(function (ans, json) {												
+				// var ans = new Graph(this.graphOptions);
+				// setTimeout("w", function(){
+				
+				// If json is an array, creat a rootobject
+				if (YAHOO.lang.isUndefined(node)) {
+					// Cerate a new Tree
+					var o = {
+						id : 'root',
+						name : 'Resultate',
+						data : {
+							$type : 'query'
+						}
+					}
+					o.children = json;
+					json = o;
+				}
+				else {
+					node.children = json;
+					json = node;
+				}
+				
+				// Restructure Object structure to suite jit
+				// ToDO: Replace this by a dynamic datatransformer method
+				(function (json) {												
+					if (YAHOO.lang.isUndefined(json.data)) {
+						json.data = {
+							$type   : json.nodeType,
+							nodeType: json.nodeType,
+							C_ID	: json.C_ID,
+							subType : json.subType,
+							number  : json.number,
+							edgeType: json.level
+						}
+					}
+					if (json.children != undefined) {
+						for (var i = 0, ch = json.children; i < ch.length; i++) {								
+							arguments.callee(ch[i]);
+						}
+					}
+					
+				})(json);
+				
+				(function (ans, json) {
+					// Add node if not yet on graph
+					if (!ans.hasNode(json.id)) {
 						ans.addNode(json);
-						for(var i=0, ch = json.children; i<ch.length; i++) {
+					}
+					if (json.children != undefined) {
+						for (var i = 0, ch = json.children; i < ch.length; i++) {
 							ans.addAdjacence(json, ch[i]);
 							arguments.callee(ans, ch[i]);
 						}
-						
-					})(rgraph.graph, json);
-				//}, 400);
-				rgraph.root = json.id;
+					}
+				})(this.graph, json);
+				// }, 400);
+				this.root = json.id;
 				// If there's time: Try to add the collaps functionality				
-				rgraph.refresh();
+				// this.refresh();
 			}
-		    
-			 //load graph.
-			var rootId = that.cfg.getProperty('rootid');
-			if (rootId != '') {
-				rgraph._laodData(rootId);
-			}
-			rgraph.refresh();			
+					    			
+			//this.rgraph.refresh();			
 						
         },
 
@@ -601,10 +574,20 @@
             return "SphereBrowser " + this.id;
         }, 
 		
-		refresh: function() {
-			rgraph.clear();
+		load: function(json) {
+			//this.rgraph.clear();
 			// load with current id
-			_laodData();
+			this.rgraph.graph = new Graph(this.rgraph.graphOptions);
+			this.rgraph.updateTree(json);
+			//this.rgraph.loadJSON(json);
+			this.rgraph.refresh();
+		},
+		
+		update: function(json, node) {			
+			// load with current id
+			this.rgraph.updateTree(json, node);
+			//this.rgraph.loadJSON(json);
+			this.rgraph.refresh();
 		},
 		
 		search: function(query) {
