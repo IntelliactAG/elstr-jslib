@@ -301,17 +301,12 @@ ELSTR.Language = function(){
         datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost), callback);
     }
 
-    var _loadLanguageObject = function(resource, fnLoadComplete){
-        
+    var _loadLanguageObject = function(resource, fnLoadComplete){       
         // Event nach dem Laden
         that.onBeforeLoadEvent.fire();
         
-        currentIsLoaded = false;
-        
-        console.log(resource);
-        
+        currentIsLoaded = false;       
         textFrontend = resource.translations;
-        
         currentIsLoaded = true;
         currentLanguage = resource.current;
         

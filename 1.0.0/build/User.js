@@ -23,13 +23,14 @@ ELSTR.User = function() {
 
 	// ///////////////////////////////////////////////////////////////
 	// Declare all language variables
-	var widgetElement;
-	var currentUser = null;
+	var currentUsername = "anonymous";
 	var isAuth = false;
 	var datasource;
-	var file;
-	var serviceUrl;
 	var loginDialog;
+	var forceAuthentication = false;
+	
+	var serviceUrl;
+
 
 	// Member Variabless
 	var that = this;
@@ -64,10 +65,24 @@ ELSTR.User = function() {
 	 */
 	this.init = function(serviceUrl, authRequired, fnInitComplete) {
 
+		_renderLoginDialog();
+		
+		if(YAHOO.lang.isObject(ELSTR.applicationData.user)){
+			currentUser = ELSTR.applicationData.user.username;
+			
+			if (currentUser != "anonymous"){
+				// User is not anonymous
+				// An authenticated sesses exists on backend
+				isAuth = true;
+			}
+		}
+		
+		if(authRequired && authRequired == true){
+			forceAuthentication = true;
+		}
+		
 		// Die als selected markierte Sprache laden
-		if (serviceUrl && serviceUrl !== undefined) {
-
-			_renderLoginDialog();
+		if (YAHOO.lang.isString(serviceUrl)) {
 			
 			datasource = new YAHOO.util.XHRDataSource(serviceUrl);
 			datasource.connMethodPost = true;
@@ -77,10 +92,12 @@ ELSTR.User = function() {
 				resultsList : "result"
 			};
 
-			if (authRequired && authRequired == true) {
-
-				loginDialog.show();
-
+			if (forceAuthentication == true && isAuth == false) {
+				// It is not allowed to abort the login dialog				
+				var loginDialogButtons = loginDialog.getButtons();
+				loginDialogButtons[1].set("disabled", true);
+				
+				loginDialog.show();							
 			}
 
 			return true;

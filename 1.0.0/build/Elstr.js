@@ -16,7 +16,7 @@ ELSTR = {
 	 * Load application Data from the server
 	 * 
 	 * @method loadAppData
-	 * @param {String}
+	 * @param {string}
 	 *            appName Name of the Application
 	 * @param {function}
 	 *            fn Callback function
