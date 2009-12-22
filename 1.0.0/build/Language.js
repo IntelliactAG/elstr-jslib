@@ -65,18 +65,18 @@ ELSTR.Language = function(){
      * Initialisiert das Sprachenobjekt
      * @method init
      * @param {String} serviceUrl The url to service to load a language
-     * @param {String} filename The path with filename to the translation file on backend
+     * @param {String/Object} resource string->The path with filename to the translation file on backend
+     * 						  		   object->ELSTR.applicationData.language
      * @param {Boolean} drawOnLoaded True, if the initial loaded language will be applied
      * @param {Function} fnInitComplete Callback function that is executed when the initialisation ist completed and the language is loaded
      * @return {Boolean} True, if the values were valid
      */
-    this.init = function(serviceUrl, filename, drawOnLoaded, fnInitComplete){
+    this.init = function(serviceUrl, resource, drawOnLoaded, fnInitComplete){
 
+    	_renderLanguageSelection();
+    	
         // Die als selected markierte Sprache laden
-        if (serviceUrl && serviceUrl !== undefined && filename && filename !== undefined) {
-            file = filename;
-            
-            _renderLanguageSelection();
+        if (serviceUrl !== undefined && resource !== undefined) {            
             
             datasource = new YAHOO.util.XHRDataSource(serviceUrl);
             datasource.connMethodPost = true;
@@ -97,7 +97,12 @@ ELSTR.Language = function(){
                 }
             }
             
-            _loadLanguage(_getCurrentLanguage(), callbackLoad);
+            if(YAHOO.lang.isString(resource)){
+                file = resource;
+                _loadLanguageFile(_getCurrentLanguage(), callbackLoad);            	
+            } else {
+            	_loadLanguageObject(resource, callbackLoad)
+            }
             
             return true;
         }
@@ -250,7 +255,7 @@ ELSTR.Language = function(){
         return currentLanguage;
     }
     
-    var _loadLanguage = function(lang, fnLoadComplete){
+    var _loadLanguageFile = function(lang, fnLoadComplete){
     
         // Event nach dem Laden
         that.onBeforeLoadEvent.fire();
@@ -295,6 +300,27 @@ ELSTR.Language = function(){
         
         datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost), callback);
     }
+
+    var _loadLanguageObject = function(resource, fnLoadComplete){
+        
+        // Event nach dem Laden
+        that.onBeforeLoadEvent.fire();
+        
+        currentIsLoaded = false;
+        
+        console.log(resource);
+        
+        textFrontend = resource.translations;
+        
+        currentIsLoaded = true;
+        currentLanguage = resource.current;
+        
+        // Event nach dem Laden
+        that.onAfterLoadEvent.fire();
+        
+        fnLoadComplete();
+    }
+    
     
     var _draw = function(fnDrawComplete){
         // Was ist ein Text-Element?
