@@ -177,7 +177,7 @@ ELSTR.Language = function(){
             _drawLanguageSelection();
             that.onAfterChangeEvent.fire(lang);
         }
-        _loadLanguage(lang, callbackLoad);
+        _loadLanguageFile(lang, callbackLoad);
         return true;
     }
     
