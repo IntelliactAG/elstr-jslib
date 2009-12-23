@@ -59,6 +59,27 @@ ELSTR.Utils = {
 			}
 		}
 	},
+	/**
+	 * Public mehtod for showing a wating cursor
+	 * 
+	 * Needs a CSS Class .cursorWait - Example:
+	 * .cursorWait {
+	 * 		cursor: wait;
+	 * }
+	 * 
+	 */	
+	cursorWait : {
+		show : function() {	
+			if (YAHOO.util.Dom.hasClass(document.body,"cursorWait") == false){
+				YAHOO.util.Dom.addClass(document.body,"cursorWait");
+			}			
+		},
+		hide : function() {			
+			if (YAHOO.util.Dom.hasClass(document.body,"cursorWait") == true){
+				YAHOO.util.Dom.removeClass(document.body,"cursorWait");
+			}
+		}
+	},
 
 	// public method for url encoding
 	utf8_encode : function(string) {

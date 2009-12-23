@@ -27,7 +27,6 @@ ELSTR = {
 				"services/ELSTR_ApplicationDataServer");
 		oDataSource.connMethodPost = true;
 		oDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
-		oDataSource.maxCacheEntries = 10;
 		oDataSource.responseSchema = {
 			resultsList : "result"
 		};
