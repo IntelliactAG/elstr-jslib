@@ -6,10 +6,28 @@ if (ELSTR == undefined) {
 /**
  * Die User Klasse regelt den Umgang mit dem Benutzer in der Webapp
  * 
- * Beispiel eines Widgets/Markups im HTML. <div class="elstrUser"></div>
+ * Example of the widget/markup
  * 
- * Damit diese Komponente verwendet werden kann, muessen folgende Komponenten
- * der YUI geladen sein requires: ["dom","event","datasource","json","dialog"]
+ * Required for Authentication: LoginDialog
+ * <div id="loginDialog">
+ * 		<div class="hd">Login</div>
+ *		<div class="bd">
+ *			<form name="loginDialogForm" method="POST" action="services/ELSTR_AuthServer">
+ *		    	<label for="username">Username</label><input type="text" name="username" />
+ *				<label for="password">Password</label><input type="password" name="password" />
+ *			</form>
+ *		</div>
+ * </div>
+ * 
+ * Optinal for Authentication: LoginDialog
+ * <div id="loginHandler">
+ * 		<span class="login">Anmelden</span>
+ * 		<span class="logout">Abmelden :</span>
+ * 		<span class="user"></span>
+ * </div>
+ * 
+ * To use this component the following YUI components ar required
+ * YUI components: ["dom","event","datasource","json","dialog"]
  * 
  * @author egli@intelliact.ch
  * @copyright Intelliact AG, 2009
@@ -55,7 +73,7 @@ ELSTR.User = function() {
 	this.init = function(authRequired, fnLoginComplete) {
 
 		_renderLoginDialog();
-		
+
 		if (YAHOO.lang.isObject(ELSTR.applicationData.user)) {
 			currentUsername = ELSTR.applicationData.user.username;
 			isAuth = ELSTR.applicationData.user.isAuth;
@@ -63,15 +81,15 @@ ELSTR.User = function() {
 			currentUsername = "anonymous";
 			isAuth = false;
 		}
-		
+
 		_renderLoginHandler();
 
 		if (authRequired && authRequired == true) {
 			forceAuthentication = true;
-			
+
 			// It is not allowed to abort the login dialog
 			var loginDialogButtons = loginDialog.getButtons();
-			loginDialogButtons[1].set("disabled", true);			
+			loginDialogButtons[1].set("disabled", true);
 		}
 
 		if (YAHOO.lang.isFunction(fnLoginComplete)) {
@@ -100,15 +118,14 @@ ELSTR.User = function() {
 
 	}
 
-	
-	this.login = function(){
+	this.login = function() {
 		loginDialog.show();
 	}
-	
-	this.logout = function(){
+
+	this.logout = function() {
 		_logoutRequest();
-	}	
-	
+	}
+
 	/**
 	 * Returns the current authentification status
 	 * 
@@ -128,12 +145,12 @@ ELSTR.User = function() {
 			var username = loginDialog.getData().username;
 			var password = loginDialog.getData().password;
 
-			_authRequest(username, password);			
+			_authRequest(username, password);
 		};
 		var handleCancel = function() {
 			this.cancel();
 		};
-		
+
 		loginDialog = new YAHOO.widget.Dialog("loginDialog", {
 			postmethod : "none",
 			visible : false,
@@ -151,7 +168,7 @@ ELSTR.User = function() {
 			} ]
 		});
 		loginDialog.render(document.body);
-		
+
 		// Add listeners to the Panel
 		var enterListener = new YAHOO.util.KeyListener("loginDialog", {
 			ctrl : false,
@@ -161,46 +178,52 @@ ELSTR.User = function() {
 			correctScope : true
 		});
 		enterListener.enable();
+
 	}
 
-	var _renderLoginHandler = function(){
-		var loginHandler = document.getElementById('loginHandler');
-		YAHOO.util.Event.removeListener(loginHandler, "click"); 
-		var elLogin = YAHOO.util.Dom.getElementsByClassName('login','span',loginHandler);
-		elLogout = YAHOO.util.Dom.getElementsByClassName('logout','span',loginHandler);
-		var elUser = YAHOO.util.Dom.getElementsByClassName('user','span',loginHandler);
-		if (isAuth){			
-			YAHOO.util.Event.addListener(loginHandler, "click", function(){				
-				that.logout();
-			}); 
-			for ( var i = 0; i < elLogin.length; i++) {				
-				YAHOO.util.Dom.setStyle(elLogin[i], "display", "none");
-			}			
-			for ( var i = 0; i < elUser.length; i++) {				
-				YAHOO.util.Dom.setStyle(elUser[i], "display", "");
-				elUser[i].innerHTML = currentUsername;
-			}				
-			for ( var i = 0; i < elLogout.length; i++) {				
-				YAHOO.util.Dom.setStyle(elLogout[i], "display", "");
-			}			
-		} else {
-			YAHOO.util.Event.addListener(loginHandler, "click", function(){				
-				that.login();
-			}); 
-			for ( var i = 0; i < elLogin.length; i++) {				
-				YAHOO.util.Dom.setStyle(elLogin[i], "display", "");
-			}			
-			for ( var i = 0; i < elUser.length; i++) {				
-				YAHOO.util.Dom.setStyle(elUser[i], "display", "none");
-				elUser[i].innerHTML = currentUsername;
-			}				
-			for ( var i = 0; i < elLogout.length; i++) {				
-				YAHOO.util.Dom.setStyle(elLogout[i], "display", "none");
-			}				
+	var _renderLoginHandler = function() {
+		// Render the handler only if it exists
+		if (document.getElementById('loginHandler')) {
+			var loginHandler = document.getElementById('loginHandler');
+			YAHOO.util.Event.removeListener(loginHandler, "click");
+			var elLogin = YAHOO.util.Dom.getElementsByClassName('login',
+					'span', loginHandler);
+			elLogout = YAHOO.util.Dom.getElementsByClassName('logout', 'span',
+					loginHandler);
+			var elUser = YAHOO.util.Dom.getElementsByClassName('user', 'span',
+					loginHandler);
+			if (isAuth) {
+				YAHOO.util.Event.addListener(loginHandler, "click", function() {
+					that.logout();
+				});
+				for ( var i = 0; i < elLogin.length; i++) {
+					YAHOO.util.Dom.setStyle(elLogin[i], "display", "none");
+				}
+				for ( var i = 0; i < elUser.length; i++) {
+					YAHOO.util.Dom.setStyle(elUser[i], "display", "");
+					elUser[i].innerHTML = currentUsername;
+				}
+				for ( var i = 0; i < elLogout.length; i++) {
+					YAHOO.util.Dom.setStyle(elLogout[i], "display", "");
+				}
+			} else {
+				YAHOO.util.Event.addListener(loginHandler, "click", function() {
+					that.login();
+				});
+				for ( var i = 0; i < elLogin.length; i++) {
+					YAHOO.util.Dom.setStyle(elLogin[i], "display", "");
+				}
+				for ( var i = 0; i < elUser.length; i++) {
+					YAHOO.util.Dom.setStyle(elUser[i], "display", "none");
+					elUser[i].innerHTML = currentUsername;
+				}
+				for ( var i = 0; i < elLogout.length; i++) {
+					YAHOO.util.Dom.setStyle(elLogout[i], "display", "none");
+				}
+			}
 		}
-		
 	}
-	
+
 	var _authRequest = function(username, password) {
 
 		var oCallback = {
@@ -208,11 +231,11 @@ ELSTR.User = function() {
 			// of the returned data and create child nodes.
 			success : function(oRequest, oParsedResponse, oPayload) {
 				ELSTR.Utils.cursorWait.hide();
-			
+
 				var responseAction = oParsedResponse.results[0].action;
 				var responseMessages = oParsedResponse.results[0].message;
-			
-				if(responseAction == "success"){
+
+				if (responseAction == "success") {
 					isAuth = oParsedResponse.results[0].isAuth;
 					currentUsername = oParsedResponse.results[0].username;
 					loginDialog.hide();
@@ -222,15 +245,15 @@ ELSTR.User = function() {
 					if (forceAuthentication == true && isAuth == false) {
 						that.login();
 					}
-					ELSTR.lang.alert("error",responseMessages[0]);
+					ELSTR.lang.alert("error", responseMessages[0]);
 				}
 
 			},
 			failure : function(oRequest, oParsedResponse, oPayload) {
 				ELSTR.Utils.cursorWait.hide();
-				
+
 				alert("Request failed!");
-				
+
 				if (forceAuthentication == true && isAuth == false) {
 					that.login();
 				}
@@ -252,30 +275,30 @@ ELSTR.User = function() {
 
 		datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),
 				oCallback);
-		
+
 		ELSTR.Utils.cursorWait.show();
 	}
-	
+
 	var _logoutRequest = function() {
-		
+
 		var oCallback = {
 			// if our XHR call is successful, we want to make use
 			// of the returned data and create child nodes.
 			success : function(oRequest, oParsedResponse, oPayload) {
 				ELSTR.Utils.cursorWait.hide();
-			
+
 				isAuth = false;
 				currentUsername = "anonymous";
-				
+
 				_renderLoginHandler();
-				
+
 				if (forceAuthentication == true && isAuth == false) {
 					that.login();
 				}
 
 			},
 			failure : function(oRequest, oParsedResponse, oPayload) {
-				ELSTR.Utils.cursorWait.hide();			
+				ELSTR.Utils.cursorWait.hide();
 				alert("Request failed!");
 			},
 			scope : {},
@@ -291,8 +314,8 @@ ELSTR.User = function() {
 
 		datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),
 				oCallback);
-		
+
 		ELSTR.Utils.cursorWait.show();
-	}	
+	}
 
 }

@@ -19,8 +19,8 @@ if (ELSTR == undefined) {
  *      </li>
  *  </ul>
  *  
- * Damit diese Komponente verwendet werden kann, muessen folgende Komponenten der YUI geladen sein
- * requires: ["dom","event","datasource","json","dialog"]
+ * To use this component the following YUI components ar required
+ * YUI components: ["dom","event","datasource","json","dialog"]
  *
  * @author egli@intelliact.ch
  * @copyright Intelliact AG, 2009
