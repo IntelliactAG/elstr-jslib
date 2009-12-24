@@ -8,26 +8,19 @@ if (ELSTR == undefined) {
  * 
  * Example of the widget/markup
  * 
- * Required for Authentication: LoginDialog
- * <div id="loginDialog">
- * 		<div class="hd">Login</div>
- *		<div class="bd">
- *			<form name="loginDialogForm" method="POST" action="services/ELSTR_AuthServer">
- *		    	<label for="username">Username</label><input type="text" name="username" />
- *				<label for="password">Password</label><input type="password" name="password" />
- *			</form>
- *		</div>
- * </div>
+ * Required for Authentication: LoginDialog <div id="loginDialog"> <div
+ * class="hd">Login</div> <div class="bd"> <form name="loginDialogForm"
+ * method="POST" action="services/ELSTR_AuthServer"> <label
+ * for="username">Username</label><input type="text" name="username" /> <label
+ * for="password">Password</label><input type="password" name="password" />
+ * </form> </div> </div>
  * 
- * Optinal for Authentication: LoginDialog
- * <div id="loginHandler">
- * 		<span class="login">Anmelden</span>
- * 		<span class="logout">Abmelden :</span>
- * 		<span class="user"></span>
- * </div>
+ * Optinal for Authentication: LoginDialog <div id="loginHandler"> <span
+ * class="login">Anmelden</span> <span class="logout">Abmelden :</span> <span
+ * class="user"></span> </div>
  * 
- * To use this component the following YUI components ar required
- * YUI components: ["dom","event","datasource","json","dialog"]
+ * To use this component the following YUI components ar required YUI
+ * components: ["dom","event","datasource","json","dialog"]
  * 
  * @author egli@intelliact.ch
  * @copyright Intelliact AG, 2009
@@ -45,7 +38,7 @@ ELSTR.User = function() {
 	var isAuth;
 	var datasource;
 	var loginDialog;
-	var forceAuthentication = false;
+	var forceAuthentication;
 	var callbackFunction;
 
 	// Member Variabless
@@ -53,6 +46,14 @@ ELSTR.User = function() {
 
 	// ////////////////////////////////////////////////////////////
 	// Event Declarations
+	that.onAfterInitEvent = new YAHOO.util.CustomEvent("afterInitEvent", this);
+
+	that.onAfterAuthEvent = new YAHOO.util.CustomEvent("afterAuthEvent", this);
+
+	that.onAfterLogoutEvent = new YAHOO.util.CustomEvent("afterLogoutEvent",
+			this);
+	that.onBeforeLogoutEvent = new YAHOO.util.CustomEvent("beforeLogoutEvent",
+			this);
 
 	// ////////////////////////////////////////////////////////////
 	// Public functions
@@ -90,6 +91,8 @@ ELSTR.User = function() {
 			// It is not allowed to abort the login dialog
 			var loginDialogButtons = loginDialog.getButtons();
 			loginDialogButtons[1].set("disabled", true);
+		} else {
+			forceAuthentication = false;
 		}
 
 		if (YAHOO.lang.isFunction(fnLoginComplete)) {
@@ -114,6 +117,7 @@ ELSTR.User = function() {
 			callbackFunction();
 		}
 
+		that.onAfterInitEvent.fire();
 		return true;
 
 	}
@@ -185,17 +189,43 @@ ELSTR.User = function() {
 		// Render the handler only if it exists
 		if (document.getElementById('loginHandler')) {
 			var loginHandler = document.getElementById('loginHandler');
-			YAHOO.util.Event.removeListener(loginHandler, "click");
+
 			var elLogin = YAHOO.util.Dom.getElementsByClassName('login',
 					'span', loginHandler);
-			elLogout = YAHOO.util.Dom.getElementsByClassName('logout', 'span',
+			var elLogout = YAHOO.util.Dom.getElementsByClassName('logout', 'span',
 					loginHandler);
 			var elUser = YAHOO.util.Dom.getElementsByClassName('user', 'span',
 					loginHandler);
-			if (isAuth) {
-				YAHOO.util.Event.addListener(loginHandler, "click", function() {
-					that.logout();
+
+			// Add event listerners
+			for ( var i = 0; i < elLogin.length; i++) {				
+				YAHOO.util.Event.addListener(elLogin[i], "click", function() {
+					that.login();
 				});
+			}
+			for ( var i = 0; i < elLogout.length; i++) {				
+				YAHOO.util.Event.addListener(elLogout[i], "click", function() {
+					that.logout();
+				});				
+			}			
+			
+		}
+
+		_updateLoginHandler();
+	}
+
+	var _updateLoginHandler = function() {
+		if (document.getElementById('loginHandler')) {
+			var loginHandler = document.getElementById('loginHandler');
+
+			var elLogin = YAHOO.util.Dom.getElementsByClassName('login',
+					'span', loginHandler);
+			var elLogout = YAHOO.util.Dom.getElementsByClassName('logout', 'span',
+					loginHandler);
+			var elUser = YAHOO.util.Dom.getElementsByClassName('user', 'span',
+					loginHandler);
+			
+			if (isAuth) {
 				for ( var i = 0; i < elLogin.length; i++) {
 					YAHOO.util.Dom.setStyle(elLogin[i], "display", "none");
 				}
@@ -207,15 +237,12 @@ ELSTR.User = function() {
 					YAHOO.util.Dom.setStyle(elLogout[i], "display", "");
 				}
 			} else {
-				YAHOO.util.Event.addListener(loginHandler, "click", function() {
-					that.login();
-				});
 				for ( var i = 0; i < elLogin.length; i++) {
 					YAHOO.util.Dom.setStyle(elLogin[i], "display", "");
 				}
 				for ( var i = 0; i < elUser.length; i++) {
 					YAHOO.util.Dom.setStyle(elUser[i], "display", "none");
-					elUser[i].innerHTML = currentUsername;
+					elUser[i].innerHTML = "";
 				}
 				for ( var i = 0; i < elLogout.length; i++) {
 					YAHOO.util.Dom.setStyle(elLogout[i], "display", "none");
@@ -239,7 +266,8 @@ ELSTR.User = function() {
 					isAuth = oParsedResponse.results[0].isAuth;
 					currentUsername = oParsedResponse.results[0].username;
 					loginDialog.hide();
-					_renderLoginHandler();
+					_updateLoginHandler();
+					that.onAfterAuthEvent.fire();
 					callbackFunction();
 				} else {
 					if (forceAuthentication == true && isAuth == false) {
@@ -280,6 +308,7 @@ ELSTR.User = function() {
 	}
 
 	var _logoutRequest = function() {
+		that.onBeforeLogoutEvent.fire();
 
 		var oCallback = {
 			// if our XHR call is successful, we want to make use
@@ -290,7 +319,8 @@ ELSTR.User = function() {
 				isAuth = false;
 				currentUsername = "anonymous";
 
-				_renderLoginHandler();
+				_updateLoginHandler();
+				that.onAfterLogoutEvent.fire();
 
 				if (forceAuthentication == true && isAuth == false) {
 					that.login();
