@@ -99,8 +99,9 @@ ELSTR.Language = function(){
             
             if(YAHOO.lang.isString(resource)){
                 file = resource;
-                _loadLanguageFile(_getCurrentLanguage(), callbackLoad);            	
+                _loadLanguage(_getCurrentLanguage(), callbackLoad);            	
             } else {
+            	file = "";
             	_loadLanguageObject(resource, callbackLoad)
             }
             
@@ -171,13 +172,13 @@ ELSTR.Language = function(){
      * @return {Boolean} True
      */
     this.change = function(lang){
-        that.onBeforeChangeEvent.fire(lang);
+        that.onBeforeChangeEvent.fire(lang);       
         var callbackLoad = function(){
             _draw();
             _drawLanguageSelection();
             that.onAfterChangeEvent.fire(lang);
         }
-        _loadLanguageFile(lang, callbackLoad);
+        _loadLanguage(lang, callbackLoad);
         return true;
     }
     
@@ -208,13 +209,10 @@ ELSTR.Language = function(){
         return selectionElements;
     }
     
-    var _renderLanguageSelection = function(){
-    
-        var selectionElements = _getLanguageSelectionElements();
-        
-        var onClickUpdateLanguage = function(){
-            if (!YAHOO.util.Dom.hasClass(this, "selected")) {
-            
+    var _renderLanguageSelection = function(){    
+        var selectionElements = _getLanguageSelectionElements();        
+        var onClickUpdateLanguage = function(){                	
+            if (!YAHOO.util.Dom.hasClass(this, "selected")) {            	
                 var lang = this.getAttribute("name");
                 that.change(lang);
                 
@@ -255,13 +253,12 @@ ELSTR.Language = function(){
         return currentLanguage;
     }
     
-    var _loadLanguageFile = function(lang, fnLoadComplete){
+    var _loadLanguage = function(lang, fnLoadComplete){
     
         // Event nach dem Laden
         that.onBeforeLoadEvent.fire();
         
         currentIsLoaded = false;
-        
         var callback = {
         
             //if our XHR call is successful, we want to make use
@@ -290,7 +287,7 @@ ELSTR.Language = function(){
         
         var oRequestPost = {
             "jsonrpc": "2.0",
-            "method": "get",
+            "method": "load",
             "params": {
                 "file": file,
                 "lang": lang
