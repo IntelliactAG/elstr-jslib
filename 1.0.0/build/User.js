@@ -37,8 +37,10 @@ ELSTR.User = function() {
 	var currentUsername;
 	var isAuth;
 	var isAdmin;
+	var resourcesAllowed;
 	var datasource;
 	var loginDialog;
+	var accessDeniedDialog;
 	var forceAuthentication;
 	var callbackFunction;
 
@@ -80,6 +82,7 @@ ELSTR.User = function() {
 			currentUsername = ELSTR.applicationData.user.username;
 			isAuth = ELSTR.applicationData.user.isAuth;
 			isAdmin = ELSTR.applicationData.user.isAdmin;
+			resourcesAllowed = ELSTR.applicationData.user.resourcesAllowed;
 		} else {
 			currentUsername = "anonymous";
 			isAuth = false;
@@ -87,6 +90,7 @@ ELSTR.User = function() {
 		}
 
 		_renderLoginHandler();
+		_createDatasource();
 
 		if (authRequired && authRequired == true) {
 			forceAuthentication = true;
@@ -101,26 +105,22 @@ ELSTR.User = function() {
 		if (YAHOO.lang.isFunction(fnLoginComplete)) {
 			callbackFunction = fnLoginComplete;
 		} else {
+			// Create empty callback if none or an invalid one is provided
 			callbackFunction = function() {
 			};
 		}
-
-		datasource = new YAHOO.util.XHRDataSource("services/ELSTR_AuthServer");
-		datasource.connMethodPost = true;
-		datasource.responseType = YAHOO.util.DataSource.TYPE_JSON;
-		datasource.responseSchema = {
-			resultsList : "result"
-		};
 
 		if (forceAuthentication == true && isAuth == false) {
 			that.login();
 		}
 
+		that.onAfterInitEvent.fire();
+
 		if (isAuth) {
+			that.onAfterAuthEvent.fire();
 			callbackFunction();
 		}
 
-		that.onAfterInitEvent.fire();
 		return true;
 
 	}
@@ -170,8 +170,74 @@ ELSTR.User = function() {
 		return isAdmin;
 	}
 
+	/**
+	 * Returns if the user has allowed access to a resource
+	 * 
+	 * @param {string/array}
+	 *            resource name of a resource
+	 * @method isAdmin
+	 * @return {Boolean} The admin status
+	 */
+	this.resourceAllowed = function(resource) {
+		var isAllowed = true;
+		var objectLiteralOfResourcesAllowed = {};
+		for ( var i = 0; i < resourcesAllowed.length; i++) {
+			objectLiteralOfResourcesAllowed[resourcesAllowed[i]] = '';
+		}
+		if (YAHOO.lang.isArray(resource)) {
+			for ( var i = 0; i < resource.length; i++) {
+				if (!(resource[i] in objectLiteralOfResourcesAllowed)) {
+					isAllowed = false;
+				}
+			}
+		} else {
+			if (!(resource in objectLiteralOfResourcesAllowed)) {
+				isAllowed = false;
+			}
+		}
+		return isAllowed;
+	}
+	
+	/**
+	 * Shows a moda access denied Panel
+	 * 
+	 */
+	this.showAccessDenied = function(additionalText){
+		var handleOtherUser = function() {
+			this.hide();
+			that.login();
+		};
+
+		accessDeniedDialog = new YAHOO.widget.SimpleDialog("accessDeniedDialog", {
+			visible : true,
+			fixedcenter : true,
+			draggable : false,
+			close : false,
+			modal : true,
+			icon: YAHOO.widget.SimpleDialog.ICON_BLOCK, 			
+			buttons : [ {
+				text : "Als anderer Benutzer anmelden",
+				handler : handleOtherUser
+			} ]
+		});
+		accessDeniedDialog.setHeader("ERROR");
+		accessDeniedDialog.setBody("Kein Zugriff auf diese Applikation");
+		accessDeniedDialog.render(document.body);
+	
+		//accessDeniedDialog.show();
+	}
+
 	// ////////////////////////////////////////////////////////////
 	// Private functions
+
+	var _createDatasource = function() {
+		datasource = new YAHOO.util.XHRDataSource("services/ELSTR_AuthServer");
+		datasource.connMethodPost = true;
+		datasource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+		datasource.responseSchema = {
+			resultsList : "result"
+		};
+	}
 
 	var _renderLoginDialog = function() {
 
@@ -212,8 +278,8 @@ ELSTR.User = function() {
 			correctScope : true
 		});
 		enterListener.enable();
-
 	}
+	
 
 	var _renderLoginHandler = function() {
 		// Render the handler only if it exists
@@ -314,6 +380,7 @@ ELSTR.User = function() {
 				if (responseAction == "success") {
 					isAuth = oParsedResponse.results[0].isAuth;
 					isAdmin = oParsedResponse.results[0].isAdmin;
+					resourcesAllowed = oParsedResponse.results[0].resourcesAllowed;
 					currentUsername = oParsedResponse.results[0].username;
 					loginDialog.hide();
 					_updateLoginHandler();
