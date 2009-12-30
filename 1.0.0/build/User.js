@@ -140,6 +140,7 @@ ELSTR.User = function() {
 						'jslib/elstr/' + LIBS.elstrVersion + '/build/Admin.js',
 						function() {
 							ELSTR.admin = new ELSTR.Admin();
+							ELSTR.admin.init();
 							ELSTR.admin.openConsole();
 						})
 			} else {

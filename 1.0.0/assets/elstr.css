@@ -1,3 +1,9 @@
+/* Elstr styles */
+
+.cursorWait {
+	cursor: url("cursor-loader.ani"), wait;
+}
+
 /* Sphere Browser styles */
 .elstr-sb-menu {
 	
