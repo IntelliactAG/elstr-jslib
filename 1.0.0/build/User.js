@@ -33,9 +33,10 @@ if (ELSTR == undefined) {
 ELSTR.User = function() {
 
 	// ///////////////////////////////////////////////////////////////
-	// Declare all language variables
+	// Declare all class variables
 	var currentUsername;
 	var isAuth;
+	var isAdmin;
 	var datasource;
 	var loginDialog;
 	var forceAuthentication;
@@ -78,9 +79,11 @@ ELSTR.User = function() {
 		if (YAHOO.lang.isObject(ELSTR.applicationData.user)) {
 			currentUsername = ELSTR.applicationData.user.username;
 			isAuth = ELSTR.applicationData.user.isAuth;
+			isAdmin = ELSTR.applicationData.user.isAdmin;
 		} else {
 			currentUsername = "anonymous";
 			isAuth = false;
+			isAdmin = false;
 		}
 
 		_renderLoginHandler();
@@ -130,14 +133,40 @@ ELSTR.User = function() {
 		_logoutRequest();
 	}
 
+	this.openAdminConsole = function() {
+		if (isAdmin) {
+			if (YAHOO.lang.isUndefined(ELSTR.admin)) {
+				ELSTR.loader('script',
+						'jslib/elstr/' + LIBS.elstrVersion + '/build/Admin.js',
+						function() {
+							ELSTR.admin = new ELSTR.Admin();
+							ELSTR.admin.openConsole();
+						})
+			} else {
+
+				ELSTR.admin.openConsole();
+			}
+		}
+	}
+
 	/**
 	 * Returns the current authentification status
 	 * 
 	 * @method isAuth
-	 * @return {Booleam} The authentification status
+	 * @return {Boolean} The authentification status
 	 */
 	this.isAuth = function() {
 		return isAuth;
+	}
+
+	/**
+	 * Returns if the user is an admin user
+	 * 
+	 * @method isAdmin
+	 * @return {Boolean} The admin status
+	 */
+	this.isAdmin = function() {
+		return isAdmin;
 	}
 
 	// ////////////////////////////////////////////////////////////
@@ -192,23 +221,30 @@ ELSTR.User = function() {
 
 			var elLogin = YAHOO.util.Dom.getElementsByClassName('login',
 					'span', loginHandler);
-			var elLogout = YAHOO.util.Dom.getElementsByClassName('logout', 'span',
-					loginHandler);
+			var elLogout = YAHOO.util.Dom.getElementsByClassName('logout',
+					'span', loginHandler);
 			var elUser = YAHOO.util.Dom.getElementsByClassName('user', 'span',
 					loginHandler);
+			var elAdmin = YAHOO.util.Dom.getElementsByClassName('admin',
+					'span', loginHandler);
 
 			// Add event listerners
-			for ( var i = 0; i < elLogin.length; i++) {				
+			for ( var i = 0; i < elLogin.length; i++) {
 				YAHOO.util.Event.addListener(elLogin[i], "click", function() {
 					that.login();
 				});
 			}
-			for ( var i = 0; i < elLogout.length; i++) {				
+			for ( var i = 0; i < elLogout.length; i++) {
 				YAHOO.util.Event.addListener(elLogout[i], "click", function() {
 					that.logout();
-				});				
-			}			
-			
+				});
+			}
+			for ( var i = 0; i < elAdmin.length; i++) {
+				YAHOO.util.Event.addListener(elAdmin[i], "click", function() {
+					that.openAdminConsole();
+				});
+			}
+
 		}
 
 		_updateLoginHandler();
@@ -220,11 +256,13 @@ ELSTR.User = function() {
 
 			var elLogin = YAHOO.util.Dom.getElementsByClassName('login',
 					'span', loginHandler);
-			var elLogout = YAHOO.util.Dom.getElementsByClassName('logout', 'span',
-					loginHandler);
+			var elLogout = YAHOO.util.Dom.getElementsByClassName('logout',
+					'span', loginHandler);
 			var elUser = YAHOO.util.Dom.getElementsByClassName('user', 'span',
 					loginHandler);
-			
+			var elAdmin = YAHOO.util.Dom.getElementsByClassName('admin',
+					'span', loginHandler);
+
 			if (isAuth) {
 				for ( var i = 0; i < elLogin.length; i++) {
 					YAHOO.util.Dom.setStyle(elLogin[i], "display", "none");
@@ -248,6 +286,16 @@ ELSTR.User = function() {
 					YAHOO.util.Dom.setStyle(elLogout[i], "display", "none");
 				}
 			}
+
+			if (isAdmin) {
+				for ( var i = 0; i < elAdmin.length; i++) {
+					YAHOO.util.Dom.setStyle(elAdmin[i], "display", "");
+				}
+			} else {
+				for ( var i = 0; i < elAdmin.length; i++) {
+					YAHOO.util.Dom.setStyle(elAdmin[i], "display", "none");
+				}
+			}
 		}
 	}
 
@@ -257,13 +305,14 @@ ELSTR.User = function() {
 			// if our XHR call is successful, we want to make use
 			// of the returned data and create child nodes.
 			success : function(oRequest, oParsedResponse, oPayload) {
-				ELSTR.Utils.cursorWait.hide();
+				ELSTR.utils.cursorWait.hide();
 
 				var responseAction = oParsedResponse.results[0].action;
 				var responseMessages = oParsedResponse.results[0].message;
 
 				if (responseAction == "success") {
 					isAuth = oParsedResponse.results[0].isAuth;
+					isAdmin = oParsedResponse.results[0].isAdmin;
 					currentUsername = oParsedResponse.results[0].username;
 					loginDialog.hide();
 					_updateLoginHandler();
@@ -278,7 +327,7 @@ ELSTR.User = function() {
 
 			},
 			failure : function(oRequest, oParsedResponse, oPayload) {
-				ELSTR.Utils.cursorWait.hide();
+				ELSTR.utils.cursorWait.hide();
 
 				alert("Request failed!");
 
@@ -298,13 +347,13 @@ ELSTR.User = function() {
 				username : username,
 				password : password
 			},
-			"id" : ELSTR.Utils.uuid()
+			"id" : ELSTR.utils.uuid()
 		};
 
 		datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),
 				oCallback);
 
-		ELSTR.Utils.cursorWait.show();
+		ELSTR.utils.cursorWait.show();
 	}
 
 	var _logoutRequest = function() {
@@ -314,9 +363,10 @@ ELSTR.User = function() {
 			// if our XHR call is successful, we want to make use
 			// of the returned data and create child nodes.
 			success : function(oRequest, oParsedResponse, oPayload) {
-				ELSTR.Utils.cursorWait.hide();
+				ELSTR.utils.cursorWait.hide();
 
 				isAuth = false;
+				isAdmin = false;
 				currentUsername = "anonymous";
 
 				_updateLoginHandler();
@@ -328,7 +378,7 @@ ELSTR.User = function() {
 
 			},
 			failure : function(oRequest, oParsedResponse, oPayload) {
-				ELSTR.Utils.cursorWait.hide();
+				ELSTR.utils.cursorWait.hide();
 				alert("Request failed!");
 			},
 			scope : {},
@@ -339,13 +389,13 @@ ELSTR.User = function() {
 			"jsonrpc" : "2.0",
 			"method" : "logout",
 			"params" : {},
-			"id" : ELSTR.Utils.uuid()
+			"id" : ELSTR.utils.uuid()
 		};
 
 		datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),
 				oCallback);
 
-		ELSTR.Utils.cursorWait.show();
+		ELSTR.utils.cursorWait.show();
 	}
 
 }
