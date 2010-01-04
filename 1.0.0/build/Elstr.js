@@ -78,7 +78,7 @@ ELSTR = {
 	loader : function(type, url, fn) {
 
 		var requestUrl;
-		if (YAHOO.lang.isArray(url) && type == "script" && LIBS.elstrCombine == "y") {
+		if (YAHOO.lang.isArray(url) && type == "script" && LIBS.elstrCombine == true) {
 			for ( var i = 0; i < url.length; i++) {
 				if (i == 0) {
 					requestUrl = 'jslib/elstr/' + LIBS.elstrVersion + '/build/jsLoader.php?file'+i+'=' + url[i];
