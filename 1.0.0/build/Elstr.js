@@ -76,8 +76,22 @@ ELSTR = {
 	 * @return {object} Object, where the appData ist loaded to
 	 */
 	loader : function(type, url, fn) {
+
+		var requestUrl;
+		if (YAHOO.lang.isArray(url) && type == "script" && LIBS.elstrCombine == "y") {
+			for ( var i = 0; i < url.length; i++) {
+				if (i == 0) {
+					requestUrl = 'jslib/elstr/' + LIBS.elstrVersion + '/build/jsLoader.php?file'+i+'=' + url[i];
+				} else {
+					requestUrl += '&file'+i+'=' + url[i];
+				}
+			}
+		} else {
+			requestUrl = url;
+		}
+
 		if (type == "script") {
-			YAHOO.util.Get.script(url, {
+			YAHOO.util.Get.script(requestUrl, {
 				onSuccess : function(obj) {
 					if (YAHOO.lang.isFunction(fn) == true) {
 						fn();
@@ -86,7 +100,7 @@ ELSTR = {
 			});
 		}
 		if (type == "css") {
-			YAHOO.util.Get.css(url, {
+			YAHOO.util.Get.css(requestUrl, {
 				onSuccess : function(obj) {
 					if (YAHOO.lang.isFunction(fn) == true) {
 						fn();
