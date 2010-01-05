@@ -1,7 +1,7 @@
 <?php
 
 /**
-* Loader for Elstr-Skripts and Stylesheets
+* Loader for Elstr-Scripts
 *
 * @version $Id$
 * @copyright 2010
