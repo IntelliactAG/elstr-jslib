@@ -78,6 +78,10 @@
                 key: "nodetypes"
             },
 			
+			"FILTER": { 
+                key: "filter"
+            },
+			
 			"SBWIDTH": { 
                 key: "sbwidth"
             },
@@ -226,6 +230,17 @@
             });	
 			
 			/**
+            * Filters for display of nodetypes
+            * 
+            * @config disabled
+            * @type array
+            * @default false
+            */
+            this.cfg.addProperty(DEFAULT_CONFIG.FILTER.key, {
+                handler: this.configContainer
+            });	
+			
+			/**
             * Height of the brwosing area
             * 
             * @config disabled
@@ -330,7 +345,9 @@
 		        //concentric circles in it.
 		        'backgroundCanvas': {
 		            'styles': {
-		                'strokeStyle': '#CCCCCC'
+		                //'strokeStyle': '#EDF5FF'
+						//'strokeStyle': '#CEDDF0'
+						'strokeStyle': '#DDDDDD'
 		            },
 		            
 		            'impl': {
@@ -387,9 +404,18 @@
 				menu.render(this.body);
 			}
 			RGraph.Plot.NodeTypes.implement(nodeRenders);
-			
+			//Hypertree.Plot.NodeTypes.implement(nodeRenders);
+			RGraph.Plot.EdgeTypes.implement({  
+				'none': function(adj, canvas) {  
+					//do not display
+   				},  
+				'up': RGraph.Plot.EdgeTypes.prototype.arrow, 
+				'down': RGraph.Plot.EdgeTypes.prototype.arrow, 
+				'even': RGraph.Plot.EdgeTypes.prototype.line
+			});  
 			 //init rgraph
 		    this.rgraph = new RGraph(canvas, {
+			//this.rgraph = new Hypertree(canvas, {
 		        //Add node/edge styles and set
 		        //overridable=true if you want your
 		        //styles to be individually overriden
@@ -403,7 +429,7 @@
 				   overridable: true
 		        },
 		        Edge: {
-		            color: '#CCCCCC',
+		            color: '#8AADE0',
 					lineWidth: 1
 		        },
 		        //Parent-children distance
@@ -412,10 +438,14 @@
 		        //Add styles to node labels on label creation
 		        onCreateLabel: function(domElement, node){
 					var label = '';
-					if (!YAHOO.lang.isUndefined(node.data.subType)) {
+					if (node.data.subType != undefined && node.data.number != undefined) {
 						label = label + node.data.subType + ' ' + node.data.number;	
 					}         
-					label = label + '<br>' + node.name;
+					if (label != '') {
+						label = label + '<br>' + node.name;
+					} else{
+						label = node.name;
+					}
 					domElement.innerHTML = label;
 		            domElement.id = node.id;
 					Dom.addClass(domElement, node.data.$type);
@@ -425,10 +455,10 @@
 				 		ELSTR.widget.SphereBrowser.instance.nodeClickEvent.fire({node : node, target : this});
 		            };
 					
-					domElement.ondblclick = function() {		                					   	
+					domElement.ondblclick = function() {		                					   							
 						ELSTR.widget.SphereBrowser.instance.rgraph.onClick(node.id, { hideLabels: false	});
 						// fire the clickevent						
-				 		ELSTR.widget.SphereBrowser.instance.nodeDblClickEvent.fire({node : node, target : this});
+				 		ELSTR.widget.SphereBrowser.instance.nodeDblClickEvent.fire({node : node, target : this});						
 		            };
 					
 					// Dangerous --> get menues form array
@@ -443,7 +473,7 @@
 								Dom.removeClass(oMenu.id, 'elstr-sb-menu-hide');
 								Dom.addClass(oMenu.id, 'elstr-sb-menu-half');
 								var xy = Dom.getXY(el.id);
-								xy[1] = xy[1] + 19;
+								xy[1] = xy[1] + el.offsetHeight -1;
 								oMenu.show();
 								Dom.setXY(oMenu.id, xy);
 							}
@@ -471,8 +501,36 @@
 		            style.left = (left - 20) + 'px';
 					style.top = (top - 20) + 'px';
 		            style.display = '';
-		        }				
-
+		            style.cursor = 'pointer';
+		            if (node._depth <= 1) {
+						//Dom.removeClass(node, 'node-min');
+						//Dom.addClass(node, 'node');
+						style.fontSize='12px';
+		            } else if(node._depth == 2){
+		                //Dom.removeClass(node, 'node');
+						//Dom.addClass(node, 'node-min');
+						style.fontSize='9px';
+		            } else {
+		                style.display = 'none';
+		            }
+					var filter = ELSTR.widget.SphereBrowser.instance.cfg.getProperty('filter');
+					if (filter.nodeType[node.data.$type] != true) {						
+						style.display = 'none';
+					}
+		        },
+				
+				onBeforePlotLine: function(adj) {
+					if (adj.nodeTo._depth > 2){
+						adj.data.$type = 'none';
+					}
+					else {
+						adj.data.$type = adj.nodeTo.data.edgeType;
+					}
+					var filter = ELSTR.widget.SphereBrowser.instance.cfg.getProperty('filter');
+					if (filter.nodeType[adj.nodeTo.data.$type] != true) {
+						adj.data.$type = 'none';
+					}
+				}
 		    });
 
 			/////////////////////////////////////////////////////////////////////////
@@ -480,37 +538,8 @@
 			this.rgraph.widget = this;
 			
 			// Rearange nodes according to our policy
-			this.rgraph.updateTree = function(json, node) {
-				// For Demo:
-				// Get root node
-				// Backloop through all nodes and remove grand-grand children
-				
-				// Push jsondata into an object
-				// find the rootnode
-				// Backloop from here and add all Nodes which are not yet there
-				// var ans = new Graph(this.graphOptions);
-				// setTimeout("w", function(){
-				
-				// If json is an array, creat a rootobject
-				if (YAHOO.lang.isUndefined(node)) {
-					// Cerate a new Tree
-					var o = {
-						id : 'root',
-						name : 'Resultate',
-						data : {
-							$type : 'query'
-						}
-					}
-					o.children = json;
-					json = o;
-				}
-				else {
-					node.children = json;
-					json = node;
-				}
-				
-				// Restructure Object structure to suite jit
-				// ToDO: Replace this by a dynamic datatransformer method
+			this.rgraph.updateJson = function(json) {				
+
 				(function (json) {												
 					if (YAHOO.lang.isUndefined(json.data)) {
 						json.data = {
@@ -519,7 +548,8 @@
 							C_ID	: json.C_ID,
 							subType : json.subType,
 							number  : json.number,
-							edgeType: json.level
+							edgeType: json.level,
+							updated : false
 						}
 					}
 					if (json.children != undefined) {
@@ -527,25 +557,13 @@
 							arguments.callee(ch[i]);
 						}
 					}
+					else {
+						json.children = [];
+					}
 					
 				})(json);
-				
-				(function (ans, json) {
-					// Add node if not yet on graph
-					if (!ans.hasNode(json.id)) {
-						ans.addNode(json);
-					}
-					if (json.children != undefined) {
-						for (var i = 0, ch = json.children; i < ch.length; i++) {
-							ans.addAdjacence(json, ch[i]);
-							arguments.callee(ans, ch[i]);
-						}
-					}
-				})(this.graph, json);
-				// }, 400);
-				this.root = json.id;
-				// If there's time: Try to add the collaps functionality				
-				// this.refresh();
+							
+				return json;
 			}
 					    			
 			//this.rgraph.refresh();			
@@ -574,24 +592,47 @@
             return "SphereBrowser " + this.id;
         }, 
 		
-		load: function(json) {
-			//this.rgraph.clear();
+		load: function(data) {
 			// load with current id
-			this.rgraph.graph = new Graph(this.rgraph.graphOptions);
-			this.rgraph.updateTree(json);
-			//this.rgraph.loadJSON(json);
+			
+			if (this.rgraph.root != undefined) {
+				this.rgraph.op.removeNode(this.rgraph.root, {
+					type: 'fade',
+					duration: 100
+				});
+			}
+			var json = this.rgraph.updateJson(data.results[0]);
+			this.rgraph.root = json.id;
+			this.rgraph.loadJSON(json);
 			this.rgraph.refresh();
+			//this.rgraph.graph = new Graph(this.rgraph.graphOptions);
+			//this.rgraph.updateTree(data.results);
+			//this.rgraph.refresh();
 		},
 		
-		update: function(json, node) {			
-			// load with current id
-			this.rgraph.updateTree(json, node);
-			//this.rgraph.loadJSON(json);
-			this.rgraph.refresh();
+		update: function(data) {						
+			if (!(data.results[0].id == undefined || data.results[0].id == "undefined" || data.results[0].id == "")) {
+				var node = this.rgraph.graph.getNode(data.results[0].id);
+				if (node.data.updated == false) {
+					var json = this.rgraph.updateJson(data.results[0]);
+					this.rgraph.op.sum(json, {
+						type: 'fade',
+						duration: 500,
+						hideLabels: false,
+						transition: Trans.Quart.easeOut
+					});
+					node.data.updated = true;
+				}
+				this.rgraph.plot();
+			}
 		},
 		
 		search: function(query) {
 			
+		},
+		
+		setFilter: function (filter) {
+			this.cfg.setProperty('filter', filter);
 		}
     });
 }());
