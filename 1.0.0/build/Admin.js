@@ -90,7 +90,7 @@ ELSTR.Admin = function() {
 		bodyHtml += "<div style='overflow:auto;height:" + tableHeight + "px;'>";
 		bodyHtml += "	<div class='yui-gf'>";
 		bodyHtml += "		<div class='yui-u first'>";
-		bodyHtml += "			<h3>Rollen</h3>";
+		bodyHtml += "			<h3><span textid='Roles'>"+ELSTR.lang.text('Roles')+"</span></h3>";
 		bodyHtml += "			<div>";
 		bodyHtml += "				<select id='elstrAdminConsoleRoleHandlerMode' style='margin:5px 0 10px 0;vertical-align:top;'>";
 		bodyHtml += "					<option value='add'>Add</option>";
@@ -102,7 +102,7 @@ ELSTR.Admin = function() {
 		bodyHtml += "			<div id='elstrAdminConsoleRoleWidget'></div>";
 		bodyHtml += "		</div>";
 		bodyHtml += "		<div class='yui-u'>";
-		bodyHtml += "			<h3>Ressourcen</h3>";
+		bodyHtml += "			<h3><span textid='Resources'>"+ELSTR.lang.text('Resources')+"</span></h3>";
 		bodyHtml += "			<div>";
 		bodyHtml += "				<select id='elstrAdminConsoleResourceHandlerMode' style='margin:5px 0 10px 0;vertical-align:top;'>";
 		bodyHtml += "					<option value='add'>Add</option>";
@@ -135,11 +135,11 @@ ELSTR.Admin = function() {
 			width : document.body.offsetWidth - 20 + 'px',
 			height : document.body.offsetHeight - 20 + 'px',
 			buttons : [ {
-				text : "Close",
+				text : "<span textid='Close'>"+ELSTR.lang.text('Close')+"</span>",
 				handler : handleClose
 			} ]
 		});
-		consoleDialog.setHeader("Administration");
+		consoleDialog.setHeader("<span textid='Admin Console'>"+ELSTR.lang.text('Admin Console')+"</span>");
 		consoleDialog.setBody(bodyHtml);
 		consoleDialog.render(document.body);
 

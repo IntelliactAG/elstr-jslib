@@ -8,17 +8,30 @@ if (ELSTR == undefined) {
  * 
  * Example of the widget/markup
  * 
- * Required for Authentication: LoginDialog <div id="loginDialog"> <div
- * class="hd">Login</div> <div class="bd"> <form name="loginDialogForm"
- * method="POST" action="services/ELSTR_AuthServer"> <label
- * for="username">Username</label><input type="text" name="username" /> <label
- * for="password">Password</label><input type="password" name="password" />
- * </form> </div> </div>
+ * Required for Authentication: 
+ * 				<div id="loginHandler">
+ *					<span class="login clickable">Anmelden</span>
+ *					<span class="logout clickable">Abmelden</span>
+ *					<span class="user"></span>
+ *					<span class="admin clickable">Admin</span>
+ *				</div>
  * 
- * Optinal for Authentication: LoginDialog <div id="loginHandler"> <span
- * class="login">Anmelden</span> <span class="logout">Abmelden :</span> <span
- * class="user"></span> </div>
  * 
+ * Optional for Authentication: 
+ *     			<div id="loginDialog">
+ *				    <div class="hd">Login</div>
+ *				    <div class="bd">
+ *				        <form name="loginDialogForm" method="POST" action="services/ELSTR_AuthServer">
+ *				            <div class="filterSetting">
+ *				            	<label for="username">Username</label><input type="text" name="username" />
+ *							</div>
+ *							<div class="filterSetting">
+ *								<label for="password">Password</label><input type="password" name="password" />
+ *							</div>
+ *				        </form>
+ *				    </div>
+ *				</div>
+ *  
  * To use this component the following YUI components ar required YUI
  * components: ["dom","event","datasource","json","dialog"]
  * 
@@ -136,13 +149,16 @@ ELSTR.User = function() {
 	this.openAdminConsole = function() {
 		if (isAdmin) {
 			if (YAHOO.lang.isUndefined(ELSTR.admin)) {
-				ELSTR.loader('script',
-						'jslib/elstr/' + LIBS.elstrVersion + '/build/Admin.js',
-						function() {
-							ELSTR.admin = new ELSTR.Admin();
-							ELSTR.admin.init();
-							ELSTR.admin.openConsole();
-						})
+				// Load the required language Modules first and then load the Admin Module itself
+				ELSTR.lang.registerModule('admin',function(){
+					ELSTR.loader('script',
+							'jslib/elstr/' + LIBS.elstrVersion + '/build/Admin.js',
+							function() {
+								ELSTR.admin = new ELSTR.Admin();
+								ELSTR.admin.init();
+								ELSTR.admin.openConsole();
+							})					
+				})
 			} else {
 
 				ELSTR.admin.openConsole();
@@ -259,11 +275,11 @@ ELSTR.User = function() {
 			close : false,
 			modal : true,
 			buttons : [ {
-				text : "Submit",
+				text : "<span textid='Login'>"+ELSTR.lang.text('Login')+"</span>",
 				handler : handleSubmit,
 				isDefault : true
 			}, {
-				text : "Cancel",
+				text : "<span textid='Cancel'>"+ELSTR.lang.text('Cancel')+"</span>",
 				handler : handleCancel
 			} ]
 		});

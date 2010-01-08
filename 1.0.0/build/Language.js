@@ -7,21 +7,17 @@ if (ELSTR == undefined) {
 /**
  * Die Language Klasse regelt den Umgang mit Sprachen in einer Webapplikation
  * 
- * Beispiel eines Widgets/Markups im HTML. 
- * Die Liste (UL) muss die Klasse 'languageSelection' haben
- * Die im Frontend gerenderte Sprache wird mit der Klasse 'selected' markiert
- *  <ul class="languageSelection">
- *      <li class="selected" name="de">
- *          Deutsch 
- *      </li>
- *      <li name="en">
- *          English 
- *      </li>
- *  </ul>
- *  
- * To use this component the following YUI components ar required
- * YUI components: ["dom","event","datasource","json","dialog"]
- *
+ * Beispiel eines Widgets/Markups im HTML. Die Liste (UL) muss die Klasse
+ * 'languageSelection' haben Die im Frontend gerenderte Sprache wird mit der
+ * Klasse 'selected' markiert
+ * <ul class="languageSelection">
+ * <li class="selected" name="de"> Deutsch </li>
+ * <li name="en"> English </li>
+ * </ul>
+ * 
+ * To use this component the following YUI components ar required YUI
+ * components: ["dom","event","datasource","json","dialog"]
+ * 
  * @author egli@intelliact.ch
  * @copyright Intelliact AG, 2009
  * @namespace ELSTR
@@ -32,7 +28,7 @@ if (ELSTR == undefined) {
  */
 ELSTR.Language = function(){
 
-    /////////////////////////////////////////////////////////////////
+    // ///////////////////////////////////////////////////////////////
     // Declare all language variables
     var widgetElement;
     var currentLanguage = null;
@@ -47,7 +43,7 @@ ELSTR.Language = function(){
     // Member Variabless
     var that = this;
     
-    //////////////////////////////////////////////////////////////
+    // ////////////////////////////////////////////////////////////
     // Event Declarations
     that.onAfterInitEvent = new YAHOO.util.CustomEvent("afterInitEvent", this);
     
@@ -58,19 +54,26 @@ ELSTR.Language = function(){
     that.onBeforeChangeEvent = new YAHOO.util.CustomEvent("beforeChangeEvent", this);
     
     
-    //////////////////////////////////////////////////////////////
+    // ////////////////////////////////////////////////////////////
     // Public functions
     
     /**
-     * Initialisiert das Sprachenobjekt
-     * @method init
-     * @param {String} serviceUrl The url to service to load a language
-     * @param {String/Object} resource string->The path with filename to the translation file on backend
-     * 						  		   object->ELSTR.applicationData.language
-     * @param {Boolean} drawOnLoaded True, if the initial loaded language will be applied
-     * @param {Function} fnInitComplete Callback function that is executed when the initialisation ist completed and the language is loaded
-     * @return {Boolean} True, if the values were valid
-     */
+	 * Initialisiert das Sprachenobjekt
+	 * 
+	 * @method init
+	 * @param {String}
+	 *            serviceUrl The url to service to load a language
+	 * @param {String/Object}
+	 *            resource string->The path with filename to the translation
+	 *            file on backend object->ELSTR.applicationData.language
+	 * @param {Boolean}
+	 *            drawOnLoaded True, if the initial loaded language will be
+	 *            applied
+	 * @param {Function}
+	 *            fnInitComplete Callback function that is executed when the
+	 *            initialisation ist completed and the language is loaded
+	 * @return {Boolean} True, if the values were valid
+	 */
     this.init = function(serviceUrl, resource, drawOnLoaded, fnInitComplete){
 
     	_renderLanguageSelection();
@@ -114,18 +117,18 @@ ELSTR.Language = function(){
     
     
     /**
-     * Gibt eine Meldung in der geladenen Sprache aus
-     * List of priorities                         error
-     *                                            warning
-     *                                            info
-     *                                            tip
-     *                                            help
-     *
-     * @method alert
-     * @param {String} priority The priority of the alert Message (error, warning, info, tip, help)
-     * @param {String} textid The id of the text in the TMX-File OR The text of the message
-     * @return {Boolean} True
-     */
+	 * Gibt eine Meldung in der geladenen Sprache aus List of priorities error
+	 * warning info tip help
+	 * 
+	 * @method alert
+	 * @param {String}
+	 *            priority The priority of the alert Message (error, warning,
+	 *            info, tip, help)
+	 * @param {String}
+	 *            textid The id of the text in the TMX-File OR The text of the
+	 *            message
+	 * @return {Boolean} True
+	 */
     this.alert = function(priority, textid){
         if (currentIsLoaded === true) {
             _alertMessage(priority, textid);
@@ -143,11 +146,15 @@ ELSTR.Language = function(){
     
     
     /**
-     * Gibt den Text in der geladenen Sprache zurueck
-     * @method alert
-     * @param {String} textid The id of the text in the TMX-File OR The text of the message
-     * @return {String} The (translated) text in the current language OR undefined, if the textid does not exist
-     */
+	 * Gibt den Text in der geladenen Sprache zurueck
+	 * 
+	 * @method alert
+	 * @param {String}
+	 *            textid The id of the text in the TMX-File OR The text of the
+	 *            message
+	 * @return {String} The (translated) text in the current language OR
+	 *         undefined, if the textid does not exist
+	 */
     this.text = function(textid){
         var messageText;
         if (currentIsLoaded === true) {
@@ -166,11 +173,13 @@ ELSTR.Language = function(){
     
     
     /**
-     * Changes the Frontend Language
-     * @method change
-     * @param {String} lang The new language to be loaded (e.g. "de" or "en")
-     * @return {Boolean} True
-     */
+	 * Changes the Frontend Language
+	 * 
+	 * @method change
+	 * @param {String}
+	 *            lang The new language to be loaded (e.g. "de" or "en")
+	 * @return {Boolean} True
+	 */
     this.change = function(lang){
         that.onBeforeChangeEvent.fire(lang);       
         var callbackLoad = function(){
@@ -184,19 +193,42 @@ ELSTR.Language = function(){
     
     
     /**
-     * Gibt die aktuelle Sprache zurueck
-     * @method language
-     * @return {String} The current language
-     */
+	 * Gibt die aktuelle Sprache zurueck
+	 * 
+	 * @method language
+	 * @return {String} The current language
+	 */
     this.language = function(){
-        var lang = _getCurrentLanguage()
+        var lang = _getCurrentLanguage();
         return lang;
+    }
+
+    /**
+	 * Changes the Frontend Language
+	 * 
+	 * @method registerModules
+	 * @param {String} module The new module to be registered
+	 * @param {function}
+	 *            fnRegisterComplete Callback function after all newly
+	 *            registered modules are loaded
+	 * @return {Boolean} True
+	 */
+    this.registerModule = function(module, fnRegisterComplete){
+    	_registerModule(module,function(){
+            var callbackLoad = function(){
+                if (YAHOO.lang.isFunction(fnRegisterComplete) == true) {
+                	fnRegisterComplete();
+                }
+            }
+            var lang = _getCurrentLanguage();
+    		_loadLanguage(lang, callbackLoad);
+    	});
     }
     
     
     
-    //////////////////////////////////////////////////////////////    
-    // Private functions 
+    // ////////////////////////////////////////////////////////////
+    // Private functions
     
     var _getLanguageSelectionElements = function(){
         // widgetElement ist das UL-Element mit der Klasse languageSelection
@@ -217,12 +249,11 @@ ELSTR.Language = function(){
                 that.change(lang);
                 
                 /*
-                 for (var i = 0; i < selectionElements.length; i++) {
-                 YAHOO.util.Dom.removeClass(selectionElements[i], "selected");
-                 }
-                 
-                 YAHOO.util.Dom.addClass(this, "selected");
-                 */
+				 * for (var i = 0; i < selectionElements.length; i++) {
+				 * YAHOO.util.Dom.removeClass(selectionElements[i], "selected"); }
+				 * 
+				 * YAHOO.util.Dom.addClass(this, "selected");
+				 */
             }
         }
         
@@ -253,6 +284,39 @@ ELSTR.Language = function(){
         return currentLanguage;
     }
     
+    
+    var _registerModule = function(module, fnLoadComplete){
+        
+        var callback = {
+        
+            // if our XHR call is successful, we want to make use
+            // of the returned data and create child nodes.
+            success: function(oRequest, oParsedResponse, oPayload){
+                oPayload.fnLoadComplete();
+            },
+            failure: function(oRequest, oParsedResponse, oPayload){
+                alert("Request failed!");
+                oPayload.fnLoadComplete();
+            },
+            
+            argument: {
+                "fnLoadComplete": fnLoadComplete
+            }
+        };
+        
+        var oRequestPost = {
+            "jsonrpc": "2.0",
+            "method": "registerModule",
+            "params": {
+                "module": module
+            },
+            "id": 1
+        };
+        
+        datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost), callback);
+    }
+    
+    
     var _loadLanguage = function(lang, fnLoadComplete){
     
         // Event nach dem Laden
@@ -261,8 +325,8 @@ ELSTR.Language = function(){
         currentIsLoaded = false;
         var callback = {
         
-            //if our XHR call is successful, we want to make use
-            //of the returned data and create child nodes.
+            // if our XHR call is successful, we want to make use
+            // of the returned data and create child nodes.
             success: function(oRequest, oParsedResponse, oPayload){
             
                 textFrontend = oParsedResponse.results[0];
