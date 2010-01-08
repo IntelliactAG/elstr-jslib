@@ -450,7 +450,6 @@
 		            domElement.id = node.id;
 					Dom.addClass(domElement, node.data.$type);
 		            domElement.onclick = function() {		                					   	
-						// ELSTR.widget.SphereBrowser.instance.rgraph.onClick(node.id, { hideLabels: false	});
 						// fire the clickevent						
 				 		ELSTR.widget.SphereBrowser.instance.nodeClickEvent.fire({node : node, target : this});
 		            };
@@ -498,8 +497,8 @@
 		            var left = parseInt(style.left);
 					var top = parseInt(style.top);
 		            var w = domElement.offsetWidth;
-		            style.left = (left - 20) + 'px';
-					style.top = (top - 20) + 'px';
+		            style.left = (left - 10) + 'px';
+					style.top = (top - 10) + 'px';
 		            style.display = '';
 		            style.cursor = 'pointer';
 		            if (node._depth <= 1) {
@@ -520,14 +519,14 @@
 		        },
 				
 				onBeforePlotLine: function(adj) {
-					if (adj.nodeTo._depth > 2){
+					if (adj.nodeTo._depth > 2 || adj.nodeFrom._depth > 2){
 						adj.data.$type = 'none';
 					}
 					else {
 						adj.data.$type = adj.nodeTo.data.edgeType;
 					}
 					var filter = ELSTR.widget.SphereBrowser.instance.cfg.getProperty('filter');
-					if (filter.nodeType[adj.nodeTo.data.$type] != true) {
+					if (filter.nodeType[adj.nodeTo.data.$type] != true || filter.nodeType[adj.nodeFrom.data.$type] != true) {
 						adj.data.$type = 'none';
 					}
 				}
@@ -544,13 +543,14 @@
 					if (YAHOO.lang.isUndefined(json.data)) {
 						json.data = {
 							$type   : json.nodeType,
-							nodeType: json.nodeType,
-							C_ID	: json.C_ID,
-							subType : json.subType,
-							number  : json.number,
-							edgeType: json.level,
 							updated : false
 						}
+						// add all properties and set nodeType
+						for (var key in json) {
+						   json.data[key] = json[key];
+						}
+
+
 					}
 					if (json.children != undefined) {
 						for (var i = 0, ch = json.children; i < ch.length; i++) {								
