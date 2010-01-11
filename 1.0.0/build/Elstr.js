@@ -110,27 +110,21 @@ ELSTR = {
 		}
 	},
 	utils : {
+		/**
+		 * Clones a literal object 
+		 * 
+		 * @return object 
+		 */
 		cloneObj : function (obj){
 		  if(obj == null || typeof(obj) != 'object')
 		      return obj;
 		
-		  var temp = new obj.constructor();
+		  var clone = new obj.constructor();
 		  for(var key in obj)
-		      temp[key] = ELSTR.utils.cloneObj(obj[key]);
+			  clone[key] = ELSTR.utils.cloneObj(obj[key]);
 		
-		  return temp;
+		  return clone;
 		},
-		/*function (o) {
-			if(typeof(o) != 'Object') return o;
-			var clone = {};
-		   	clone.prototype = o.prototype;
-		   	for (property in o) clone[property] = cloneObj(o[property]);
-		   	return clone;
-		}*/
-		
-
-
-
 		/**
 		 * Generate a random uuid. Modified script from:
 		 * http://www.broofa.com/Tools/Math.uuid.js
