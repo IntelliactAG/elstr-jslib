@@ -345,8 +345,6 @@
 		        //concentric circles in it.
 		        'backgroundCanvas': {
 		            'styles': {
-		                //'strokeStyle': '#EDF5FF'
-						//'strokeStyle': '#CEDDF0'
 						'strokeStyle': '#DDDDDD'
 		            },
 		            
@@ -383,25 +381,31 @@
 			
 			// Render the menues						
 			var onMenuEnter = function(e, menu) {
-				menu.activated = true;
-				Dom.removeClass(menu.id, 'elstr-sb-menu-half');
-				Dom.removeClass(menu.id, 'elstr-sb-menu-hide');
-				Dom.addClass(menu.id, 'elstr-sb-menu-show');
+				if (menu != undefined) {
+					menu.activated = true;
+					Dom.removeClass(menu.id, 'elstr-sb-menu-half');
+					Dom.removeClass(menu.id, 'elstr-sb-menu-hide');
+					Dom.addClass(menu.id, 'elstr-sb-menu-show');
+				}
 			}
 			
 			var onMenuLeave = function(e, menu) {				
-				menu.activated = false;
-				Dom.removeClass(menu.id, 'elstr-sb-menu-show');
-				Dom.removeClass(menu.id, 'elstr-sb-menu-half');
-				Dom.addClass(menu.id, 'elstr-sb-menu-hide');
+				if (menu != undefined) {
+					menu.activated = false;
+					Dom.removeClass(menu.id, 'elstr-sb-menu-show');
+					Dom.removeClass(menu.id, 'elstr-sb-menu-half');
+					Dom.addClass(menu.id, 'elstr-sb-menu-hide');
+				}
 			}
 			
 			for (var i in nodeTypes) {
 				var menu = nodeTypes[i].menu;
-				menu.activated = false
-				YAHOO.util.Event.addListener(menu.id, 'mouseover', onMenuEnter, menu);
-				YAHOO.util.Event.addListener(menu.id, 'mouseout', onMenuLeave, menu);
-				menu.render(this.body);
+				if (menu != undefined) {
+					menu.activated = false
+					YAHOO.util.Event.addListener(menu.id, 'mouseover', onMenuEnter, menu);
+					YAHOO.util.Event.addListener(menu.id, 'mouseout', onMenuLeave, menu);
+					menu.render(this.body);
+				}
 			}
 			RGraph.Plot.NodeTypes.implement(nodeRenders);
 			//Hypertree.Plot.NodeTypes.implement(nodeRenders);
@@ -481,11 +485,12 @@
 						domElement.onmouseout = function(e){
 							// Show the menu					
 							var oMenu = this.menu;
-							
-							if (oMenu.activated == false) {
-								Dom.removeClass(oMenu.id, 'elstr-sb-menu-show');
-								Dom.removeClass(oMenu.id, 'elstr-sb-menu-half');
-								Dom.addClass(oMenu.id, 'elstr-sb-menu-hide');
+							if (this.menu != undefined) {
+								if (oMenu.activated == false) {
+									Dom.removeClass(oMenu.id, 'elstr-sb-menu-show');
+									Dom.removeClass(oMenu.id, 'elstr-sb-menu-half');
+									Dom.addClass(oMenu.id, 'elstr-sb-menu-hide');
+								}
 							}
 						}
 					}
@@ -505,10 +510,12 @@
 						//Dom.removeClass(node, 'node-min');
 						//Dom.addClass(node, 'node');
 						style.fontSize='12px';
+						style.height='40px';						
 		            } else if(node._depth == 2){
 		                //Dom.removeClass(node, 'node');
 						//Dom.addClass(node, 'node-min');
 						style.fontSize='9px';
+						style.height='20px';
 		            } else {
 		                style.display = 'none';
 		            }
