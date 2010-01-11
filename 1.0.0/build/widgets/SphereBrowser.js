@@ -464,7 +464,6 @@
 				 		ELSTR.widget.SphereBrowser.instance.nodeDblClickEvent.fire({node : node, target : this});						
 		            };
 					
-					// Dangerous --> get menues form array
 					if (!YAHOO.lang.isUndefined(nodeTypes[node.data.$type].menu)) {
 						domElement.menu = nodeTypes[node.data.$type].menu;
 						domElement.onmouseover = function(e){
@@ -608,7 +607,9 @@
 					duration: 100
 				});
 			}
-			var json = this.rgraph.updateJson(data.results[0]);
+			
+			var res = ELSTR.utils.cloneObj(data.results);
+			var json = this.rgraph.updateJson(res[0]);
 			this.rgraph.root = json.id;
 			this.rgraph.loadJSON(json);
 			this.rgraph.refresh();
@@ -621,7 +622,8 @@
 			if (!(data.results[0].id == undefined || data.results[0].id == "undefined" || data.results[0].id == "")) {
 				var node = this.rgraph.graph.getNode(data.results[0].id);
 				if (node.data.updated == false) {
-					var json = this.rgraph.updateJson(data.results[0]);
+					var res = ELSTR.utils.cloneObj(data.results);
+					var json = this.rgraph.updateJson(res[0]);
 					this.rgraph.op.sum(json, {
 						type: 'fade',
 						duration: 500,
@@ -635,7 +637,7 @@
 		},
 		
 		search: function(query) {
-			
+			 
 		},
 		
 		setFilter: function (filter) {
