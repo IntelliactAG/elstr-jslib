@@ -261,12 +261,16 @@ ELSTR.User = function() {
 			var username = loginDialog.getData().username;
 			var password = loginDialog.getData().password;
 
+			_clearPasswordValue();
 			_authRequest(username, password);
 		};
 		var handleCancel = function() {
 			this.cancel();
+			_clearPasswordValue();
 		};
 
+		
+		
 		loginDialog = new YAHOO.widget.Dialog("loginDialog", {
 			postmethod : "none",
 			visible : false,
@@ -480,6 +484,16 @@ ELSTR.User = function() {
 				oCallback);
 
 		ELSTR.utils.cursorWait.show();
+	}
+	
+	var _clearPasswordValue = function(){
+		var isPasswordInput = function(el) {
+			return (el.getAttribute("name")=="password");
+		}
+		var elPassword = YAHOO.util.Dom.getElementsBy(isPasswordInput, "input","loginDialog");
+		for ( var i = 0; i < elPassword.length; i++) {
+			elPassword[i].value = "";
+		}
 	}
 
 }
