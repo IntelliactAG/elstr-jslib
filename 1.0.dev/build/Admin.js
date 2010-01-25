@@ -181,7 +181,7 @@ ELSTR.Admin = function() {
 	
 	var _renderResourceWidget = function() {
 
-		var oCallback = ELSTR.utils.createCallback({
+		var oCallback = {
 			// if our XHR call is successful, we want to make use
 			// of the returned data and create child nodes.
 			success : function(oRequest, oParsedResponse, oPayload) {
@@ -234,8 +234,13 @@ ELSTR.Admin = function() {
 						resourceDataTable.onEventShowCellEditor);
 				_loadResourceDataTable();
 
-			}
-		});
+			},
+			failure : function(oRequest, oParsedResponse, oPayload) {
+				alert("Request failed!");
+			},	
+			scope : {},
+			argument : {}
+		};
 
 		var oRequestPost = {
 			"jsonrpc" : "2.0",
@@ -254,16 +259,19 @@ ELSTR.Admin = function() {
 		var data = this.getRecord()._oData;
 		var column = this.getColumn()
 
-		var oCallback = ELSTR.utils.createCallback({
+		var oCallback = {
 			success : function(oRequest, oParsedResponse, oPayload) {
 				fnCallback(true, newValue);
 				_loadResourceDataTable();
 			},
 			failure : function(oRequest, oParsedResponse, oPayload) {
+				alert("Request failed!");
 				fnCallback(false, newValue);
 				_loadResourceDataTable();
-			}
-		});
+			},
+			scope : {},
+			argument : {}
+		};
 
 		var oRequestPost = {
 			"jsonrpc" : "2.0",
@@ -281,17 +289,12 @@ ELSTR.Admin = function() {
 	}
 
 	var _loadResourceDataTable = function() {
-		var oCallback = ELSTR.utils.createCallback({
-			//success : resourceDataTable.onDataReturnInitializeTable,
-			
-			success : function(oRequest, oParsedResponse, oPayload) {
-				resourceDataTable.onDataReturnInitializeTable(oRequest, oParsedResponse, oPayload);
-			},
-			
+		var oCallback = {
+			success : resourceDataTable.onDataReturnInitializeTable,			
 			failure : resourceDataTable.onDataReturnInitializeTable,
 			argument : resourceDataTable.getState(),
 			scope : resourceDataTable
-		});
+		};
 
 		// Show loading row
 		resourceDataTable.deleteRows(0,
@@ -312,12 +315,12 @@ ELSTR.Admin = function() {
 	}
 
 	var _loadRoleDataTable = function() {
-		var oCallback = ELSTR.utils.createCallback({
+		var oCallback = {
 			success : roleDataTable.onDataReturnInitializeTable,
 			failure : roleDataTable.onDataReturnInitializeTable,
 			argument : roleDataTable.getState(),
 			scope : roleDataTable
-		});
+		};
 
 		// Show loading row
 		roleDataTable.deleteRows(0,
@@ -338,14 +341,17 @@ ELSTR.Admin = function() {
 	}
 
 	var _onResourceHandlerButtonClick = function() {
-		var oCallback = ELSTR.utils.createCallback({
+		var oCallback = {
 			success : function(oRequest, oParsedResponse, oPayload) {
 				_loadResourceDataTable();
 			},
 			failure : function(oRequest, oParsedResponse, oPayload) {
+				alert("Request failed!");
 				_loadResourceDataTable();
-			}
-		});
+			},
+			scope : {},
+			argument : {}
+		};
 
 		var mode = YAHOO.util.Dom.get("elstrAdminConsoleResourceHandlerMode").value;
 		var type = YAHOO.util.Dom.get("elstrAdminConsoleResourceHandlerType").value;
@@ -371,16 +377,19 @@ ELSTR.Admin = function() {
 	}
 
 	var _onRoleHandlerButtonClick = function() {
-		var oCallback = ELSTR.utils.createCallback({
+		var oCallback = {
 			success : function(oRequest, oParsedResponse, oPayload) {
 				_loadRoleDataTable();
 				_recreateResourceWidget();
 			},
 			failure : function(oRequest, oParsedResponse, oPayload) {
+				alert("Request failed!");
 				_loadRoleDataTable();
 				_recreateResourceWidget();
-			}
-		});
+			},
+			scope : {},
+			argument : {}
+		};
 
 		var mode = YAHOO.util.Dom.get("elstrAdminConsoleRoleHandlerMode").value;
 		var role = YAHOO.util.Dom.get("elstrAdminConsoleRoleHandlerInput").value;

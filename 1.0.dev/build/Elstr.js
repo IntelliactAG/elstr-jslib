@@ -31,7 +31,7 @@ ELSTR = {
 			resultsList : "result"
 		};
 
-		var oCallback = ELSTR.utils.createCallback({
+		var oCallback = {
 			success : function(oRequest, oParsedResponse, oPayload) {
 
 				ELSTR.applicationData = oParsedResponse.results[0];
@@ -47,7 +47,7 @@ ELSTR = {
 			},
 			scope : {},
 			argument : {}
-		});
+		};
 
 		var oRequestPost = {
 			"jsonrpc" : "2.0",
@@ -108,34 +108,6 @@ ELSTR = {
 		}
 	},
 	utils : {
-		/**
-		 * Creates a callback for yui datasource
-		 * 
-		 * @param object {success : successCallbackFunction, failure : failureCallbackFunction
-		 * @return object callback
-		 */
-		createCallback : function (obj){
-			var oCallback = {
-					// if our XHR call is successful, we want to make use
-					// of the returned data and create child nodes.
-					success : function(oRequest, oParsedResponse, oPayload) {
-						// Do something for a successful request
-						if(YAHOO.lang.isFunction(obj.success)){
-							obj.success(oRequest, oParsedResponse, oPayload);
-						}				
-					},
-					failure : function(oRequest, oParsedResponse, oPayload) {
-						// Do something for a failed request
-						alert("Request failed!");
-						if(YAHOO.lang.isFunction(obj.failure)){
-							obj.failure(oRequest, oParsedResponse, oPayload);
-						}						
-					},
-					scope : obj.scope,
-					argument : obj.argument
-				};
-			return oCallback;		
-		},
 		/**
 		 * Clones a literal object 
 		 * 
@@ -269,6 +241,12 @@ ELSTR = {
 
 			}
 			return string;
+		}
+	},
+	error : {
+		requestFailure : function (oRequest, oParsedResponse, oPayload){
+			alert("Request failed!");
+			console.log(oParsedResponse);
 		}
 	}
 }

@@ -18,7 +18,7 @@ if (ELSTR == undefined) {
  * 
  * 
  * Optional for Authentication: 
- *     			<div id="loginDialog">
+ *     			<div id="dialogLogin">
  *				    <div class="hd">Login</div>
  *				    <div class="bd">
  *				        <form name="loginDialogForm" method="POST" action="services/ELSTR_AuthServer">
@@ -271,7 +271,7 @@ ELSTR.User = function() {
 
 		
 		
-		loginDialog = new YAHOO.widget.Dialog("loginDialog", {
+		loginDialog = new YAHOO.widget.Dialog("dialogLogin", {
 			postmethod : "none",
 			visible : false,
 			fixedcenter : true,
@@ -417,7 +417,7 @@ ELSTR.User = function() {
 			failure : function(oRequest, oParsedResponse, oPayload) {
 				ELSTR.utils.cursorWait.hide();
 
-				alert("Request failed!");
+				ELSTR.error.requestFailure(oRequest, oParsedResponse, oPayload);
 
 				if (forceAuthentication == true && isAuth == false) {
 					that.login();
