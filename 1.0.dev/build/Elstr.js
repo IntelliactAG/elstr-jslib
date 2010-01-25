@@ -191,7 +191,9 @@ ELSTR = {
 		clearChilds : function(el) {
 			if (el.childNodes) {
 				while (el.hasChildNodes()) {
-					el.removeChild(el.firstChild);
+					var elFirstChild = el.firstChild;
+					ELSTR.utils.clearChilds(elFirstChild);
+					el.removeChild(elFirstChild);					
 				}
 			}
 		},
