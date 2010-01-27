@@ -51,6 +51,7 @@ ELSTR.User = function() {
 	var isAuth;
 	var isAdmin;
 	var resourcesAllowed;
+	var enterpriseApplicationData;
 	var datasource;
 	var loginDialog;
 	var accessDeniedDialog;
@@ -62,14 +63,12 @@ ELSTR.User = function() {
 
 	// ////////////////////////////////////////////////////////////
 	// Event Declarations
+	
 	that.onAfterInitEvent = new YAHOO.util.CustomEvent("afterInitEvent", this);
-
 	that.onAfterAuthEvent = new YAHOO.util.CustomEvent("afterAuthEvent", this);
-
-	that.onAfterLogoutEvent = new YAHOO.util.CustomEvent("afterLogoutEvent",
-			this);
-	that.onBeforeLogoutEvent = new YAHOO.util.CustomEvent("beforeLogoutEvent",
-			this);
+	that.onAfterLogoutEvent = new YAHOO.util.CustomEvent("afterLogoutEvent", this);
+	that.onBeforeLogoutEvent = new YAHOO.util.CustomEvent("beforeLogoutEvent", this);
+	that.enterpriseApplicationAuthEvent = {};
 
 	// ////////////////////////////////////////////////////////////
 	// Public functions
@@ -96,6 +95,9 @@ ELSTR.User = function() {
 			isAuth = ELSTR.applicationData.user.isAuth;
 			isAdmin = ELSTR.applicationData.user.isAdmin;
 			resourcesAllowed = ELSTR.applicationData.user.resourcesAllowed;
+			enterpriseApplicationData = ELSTR.applicationData.user.enterpriseApplicationData;
+			
+			ELSTR.applicationData.user = "empty afert reading it to the user object";
 		} else {
 			currentUsername = "anonymous";
 			isAuth = false;
@@ -138,7 +140,19 @@ ELSTR.User = function() {
 
 	}
 
-	this.login = function() {
+	this.login = function(enterpriseApplication) {
+		
+		if(!YAHOO.lang.isUndefined(enterpriseApplication)){
+			 
+			if(YAHOO.lang.isUndefined(that.enterpriseApplicationAuthEvent[enterpriseApplication])){
+				that.enterpriseApplicationAuthEvent[enterpriseApplication] = new YAHOO.util.CustomEvent("afterAuthEvent_"+enterpriseApplication, this, true, YAHOO.util.CustomEvent.LIST, true);	
+			}
+
+			loginDialog.enterpriseApplication = enterpriseApplication;
+		} else {
+			loginDialog.enterpriseApplication = '';
+		} 
+		
 		loginDialog.show();
 	}
 
@@ -215,6 +229,28 @@ ELSTR.User = function() {
 	}
 	
 	/**
+	 * Interface for reading enterprise application data
+	 * 
+	 * @param {string} enterprise application
+	 * @param {string} key
+	 * @method getApplicationData
+	 * @return 
+	 */
+	this.getEnterpriseApplicationData = function(enterpriseApplication, key) {
+		if (YAHOO.lang.isObject(enterpriseApplicationData[enterpriseApplication])){
+			var oEnterpriseApplication = enterpriseApplicationData[enterpriseApplication];
+			if (!YAHOO.lang.isUndefined(oEnterpriseApplication[key])){
+				return oEnterpriseApplication[key];
+			} else {
+				return null;
+			}
+		} else {
+			return null;
+		}
+	}
+	
+	
+	/**
 	 * Shows a moda access denied Panel
 	 * 
 	 */
@@ -240,8 +276,8 @@ ELSTR.User = function() {
 		accessDeniedDialog.setBody("Kein Zugriff auf diese Applikation");
 		accessDeniedDialog.render(document.body);
 	
-		//accessDeniedDialog.show();
 	}
+	
 
 	// ////////////////////////////////////////////////////////////
 	// Private functions
@@ -260,9 +296,10 @@ ELSTR.User = function() {
 		var handleSubmit = function() {
 			var username = loginDialog.getData().username;
 			var password = loginDialog.getData().password;
+			var enterpriseApplication = loginDialog.enterpriseApplication;
 
 			_clearPasswordValue();
-			_authRequest(username, password);
+			_authRequest(username, password, enterpriseApplication);
 		};
 		var handleCancel = function() {
 			this.cancel();
@@ -288,6 +325,7 @@ ELSTR.User = function() {
 			} ]
 		});
 		loginDialog.render(document.body);
+		loginDialog.enterpriseApplication = '';
 
 		// Add listeners to the Panel
 		var enterListener = new YAHOO.util.KeyListener("loginDialog", {
@@ -386,7 +424,7 @@ ELSTR.User = function() {
 		}
 	}
 
-	var _authRequest = function(username, password) {
+	var _authRequest = function(username, password, enterpriseApplication) {
 
 		var oCallback = {
 			// if our XHR call is successful, we want to make use
@@ -402,9 +440,22 @@ ELSTR.User = function() {
 					isAdmin = oParsedResponse.results[0].isAdmin;
 					resourcesAllowed = oParsedResponse.results[0].resourcesAllowed;
 					currentUsername = oParsedResponse.results[0].username;
+					enterpriseApplicationData = oParsedResponse.results[0].enterpriseApplicationData;
 					loginDialog.hide();
 					_updateLoginHandler();
 					that.onAfterAuthEvent.fire();
+									
+					try {
+					    var oRequestPost = YAHOO.lang.JSON.parse(oRequest);
+						if (oRequestPost.params.enterpriseApplication != ''){
+							var enterpriseApplication = oRequestPost.params.enterpriseApplication;
+							
+							that.enterpriseApplicationAuthEvent[enterpriseApplication].fire();
+						}
+					}
+					catch (e) {
+					}
+
 					callbackFunction();
 				} else {
 					if (forceAuthentication == true && isAuth == false) {
@@ -433,7 +484,8 @@ ELSTR.User = function() {
 			"method" : "auth",
 			"params" : {
 				username : username,
-				password : password
+				password : password,
+				enterpriseApplication : enterpriseApplication
 			},
 			"id" : ELSTR.utils.uuid()
 		};

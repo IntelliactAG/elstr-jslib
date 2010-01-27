@@ -244,9 +244,47 @@ ELSTR = {
 		}
 	},
 	error : {
-		requestFailure : function (oRequest, oParsedResponse, oPayload){
-			alert("Request failed!");
-			console.log(oParsedResponse);
+		requestFailure : function (oRequest, oResponse, oPayload, oDataSource, oCallback){
+			//alert("Request failed!");
+			//console.log(oParsedResponse);
+			
+			var status = oResponse.status;
+			
+			try {
+			    var parsedResponse = YAHOO.lang.JSON.parse(oResponse.responseText);
+			}
+			catch (e) {
+			    alert("Request failed!");
+			    return;
+			}
+			 
+			switch(status) {
+			case 401:
+				//console.log(status);
+				
+				var enterpriseApplication = parsedResponse.error.data.context;
+				
+				if (YAHOO.lang.isUndefined( ELSTR.user.enterpriseApplicationAuthEvent[enterpriseApplication] )){
+					ELSTR.user.login(enterpriseApplication);
+				}
+				
+				ELSTR.user.enterpriseApplicationAuthEvent[enterpriseApplication].subscribe(function(type, args){
+
+					oDataSource.sendRequest(oRequest, oCallback);
+					
+		        });
+				
+			  
+				//console.log(parsedResponse);
+				//console.log(oDataSource);
+				//console.log(oCallback);
+			  break;
+			default:
+				alert("Request failed!");
+			}
+			
+
+			
 		}
 	}
 }
