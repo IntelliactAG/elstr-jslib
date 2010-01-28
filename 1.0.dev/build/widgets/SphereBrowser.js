@@ -312,7 +312,7 @@
         onRender: function(p_sType, p_aArgs){
         
             // Check container.js for examples			
-            
+        
         },
         
         /**
@@ -343,7 +343,7 @@
          * @return {RGraph} The created RGraph
          */
         createNewGraph: function(el){
-	        var infovis = el;
+            var infovis = el;
             var w = this.cfg.getProperty('sbwidth'), h = this.cfg.getProperty('sbheight');
             infovis.id = 'elstr_sb_1';
             Dom.setStyle(infovis.id, 'width', w + 'px');
@@ -425,12 +425,77 @@
             // Add Node and Edge Renderes
             RGraph.Plot.NodeTypes.implement(nodeRenders);
             //Hypertree.Plot.NodeTypes.implement(nodeRenders);
+            var arrowUp = function(adj, canvas){
+                var node = adj.nodeFrom, child = adj.nodeTo;
+                var data = adj.data, econfig = this.edge;
+				data.$direction = 1;
+                //get edge dim
+                var cond = econfig.overridable && data;
+                var edgeDim = cond && data.$dim || 14;
+                //get edge direction
+                if (cond && data.$direction && data.$direction.length > 1) {
+                    var nodeHash = {};
+                    nodeHash[node.id] = node;
+                    nodeHash[child.id] = child;
+                    var sense = data.$direction;
+                    node = nodeHash[sense[0]];
+                    child = nodeHash[sense[1]];
+                }
+                var posFrom = node.pos.getc(true), posTo = child.pos.getc(true);
+                var vect = new Complex(posTo.x - posFrom.x, posTo.y - posFrom.y);
+                vect.$scale(edgeDim / vect.norm());
+                var intermediatePoint = new Complex(posTo.x - vect.x, posTo.y - vect.y);
+                var normal = new Complex(-vect.y / 2, vect.x / 2);
+                var v1 = intermediatePoint.add(normal), v2 = intermediatePoint.$add(normal.$scale(-1));
+                canvas.path('stroke', function(context){
+                    context.moveTo(posFrom.x, posFrom.y);
+                    context.lineTo(posTo.x, posTo.y);
+                });
+                canvas.path('fill', function(context){
+                    context.moveTo(v1.x, v1.y);
+                    context.lineTo(v2.x, v2.y);
+                    context.lineTo(posTo.x, posTo.y);
+                });
+            }
+			var arrowDown = function(adj, canvas){
+                var node = adj.nodeFrom, child = adj.nodeTo;
+                var data = adj.data, econfig = this.edge;
+				data.$direction = -1;
+                //get edge dim
+                var cond = econfig.overridable && data;
+                var edgeDim = cond && data.$dim || 14;
+                //get edge direction
+                if (cond && data.$direction && data.$direction.length > 1) {
+                    var nodeHash = {};
+                    nodeHash[node.id] = node;
+                    nodeHash[child.id] = child;
+                    var sense = data.$direction;
+                    node = nodeHash[sense[0]];
+                    child = nodeHash[sense[1]];
+                }
+                var posFrom = node.pos.getc(true), posTo = child.pos.getc(true);
+                var vect = new Complex(posTo.x - posFrom.x, posTo.y - posFrom.y);
+                vect.$scale(edgeDim / vect.norm());
+                var intermediatePoint = new Complex(posTo.x - vect.x, posTo.y - vect.y);
+                var normal = new Complex(-vect.y / 2, vect.x / 2);
+                var v1 = intermediatePoint.add(normal), v2 = intermediatePoint.$add(normal.$scale(-1));
+                canvas.path('stroke', function(context){
+                    context.moveTo(posFrom.x, posFrom.y);
+                    context.lineTo(posTo.x, posTo.y);
+                });
+                canvas.path('fill', function(context){
+                    context.moveTo(v1.x, v1.y);
+                    context.lineTo(v2.x, v2.y);
+                    context.lineTo(posTo.x, posTo.y);
+                });
+            }
+			
             RGraph.Plot.EdgeTypes.implement({
                 'none': function(adj, canvas){
                     //do not display
                 },
-                'up': RGraph.Plot.EdgeTypes.prototype.arrow,
-                'down': RGraph.Plot.EdgeTypes.prototype.arrow,
+                'up': arrowUp,
+                'down': arrowUp,
                 'even': RGraph.Plot.EdgeTypes.prototype.line
             });
             
@@ -551,6 +616,9 @@
                     if (filter.nodeType[node.data.$type] != true) {
                         style.display = 'none';
                     }
+                    if (node.data.$type != ELSTR.applicationData.config.SEARCHNODETYPE && (filter.level[node.data.level] != true && !(node._depth == 0))) {
+                        style.display = 'none';
+                    }
                 },
                 
                 onBeforePlotLine: function(adj){
@@ -558,10 +626,13 @@
                         adj.data.$type = 'none';
                     }
                     else {
-                        adj.data.$type = adj.nodeTo.data.edgeType;
+                        adj.data.$type = adj.nodeTo.data.level;
                     }
                     var filter = ELSTR.widget.SphereBrowser.instance.cfg.getProperty('filter');
                     if (filter.nodeType[adj.nodeTo.data.$type] != true || filter.nodeType[adj.nodeFrom.data.$type] != true) {
+                        adj.data.$type = 'none';
+                    }
+                    if (filter.level[adj.nodeTo.data.level] != true) {
                         adj.data.$type = 'none';
                     }
                 }
@@ -585,8 +656,6 @@
                         for (var key in json) {
                             json.data[key] = json[key];
                         }
-                        
-                        
                     }
                     if (json.children != undefined) {
                         for (var i = 0, ch = json.children; i < ch.length; i++) {
@@ -607,13 +676,13 @@
         
         load: function(data){
             // load with current id
-			if (this.rgraph != undefined) {
-				this.rgraph.constructor.Plot.prototype.clearLabels(true);
-			}
+            if (this.rgraph != undefined) {
+                this.rgraph.constructor.Plot.prototype.clearLabels(true);
+            }
             delete this.rgraph;
             ELSTR.utils.clearChilds(this.body);
-			this.rgraph = this.createNewGraph(this.body);
-						
+            this.rgraph = this.createNewGraph(this.body);
+            
             var res = ELSTR.utils.cloneObj(data.results);
             var json = this.rgraph.updateJson(res[0]);
             //this.rgraph.root = json.id;
