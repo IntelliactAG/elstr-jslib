@@ -216,7 +216,7 @@ ELSTR.Admin = function() {
 							}
 						},
 						editor : new YAHOO.widget.RadioCellEditor( {
-							radioOptions : [ "allow", "deny" ],
+							radioOptions : [ "allow", "deny","inherit" ],
 							asyncSubmitter : _updateAccessRight,
 							disableBtns : true
 						})
