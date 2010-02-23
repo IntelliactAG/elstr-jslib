@@ -443,7 +443,7 @@ ELSTR.User = function() {
 					enterpriseApplicationData = oParsedResponse.results[0].enterpriseApplicationData;
 					loginDialog.hide();
 					_updateLoginHandler();
-					that.onAfterAuthEvent.fire();
+					that.onAfterAuthEvent.fire(username, password);
 									
 					try {
 					    var oRequestPost = YAHOO.lang.JSON.parse(oRequest);
