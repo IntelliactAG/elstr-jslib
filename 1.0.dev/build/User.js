@@ -328,7 +328,7 @@ ELSTR.User = function() {
 		loginDialog.enterpriseApplication = '';
 
 		// Add listeners to the Panel
-		var enterListener = new YAHOO.util.KeyListener("loginDialog", {
+		var enterListener = new YAHOO.util.KeyListener("dialogLogin", {
 			ctrl : false,
 			keys : 13
 		}, {
