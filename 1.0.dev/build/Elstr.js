@@ -26,6 +26,7 @@ ELSTR = {
 		var oDataSource = new YAHOO.util.XHRDataSource(
 				"services/ELSTR_ApplicationDataServer");
 		oDataSource.connMethodPost = true;
+		oDataSource.connMgr.setDefaultPostHeader(false);
 		oDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
 		oDataSource.responseSchema = {
 			resultsList : "result"
