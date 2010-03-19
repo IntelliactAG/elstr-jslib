@@ -143,15 +143,14 @@ ELSTR.User = function() {
 
 	this.login = function(enterpriseApplication) {
 		
-		if(!YAHOO.lang.isUndefined(enterpriseApplication)){
-			 
+		if(YAHOO.lang.isUndefined(enterpriseApplication) || enterpriseApplication == ''){
+			loginDialog.enterpriseApplication = '';
+		} else { 
 			if(YAHOO.lang.isUndefined(that.enterpriseApplicationAuthEvent[enterpriseApplication])){
 				that.enterpriseApplicationAuthEvent[enterpriseApplication] = new YAHOO.util.CustomEvent("afterAuthEvent_"+enterpriseApplication, this, true, YAHOO.util.CustomEvent.LIST, true);	
 			}
 
 			loginDialog.enterpriseApplication = enterpriseApplication;
-		} else {
-			loginDialog.enterpriseApplication = '';
 		} 
 		
 		loginDialog.show();
@@ -435,7 +434,7 @@ ELSTR.User = function() {
 	}
 
 	var _authRequest = function(username, password, enterpriseApplication) {
-
+		var eApp = enterpriseApplication;
 		var oCallback = {
 			// if our XHR call is successful, we want to make use
 			// of the returned data and create child nodes.
@@ -460,7 +459,7 @@ ELSTR.User = function() {
 						if (oRequestPost.params.enterpriseApplication != ''){
 							var enterpriseApplication = oRequestPost.params.enterpriseApplication;
 							
-							that.enterpriseApplicationAuthEvent[enterpriseApplication].fire();
+							that.enterpriseApplicationAuthEvent[enterpriseApplication].fire();							
 						}
 					}
 					catch (e) {
@@ -469,7 +468,7 @@ ELSTR.User = function() {
 					callbackFunction();
 				} else {
 					if (forceAuthentication == true && isAuth == false) {
-						that.login();
+						that.login(eApp);
 					}
 					
 					ELSTR.lang.alert("error", responseMessages[0],loginDialogMessageContainer);

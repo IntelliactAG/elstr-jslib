@@ -264,22 +264,18 @@ ELSTR = {
 				//console.log(status);
 				
 				var enterpriseApplication = parsedResponse.error.data.context;
-				
+
 				if (YAHOO.lang.isUndefined( ELSTR.user.enterpriseApplicationAuthEvent[enterpriseApplication] )){
 					ELSTR.user.login(enterpriseApplication);
-				}
-				
+				}				
 				ELSTR.user.enterpriseApplicationAuthEvent[enterpriseApplication].subscribe(function(type, args){
-
 					oDataSource.sendRequest(oRequest, oCallback);
-					
-		        });
-				
-			  
+		        });			  
 				//console.log(parsedResponse);
 				//console.log(oDataSource);
 				//console.log(oCallback);
 			  break;
+				
 			default:
 				alert("Request failed!");
 			}
