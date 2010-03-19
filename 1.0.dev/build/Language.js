@@ -38,7 +38,7 @@ ELSTR.Language = function(){
     var visibleAlertMessages = [];
     var file;
     var serviceUrl;
-    
+      
 
     // Member Variabless
     var that = this;
@@ -127,16 +127,29 @@ ELSTR.Language = function(){
 	 * @param {String}
 	 *            textid The id of the text in the TMX-File OR The text of the
 	 *            message
+	 * @param {String or Dom-element}
+	 * 			  id of a dom element or the dom element
+	 * 			  if set, the message is rendered into the specified element
 	 * @return {Boolean} True
 	 */
-    this.alert = function(priority, textid){
+    this.alert = function(priority, textid, element){
+    	
+    	var showMessage = function(priority, textid, element){
+    		if(YAHOO.lang.isUndefined(element)){
+    			_alertMessage(priority, textid);
+    		} else {
+    			_renderMessage(priority, textid, element);
+    		}
+    		
+    	}
+    	
         if (currentIsLoaded === true) {
-            _alertMessage(priority, textid);
+        	showMessage(priority, textid, element);
         }
         else {
         
             var subscribedAlertMessage = function(){
-                _alertMessage(priority, textid);
+            	showMessage(priority, textid, element);
                 that.onAfterLoadEvent.unsubscribe(subscribedAlertMessage);
             }
             that.onAfterLoadEvent.subscribe(subscribedAlertMessage);
@@ -478,6 +491,28 @@ ELSTR.Language = function(){
         
         // Element in die Liste der Meldungen eintragen
         visibleAlertMessages[visibleAlertMessages.length] = messageId;
+        
+    }
+    
+    var _renderMessage = function(priority, key, elMessageContainer){
+        var elMessage;
+    	var messageText = "";
+        if (textFrontend[key]) {
+            messageText = "<div textid='" + key + "'>" + textFrontend[key] + "</div>";
+        }
+        else {
+            messageText = key;
+        }
+        
+        if (typeof elMessageContainer == "string") {
+        	elMessageContainer = document.getElementById(element);
+        }
+        
+        elMessage = document.createElement("div");
+        elMessageContainer.appendChild(elMessage);
+        
+        YAHOO.util.Dom.addClass(elMessage, priority);
+        elMessage.innerHTML = messageText;
         
     }
     

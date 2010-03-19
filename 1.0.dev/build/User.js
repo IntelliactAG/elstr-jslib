@@ -54,6 +54,7 @@ ELSTR.User = function() {
 	var enterpriseApplicationData;
 	var datasource;
 	var loginDialog;
+	var loginDialogMessageContainer;
 	var accessDeniedDialog;
 	var forceAuthentication;
 	var callbackFunction;
@@ -299,14 +300,18 @@ ELSTR.User = function() {
 			var enterpriseApplication = loginDialog.enterpriseApplication;
 
 			_clearPasswordValue();
+			// Clear all child nodes of the message container element
+			ELSTR.utils.clearChilds(loginDialogMessageContainer);
+			
 			_authRequest(username, password, enterpriseApplication);
 		};
 		var handleCancel = function() {
 			this.cancel();
 			_clearPasswordValue();
+			// Clear all child nodes of the message container element
+			ELSTR.utils.clearChilds(loginDialogMessageContainer);			
 		};
 
-		
 		
 		loginDialog = new YAHOO.widget.Dialog("dialogLogin", {
 			postmethod : "none",
@@ -336,6 +341,11 @@ ELSTR.User = function() {
 			correctScope : true
 		});
 		enterListener.enable();
+		
+		loginDialogMessageContainer = document.createElement("div");
+		loginDialog.body.appendChild(loginDialogMessageContainer);
+		YAHOO.util.Dom.addClass(loginDialogMessageContainer, "loginDialogMessageContainer");
+
 	}
 	
 
@@ -461,7 +471,8 @@ ELSTR.User = function() {
 					if (forceAuthentication == true && isAuth == false) {
 						that.login();
 					}
-					ELSTR.lang.alert("error", responseMessages[0]);
+					
+					ELSTR.lang.alert("error", responseMessages[0],loginDialogMessageContainer);
 				}
 
 			},
@@ -547,5 +558,5 @@ ELSTR.User = function() {
 			elPassword[i].value = "";
 		}
 	}
-
+	
 }
