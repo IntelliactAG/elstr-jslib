@@ -113,6 +113,7 @@ ELSTR.Admin = function() {
 		bodyHtml += "					<option value='Application'>Application</option>";
 		bodyHtml += "					<option value='Service'>Service</option>";
 		bodyHtml += "					<option value='WidgetServer'>WidgetServer</option>";
+		bodyHtml += "					<option value='Method'>Method</option>";
 		bodyHtml += "				</select>";
 		bodyHtml += "				<button id='elstrAdminConsoleResourceHandlerButton' type='button'>Go!</button>";
 		bodyHtml += "			</div>";
