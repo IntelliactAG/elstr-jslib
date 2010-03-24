@@ -428,7 +428,7 @@
             var arrowUp = function(adj, canvas){
                 var node = adj.nodeFrom, child = adj.nodeTo;
                 var data = adj.data, econfig = this.edge;
-				data.$direction = 1;
+                data.$direction = 1;
                 //get edge dim
                 var cond = econfig.overridable && data;
                 var edgeDim = cond && data.$dim || 14;
@@ -457,10 +457,10 @@
                     context.lineTo(posTo.x, posTo.y);
                 });
             }
-			var arrowDown = function(adj, canvas){
+            var arrowDown = function(adj, canvas){
                 var node = adj.nodeFrom, child = adj.nodeTo;
                 var data = adj.data, econfig = this.edge;
-				data.$direction = -1;
+                data.$direction = -1;
                 //get edge dim
                 var cond = econfig.overridable && data;
                 var edgeDim = cond && data.$dim || 14;
@@ -489,7 +489,7 @@
                     context.lineTo(posTo.x, posTo.y);
                 });
             }
-			
+            
             RGraph.Plot.EdgeTypes.implement({
                 'none': function(adj, canvas){
                     //do not display
@@ -602,7 +602,7 @@
                         style.fontSize = '12px';
                         style.height = '40px';
                     }
-                    else 
+                    else {
                         if (node._depth == 2) {
                             //Dom.removeClass(node, 'node');
                             //Dom.addClass(node, 'node-min');
@@ -612,16 +612,19 @@
                         else {
                             style.display = 'none';
                         }
+                    }
                     var filter = ELSTR.widget.SphereBrowser.instance.cfg.getProperty('filter');
-                    if (filter.nodeType[node.data.$type] != true) {
+                    if (filter.nodeType[node.data.$type] === false) {
                         style.display = 'none';
                     }
-                    if (node.data.$type != ELSTR.applicationData.config.SEARCHNODETYPE && (filter.level[node.data.level] != true && !(node._depth == 0))) {
+					// Filter / 
+                    if (node.data.$type != ELSTR.applicationData.config.SEARCHNODETYPE && (filter.level[node.data.level] === false && !(node._depth == 0))) {
                         style.display = 'none';
                     }
+                    
                 },
                 
-                onBeforePlotLine: function(adj){					
+                onBeforePlotLine: function(adj){
                     if (adj.nodeTo._depth > 2 || adj.nodeFrom._depth > 2) {
                         adj.data.$type = 'none';
                     }
@@ -629,13 +632,13 @@
                         adj.data.$type = adj.nodeTo.data.level;
                     }
                     // Hide lines from or to filtered nodes
-					var filter = ELSTR.widget.SphereBrowser.instance.cfg.getProperty('filter');
-                    if (filter.nodeType[adj.nodeTo.data.$type] != true || filter.nodeType[adj.nodeFrom.data.$type] != true) {
+                    var filter = ELSTR.widget.SphereBrowser.instance.cfg.getProperty('filter');
+                    if (filter.nodeType[adj.nodeTo.data.$type] === false || filter.nodeType[adj.nodeFrom.data.$type] === false) {
                         adj.data.$type = 'none';
                     }
-					
-					// Hide lines, if filtered
-                    if (filter.level[adj.nodeTo.data.level] != true) {
+                    
+                    // Hide lines, if filtered
+                    if (filter.level[adj.nodeTo.data.level] === false) {
                         adj.data.$type = 'none';
                     }
                 }
