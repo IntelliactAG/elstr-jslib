@@ -162,13 +162,16 @@ ELSTR = {
 		 * @param dom-node
 		 */
 		clearChilds : function(el) {
-			if (el.childNodes) {
+			while(el.firstChild) {
+			    el.removeChild(el.firstChild);
+			}
+			/*if (el.hasChildNodes()) {
 				while (el.hasChildNodes()) {
 					var elFirstChild = el.firstChild;
 					ELSTR.utils.clearChilds(elFirstChild);
 					el.removeChild(elFirstChild);					
 				}
-			}
+			}*/
 		},
 		/**
 		 * Public mehtod for showing a wating cursor

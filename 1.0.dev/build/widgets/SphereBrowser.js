@@ -621,17 +621,20 @@
                     }
                 },
                 
-                onBeforePlotLine: function(adj){
+                onBeforePlotLine: function(adj){					
                     if (adj.nodeTo._depth > 2 || adj.nodeFrom._depth > 2) {
                         adj.data.$type = 'none';
                     }
                     else {
                         adj.data.$type = adj.nodeTo.data.level;
                     }
-                    var filter = ELSTR.widget.SphereBrowser.instance.cfg.getProperty('filter');
+                    // Hide lines from or to filtered nodes
+					var filter = ELSTR.widget.SphereBrowser.instance.cfg.getProperty('filter');
                     if (filter.nodeType[adj.nodeTo.data.$type] != true || filter.nodeType[adj.nodeFrom.data.$type] != true) {
                         adj.data.$type = 'none';
                     }
+					
+					// Hide lines, if filtered
                     if (filter.level[adj.nodeTo.data.level] != true) {
                         adj.data.$type = 'none';
                     }
