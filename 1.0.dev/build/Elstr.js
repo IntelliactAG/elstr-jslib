@@ -245,27 +245,106 @@ ELSTR = {
 
 			}
 			return string;
+		},
+		// logging console
+		logger : {
+			// status = 0 (no logger yet)
+			// status = 1 (logger requested)
+			// status = 2 (logger is ready to write)
+			status : 0,
+			event : new YAHOO.util.CustomEvent("loggerIsReady")
+		},
+		/**
+		 * Log elstr (error) messages
+		 * 
+		 * @method loader
+		 * @param {string} message text
+		 * @param {string} category: info, warn, error
+		 * @param {string} source
+		 */
+		log : function(msg, category, source){
+			var logMsg = msg;
+			var logCategory = category;
+			var logSource = source;					
+			
+			var log = function(){
+				YAHOO.log(logMsg, logCategory, logSource);
+				ELSTR.utils.logger.panel.show();
+			}
+			
+			if(ELSTR.utils.logger.status == 0){
+				
+				//Create this loader instance and ask for the Button module
+			    var loader = new YAHOO.util.YUILoader({
+			    	base : 'jslib/yui/' + LIBS.yuiVersion + '/build/',
+			    	loadOptional : true,
+			    	filter: LIBS.yuiFilter,
+			    	combine: LIBS.yuiCombine,		    	
+			        require: ['logger'],
+			        onSuccess: function() {
+			    	
+				    	ELSTR.utils.logger.panel = new YAHOO.widget.Panel("elstrLoggerPanel", { 
+				    		width:"320px", 
+				    		fixedcenter : true,
+				    		visible:false, 
+				    		draggable:true, 
+							width : '300px',
+							height : '300px',
+				    		close:true } 
+				    	);
+				    	ELSTR.utils.logger.panel.setHeader("Elstr logging console");
+				    	ELSTR.utils.logger.panel.setBody("");
+				    	ELSTR.utils.logger.panel.render(document.body);
+				    	
+
+			            ELSTR.utils.logger.reader = new YAHOO.widget.LogReader(ELSTR.utils.logger.panel.body , {
+			                logReaderEnabled: true,
+			                draggable: false,
+			                newestOnTop: true,
+			                footerEnabled : false,
+			                height: '220px',
+			                width: '280px'
+			            });
+
+			            ELSTR.utils.logger.status = 2;
+			            ELSTR.utils.logger.event.fire();			            
+			        }
+			    });
+			    //Call insert, only choosing the JS files, so the skin doesn't over write my custom css
+			    loader.insert({}, 'js');
+				
+			    ELSTR.utils.logger.status = 1;	
+			    
+			    ELSTR.utils.logger.event.subscribe(log);
+			    
+			} else if (ELSTR.utils.logger.status == 1){
+				ELSTR.utils.logger.event.subscribe(log);
+				
+			} else if (ELSTR.utils.logger.status == 2) {
+				log();
+			}
 		}
 	},
 	error : {
 		requestFailure : function (oRequest, oResponse, oPayload, oDataSource, oCallback){
-			//alert("Request failed!");
-			//console.log(oParsedResponse);
-			
+		
 			var status = oResponse.status;
+			var responseText =  oResponse.responseText;
+			
+			//console.log(oResponse);
 			
 			try {
-			    var parsedResponse = YAHOO.lang.JSON.parse(oResponse.responseText);
+			    var parsedResponse = YAHOO.lang.JSON.parse(responseText);
 			}
 			catch (e) {
-			    alert("Request failed!");
+			    ELSTR.utils.log(e,"error");
+			    ELSTR.utils.log("Request: " + oRequest);			    
 			    return;
 			}
 			 
 			switch(status) {
 			case 401:
-				//console.log(status);
-				
+				//console.log(status);				
 				var enterpriseApplication = parsedResponse.error.data.context;
 
 				if (YAHOO.lang.isUndefined( ELSTR.user.enterpriseApplicationAuthEvent[enterpriseApplication] )){
@@ -279,11 +358,11 @@ ELSTR = {
 				//console.log(oCallback);
 			  break;
 				
-			default:
-				alert("Request failed!");
+			default:				
+			    ELSTR.utils.log("Request failed!","error");
+				ELSTR.utils.log("Status: " + status);
+			    ELSTR.utils.log("Response: " + responseText);
 			}
-			
-
 			
 		}
 	}
