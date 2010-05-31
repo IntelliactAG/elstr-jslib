@@ -1,10 +1,11 @@
 <?php
 
 /**
-* Loader for Elstr-Scripts
+* Javascript loader for Elstr-Scripts
 *
-* @version $Id$
 * @copyright 2010
+* @author egli@intelliact.ch
+* 
 */
 
 $contentString = "";

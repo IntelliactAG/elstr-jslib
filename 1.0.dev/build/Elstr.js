@@ -76,11 +76,20 @@ ELSTR = {
 	 */
 	loader : function(type, url, fn) {
 
-		var requestUrl;
-		if (YAHOO.lang.isArray(url) && type == "script" && LIBS.elstrCombine == true) {
+		var requestUrl, loaderScript;
+		if (YAHOO.lang.isArray(url) && LIBS.elstrCombine == true) {
+			if (type == "script"){
+				// Use the Javascript loader
+				loaderScript = 'jslib/elstr/' + LIBS.elstrVersion + '/build/jsLoader.php';
+			} 
+			if (type == "css"){				// 
+				// Use the Stylesheet loader
+				loaderScript = 'jslib/elstr/' + LIBS.elstrVersion + '/build/cssLoader.php'
+			}
+			
 			for ( var i = 0; i < url.length; i++) {
 				if (i == 0) {
-					requestUrl = 'jslib/elstr/' + LIBS.elstrVersion + '/build/jsLoader.php?file'+i+'=' + url[i];
+					requestUrl = loaderScript + '?file'+i+'=' + url[i];				
 				} else {
 					requestUrl += '&file'+i+'=' + url[i];
 				}
