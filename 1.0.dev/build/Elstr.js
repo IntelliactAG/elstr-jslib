@@ -43,7 +43,7 @@ ELSTR = {
 
 			},
 			failure : function(oRequest, oParsedResponse, oPayload) {
-				alert("Request failed!");
+				ELSTR.error.requestFailure(oRequest, oParsedResponse, oPayload);
 
 			},
 			scope : {},
