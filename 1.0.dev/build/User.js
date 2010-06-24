@@ -277,7 +277,15 @@ ELSTR.User = function() {
 		accessDeniedDialog.render(document.body);
 	
 	}
-	
+
+
+	/**
+	 * Return the current username
+	 *
+	 */
+	this.getCurrentUsername = function(){
+		return currentUsername;
+	}
 
 	// ////////////////////////////////////////////////////////////
 	// Private functions
