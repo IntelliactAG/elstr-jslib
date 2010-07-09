@@ -654,14 +654,15 @@
             
                 (function(json){
                     if (YAHOO.lang.isUndefined(json.data)) {
-                        json.data = {
-                            $type: json.nodeType,
+                        var data = {
+					        $type: json.nodeType,
                             updated: false
-                        }
+						};
                         // add all properties and set nodeType
                         for (var key in json) {
-                            json.data[key] = json[key];
+                            data[key] = json[key];
                         }
+						json.data = data;
                     }
                     if (json.children != undefined) {
                         for (var i = 0, ch = json.children; i < ch.length; i++) {
@@ -688,7 +689,6 @@
             delete this.rgraph;
             ELSTR.utils.clearChilds(this.body);
             this.rgraph = this.createNewGraph(this.body);
-            
             var res = ELSTR.utils.cloneObj(data.results);
             var json = this.rgraph.updateJson(res[0]);
             //this.rgraph.root = json.id;
