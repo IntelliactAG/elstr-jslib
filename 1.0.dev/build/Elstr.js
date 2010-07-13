@@ -293,7 +293,6 @@ ELSTR = {
 			        onSuccess: function() {
 			    	
 				    	ELSTR.utils.logger.panel = new YAHOO.widget.Panel("elstrLoggerPanel", { 
-				    		width:"320px", 
 				    		fixedcenter : true,
 				    		visible:false, 
 				    		draggable:true, 
