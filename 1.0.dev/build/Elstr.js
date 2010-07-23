@@ -69,7 +69,7 @@ ELSTR = {
 	loader : function(type, url, fn) {
 
 		var requestUrl, loaderScript;
-		if (YAHOO.lang.isArray(url) && LIBS.elstrCombine === true) {
+		if (YAHOO.lang.isArray(url) && LIBS.elstrCombine) {
 			if (type == "script"){
 				// Use the Javascript loader
 				loaderScript = 'jslib/elstr/' + LIBS.elstrVersion + '/build/jsLoader.php';
