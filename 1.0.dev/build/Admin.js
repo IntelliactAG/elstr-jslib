@@ -1,23 +1,29 @@
 // Create the Namespace for the Framework
-if (ELSTR == undefined) {
-	var ELSTR = new Object();
-};
+if (ELSTR === undefined) {
+	var ELSTR = {};
+}
 
 /**
  * Die User Klasse regelt den Umgang mit dem Benutzer in der Webapp
  * 
  * Example of the widget/markup
  * 
- * Required for Authentication: LoginDialog <div id="loginDialog"> <div
- * class="hd">Login</div> <div class="bd"> <form name="loginDialogForm"
- * method="POST" action="services/ELSTR_AuthServer"> <label
- * for="username">Username</label><input type="text" name="username" /> <label
- * for="password">Password</label><input type="password" name="password" />
- * </form> </div> </div>
+ * Required for Authentication: LoginDialog
+ *	<div id="loginDialog">
+ *		<div class="hd">Login</div>
+ *		<div class="bd">
+ *			<form name="loginDialogForm" method="POST" action="services/ELSTR_AuthServer">
+ *				<label for="username">Username</label><input type="text" name="username" />
+ *				<label for="password">Password</label><input type="password" name="password" />
+ *			</form>
+ *		</div>
+ *	</div>
  * 
- * Optinal for Authentication: LoginDialog <div id="loginHandler"> <span
- * class="login">Anmelden</span> <span class="logout">Abmelden :</span> <span
- * class="user"></span> </div>
+ * Optinal for Authentication: LoginDialog
+ *	<div id="loginHandler">
+ *		<span class="login">Anmelden</span> <span class="logout">Abmelden :</span>
+ *		<span class="user"></span>
+ *	</div>
  * 
  * To use this component the following YUI components ar required YUI
  * components: ["dom","event","datasource","json","dialog"]
@@ -34,9 +40,12 @@ ELSTR.Admin = function() {
 
 	// ///////////////////////////////////////////////////////////////
 	// Declare all class variables
-	var consoleDialog;
-	var datasource;
-	var resourceDataTable;
+	var consoleDialog,
+	datasource,
+	resourceDataTable,
+	roleDataTable;
+
+	var YDom = YAHOO.util.Dom;
 
 	// Member Variabless
 	var that = this;
@@ -53,13 +62,11 @@ ELSTR.Admin = function() {
 	 * @return void
 	 */
 	this.init = function() {
-
 		_renderConsoleDialog();
 		_createDatasource();
 		_renderRoleWidget();
 		_renderResourceWidget();
-
-	}
+	};
 
 	/**
 	 * Opens the admin console
@@ -69,20 +76,19 @@ ELSTR.Admin = function() {
 	 */
 	this.openConsole = function() {
 		consoleDialog.show();
-	}
+	};
 
 	// ////////////////////////////////////////////////////////////
 	// Private functions
 
 	var _createDatasource = function() {
-		datasource = new YAHOO.util.XHRDataSource(
-				"services/ELSTR_WidgetServer_JSON_Admin");
+		datasource = new YAHOO.util.XHRDataSource("services/ELSTR_WidgetServer_JSON_Admin");
 		datasource.connMethodPost = true;
 		datasource.responseType = YAHOO.util.DataSource.TYPE_JSON;
 		datasource.responseSchema = {
 			resultsList : "result"
 		};
-	}
+	};
 
 	var _renderConsoleDialog = function() {
 		var tableHeight = document.body.offsetHeight - 100;
@@ -144,41 +150,36 @@ ELSTR.Admin = function() {
 		consoleDialog.setBody(bodyHtml);
 		consoleDialog.render(document.body);
 
-		var resourceHandlerButton = new YAHOO.widget.Button(
-				"elstrAdminConsoleResourceHandlerButton");
+		var resourceHandlerButton = new YAHOO.widget.Button("elstrAdminConsoleResourceHandlerButton");
 		resourceHandlerButton.on("click", _onResourceHandlerButtonClick);
 
-		var roleHandlerButton = new YAHOO.widget.Button(
-				"elstrAdminConsoleRoleHandlerButton");
+		var roleHandlerButton = new YAHOO.widget.Button("elstrAdminConsoleRoleHandlerButton");
 		roleHandlerButton.on("click", _onRoleHandlerButtonClick);
-	}
+	};
 
 	var _renderRoleWidget = function() {
 
-		var oColumnDefs = new Array();
+		var oColumnDefs = [];
 		oColumnDefs[oColumnDefs.length] = {
 			key : 'name',
 			label : 'Name',
 			sortable : false,
 			resizeable : true
-		}
+		};
 
-		roleDataTable = new YAHOO.widget.ScrollingDataTable(
-				"elstrAdminConsoleRoleWidget", oColumnDefs, datasource, {
-					initialLoad : false,
-					draggableColumns : true,
-					selectionMode : "standard"
-				});
-		roleDataTable.subscribe("cellClickEvent",
-				roleDataTable.onEventShowCellEditor);
+		roleDataTable = new YAHOO.widget.ScrollingDataTable("elstrAdminConsoleRoleWidget", oColumnDefs, datasource, {
+			initialLoad : false,
+			draggableColumns : true,
+			selectionMode : "standard"
+		});
+		roleDataTable.subscribe("cellClickEvent",roleDataTable.onEventShowCellEditor);
 		_loadRoleDataTable();
-
-	}
+	};
 
 	var _recreateResourceWidget = function(){
 		resourceDataTable.destroy();
 		_renderResourceWidget();
-	}
+	};
 	
 	var _renderResourceWidget = function() {
 
@@ -186,19 +187,28 @@ ELSTR.Admin = function() {
 			// if our XHR call is successful, we want to make use
 			// of the returned data and create child nodes.
 			success : function(oRequest, oParsedResponse, oPayload) {
-				var oColumnDefs = new Array();
+				var oColumnDefs = [];
 				oColumnDefs[oColumnDefs.length] = {
 					key : 'type',
 					label : 'Type',
 					sortable : false,
 					resizeable : true
-				}
+				};
 				oColumnDefs[oColumnDefs.length] = {
 					key : 'name',
 					label : 'Name',
 					sortable : false,
 					resizeable : true
-				}
+				};
+
+				var cellFormatter = function(elCell, oRecord, oColumn, oData) {
+					elCell.innerHTML = oData;
+					if (oData == 'allow') {
+						YDom.setStyle(elCell,'background-color', '#99ff99');
+					} else if (oData == 'deny') {
+						YDom.setStyle(elCell,'background-color', '#ff9999');
+					}
+				};
 
 				for ( var i = 0; i < oParsedResponse.results.length; i++) {
 					oColumnDefs[oColumnDefs.length] = {
@@ -206,33 +216,22 @@ ELSTR.Admin = function() {
 						label : oParsedResponse.results[i].name,
 						sortable : true,
 						resizeable : true,
-						formatter : function(elCell, oRecord, oColumn, oData) {
-							elCell.innerHTML = oData;
-							if (oData == 'allow') {
-								YAHOO.util.Dom.setStyle(elCell,
-										'background-color', '#99ff99');
-							} else if (oData == 'deny') {
-								YAHOO.util.Dom.setStyle(elCell,
-										'background-color', '#ff9999');
-							}
-						},
+						formatter : cellFormatter,
 						editor : new YAHOO.widget.RadioCellEditor( {
 							radioOptions : [ "allow", "deny","inherit" ],
 							asyncSubmitter : _updateAccessRight,
 							disableBtns : true
 						})
-					}
+					};
 				}
 
-				resourceDataTable = new YAHOO.widget.ScrollingDataTable(
-						"elstrAdminConsoleResourceWidget", oColumnDefs,
-						datasource, {
-							initialLoad : false,
-							draggableColumns : true,
-							selectionMode : "standard"
-						});
-				resourceDataTable.subscribe("cellClickEvent",
-						resourceDataTable.onEventShowCellEditor);
+				resourceDataTable = new YAHOO.widget.ScrollingDataTable("elstrAdminConsoleResourceWidget", oColumnDefs,
+					datasource, {
+						initialLoad : false,
+						draggableColumns : true,
+						selectionMode : "standard"
+					});
+				resourceDataTable.subscribe("cellClickEvent",resourceDataTable.onEventShowCellEditor);
 				_loadResourceDataTable();
 
 			},
@@ -250,15 +249,13 @@ ELSTR.Admin = function() {
 			"id" : ELSTR.utils.uuid()
 		};
 
-		datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),
-				oCallback);
-
-	}
+		datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),oCallback);
+	};
 
 	var _updateAccessRight = function(fnCallback, newValue) {
 
 		var data = this.getRecord()._oData;
-		var column = this.getColumn()
+		var column = this.getColumn();
 
 		var oCallback = {
 			success : function(oRequest, oParsedResponse, oPayload) {
@@ -284,10 +281,8 @@ ELSTR.Admin = function() {
 			},
 			"id" : ELSTR.utils.uuid()
 		};
-
-		datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),
-				oCallback);
-	}
+		datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),oCallback);
+	};
 
 	var _loadResourceDataTable = function() {
 		var oCallback = {
@@ -298,8 +293,7 @@ ELSTR.Admin = function() {
 		};
 
 		// Show loading row
-		resourceDataTable.deleteRows(0,
-				resourceDataTable.getRecordSet()._records.length);
+		resourceDataTable.deleteRows(0,resourceDataTable.getRecordSet()._records.length);
 		resourceDataTable.addRow( {
 			name : "<div class='loaderIcon'></div> Loading ..."
 		}, 0);
@@ -310,10 +304,8 @@ ELSTR.Admin = function() {
 			"params" : {},
 			"id" : ELSTR.utils.uuid()
 		};
-
-		datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),
-				oCallback);
-	}
+		datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),oCallback);
+	};
 
 	var _loadRoleDataTable = function() {
 		var oCallback = {
@@ -324,8 +316,7 @@ ELSTR.Admin = function() {
 		};
 
 		// Show loading row
-		roleDataTable.deleteRows(0,
-				roleDataTable.getRecordSet()._records.length);
+		roleDataTable.deleteRows(0,	roleDataTable.getRecordSet()._records.length);
 		roleDataTable.addRow( {
 			name : "<div class='loaderIcon'></div> Loading ..."
 		}, 0);
@@ -337,9 +328,8 @@ ELSTR.Admin = function() {
 			"id" : ELSTR.utils.uuid()
 		};
 
-		datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),
-				oCallback);
-	}
+		datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),	oCallback);
+	};
 
 	var _onResourceHandlerButtonClick = function() {
 		var oCallback = {
@@ -354,10 +344,9 @@ ELSTR.Admin = function() {
 			argument : {}
 		};
 
-		var mode = YAHOO.util.Dom.get("elstrAdminConsoleResourceHandlerMode").value;
-		var type = YAHOO.util.Dom.get("elstrAdminConsoleResourceHandlerType").value;
-		var resource = YAHOO.util.Dom
-				.get("elstrAdminConsoleResourceHandlerInput").value;
+		var mode = YDom.get("elstrAdminConsoleResourceHandlerMode").value;
+		var type = YDom.get("elstrAdminConsoleResourceHandlerType").value;
+		var resource = YDom.get("elstrAdminConsoleResourceHandlerInput").value;
 
 		if (resource != '') {
 			var oRequestPost = {
@@ -371,11 +360,9 @@ ELSTR.Admin = function() {
 				"id" : ELSTR.utils.uuid()
 			};
 
-			datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),
-					oCallback);
+			datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),oCallback);
 		}
-
-	}
+	};
 
 	var _onRoleHandlerButtonClick = function() {
 		var oCallback = {
@@ -392,8 +379,8 @@ ELSTR.Admin = function() {
 			argument : {}
 		};
 
-		var mode = YAHOO.util.Dom.get("elstrAdminConsoleRoleHandlerMode").value;
-		var role = YAHOO.util.Dom.get("elstrAdminConsoleRoleHandlerInput").value;
+		var mode = YDom.get("elstrAdminConsoleRoleHandlerMode").value;
+		var role = YDom.get("elstrAdminConsoleRoleHandlerInput").value;
 
 		if (role != '') {
 			var oRequestPost = {
@@ -406,10 +393,7 @@ ELSTR.Admin = function() {
 				"id" : ELSTR.utils.uuid()
 			};
 
-			datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),
-					oCallback);
+			datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),	oCallback);
 		}
-
-	}
-
-}
+	};
+};

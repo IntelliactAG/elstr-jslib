@@ -1,7 +1,7 @@
 // Create the Namespace for the Framework
-if (ELSTR == undefined) {
-	var ELSTR = new Object();
-};
+if (ELSTR === undefined) {
+	var ELSTR = {};
+}
 
 /**
  * Die User Klasse regelt den Umgang mit dem Benutzer in der Webapp
@@ -9,28 +9,28 @@ if (ELSTR == undefined) {
  * Example of the widget/markup
  * 
  * Required for Authentication: 
- * 				<div id="loginHandler">
- *					<span class="login clickable">Anmelden</span>
- *					<span class="logout clickable">Abmelden</span>
- *					<span class="user"></span>
- *					<span class="admin clickable">Admin</span>
- *				</div>
+ * 	<div id="loginHandler">
+ *		<span class="login clickable">Anmelden</span>
+ *		<span class="logout clickable">Abmelden</span>
+ *		<span class="user"></span>
+ *		<span class="admin clickable">Admin</span>
+ *	</div>
  * 
  * 
  * Optional for Authentication: 
- *     			<div id="dialogLogin">
- *				    <div class="hd">Login</div>
- *				    <div class="bd">
- *				        <form name="loginDialogForm" method="POST" action="services/ELSTR_AuthServer">
- *				            <div class="filterSetting">
- *				            	<label for="username">Username</label><input type="text" name="username" />
- *							</div>
- *							<div class="filterSetting">
- *								<label for="password">Password</label><input type="password" name="password" />
- *							</div>
- *				        </form>
- *				    </div>
- *				</div>
+ *  <div id="dialogLogin">
+ *		<div class="hd">Login</div>
+ *		<div class="bd">
+ *			<form name="loginDialogForm" method="POST" action="services/ELSTR_AuthServer">
+ *				<div class="filterSetting">
+ *				    <label for="username">Username</label><input type="text" name="username" />
+ *					</div>
+ *					<div class="filterSetting">
+ *						<label for="password">Password</label><input type="password" name="password" />
+ *					</div>
+ *			</form>
+ *		</div>
+ *	</div>
  *  
  * To use this component the following YUI components ar required YUI
  * components: ["dom","event","datasource","json","dialog"]
@@ -47,17 +47,20 @@ ELSTR.User = function() {
 
 	// ///////////////////////////////////////////////////////////////
 	// Declare all class variables
-	var currentUsername;
-	var isAuth;
-	var isAdmin;
-	var resourcesAllowed;
-	var enterpriseApplicationData;
-	var datasource;
-	var loginDialog;
-	var loginDialogMessageContainer;
-	var accessDeniedDialog;
-	var forceAuthentication;
-	var callbackFunction;
+	var currentUsername,
+	isAuth,
+	isAdmin,
+	resourcesAllowed,
+	enterpriseApplicationData,
+	datasource,
+	loginDialog,
+	loginDialogMessageContainer,
+	accessDeniedDialog,
+	forceAuthentication,
+	callbackFunction;
+
+	var YCustomEvent = YAHOO.util.CustomEvent,
+	YDom = YAHOO.util.Dom;
 
 	// Member Variabless
 	var that = this;
@@ -65,10 +68,10 @@ ELSTR.User = function() {
 	// ////////////////////////////////////////////////////////////
 	// Event Declarations
 	
-	that.onAfterInitEvent = new YAHOO.util.CustomEvent("afterInitEvent", this);
-	that.onAfterAuthEvent = new YAHOO.util.CustomEvent("afterAuthEvent", this);
-	that.onAfterLogoutEvent = new YAHOO.util.CustomEvent("afterLogoutEvent", this);
-	that.onBeforeLogoutEvent = new YAHOO.util.CustomEvent("beforeLogoutEvent", this);
+	that.onAfterInitEvent = new YCustomEvent("afterInitEvent", this);
+	that.onAfterAuthEvent = new YCustomEvent("afterAuthEvent", this);
+	that.onAfterLogoutEvent = new YCustomEvent("afterLogoutEvent", this);
+	that.onBeforeLogoutEvent = new YCustomEvent("beforeLogoutEvent", this);
 	that.enterpriseApplicationAuthEvent = {};
 
 	// ////////////////////////////////////////////////////////////
@@ -78,8 +81,6 @@ ELSTR.User = function() {
 	 * Initialisiert das Userobject
 	 * 
 	 * @method init
-	 * @param {String}
-	 *            serviceUrl The url to service to load a language
 	 * @param {Boolean}
 	 *            authRequired True, if for the app authentication is required
 	 * @param {Function}
@@ -108,7 +109,7 @@ ELSTR.User = function() {
 		_renderLoginHandler();
 		_createDatasource();
 
-		if (authRequired && authRequired == true) {
+		if (authRequired && authRequired === true) {
 			forceAuthentication = true;
 
 			// It is not allowed to abort the login dialog
@@ -126,7 +127,7 @@ ELSTR.User = function() {
 			};
 		}
 
-		if (forceAuthentication == true && isAuth == false) {
+		if (forceAuthentication === true && isAuth === false) {
 			that.login();
 		}
 
@@ -136,10 +137,8 @@ ELSTR.User = function() {
 			that.onAfterAuthEvent.fire();
 			callbackFunction();
 		}
-
 		return true;
-
-	}
+	};
 
 	this.login = function(enterpriseApplication) {
 		
@@ -154,11 +153,11 @@ ELSTR.User = function() {
 		} 
 		
 		loginDialog.show();
-	}
+	};
 
 	this.logout = function() {
 		_logoutRequest();
-	}
+	};
 
 	this.openAdminConsole = function() {
 		if (isAdmin) {
@@ -166,19 +165,19 @@ ELSTR.User = function() {
 				// Load the required language Modules first and then load the Admin Module itself
 				ELSTR.lang.registerModule('admin',function(){
 					ELSTR.loader('script',
-							'jslib/elstr/' + LIBS.elstrVersion + '/build/Admin.js',
-							function() {
-								ELSTR.admin = new ELSTR.Admin();
-								ELSTR.admin.init();
-								ELSTR.admin.openConsole();
-							})					
-				})
+						'jslib/elstr/' + LIBS.elstrVersion + '/build/Admin.js',
+						function() {
+							ELSTR.admin = new ELSTR.Admin();
+							ELSTR.admin.init();
+							ELSTR.admin.openConsole();
+						});
+				});
 			} else {
 
 				ELSTR.admin.openConsole();
 			}
 		}
-	}
+	};
 
 	/**
 	 * Returns the current authentification status
@@ -188,7 +187,7 @@ ELSTR.User = function() {
 	 */
 	this.isAuth = function() {
 		return isAuth;
-	}
+	};
 
 	/**
 	 * Returns if the user is an admin user
@@ -198,7 +197,7 @@ ELSTR.User = function() {
 	 */
 	this.isAdmin = function() {
 		return isAdmin;
-	}
+	};
 
 	/**
 	 * Returns if the user has allowed access to a resource
@@ -215,7 +214,7 @@ ELSTR.User = function() {
 			objectLiteralOfResourcesAllowed[resourcesAllowed[i]] = '';
 		}
 		if (YAHOO.lang.isArray(resource)) {
-			for ( var i = 0; i < resource.length; i++) {
+			for ( var i = 0, len = resource.length; i < len; i++) {
 				if (!(resource[i] in objectLiteralOfResourcesAllowed)) {
 					isAllowed = false;
 				}
@@ -226,12 +225,12 @@ ELSTR.User = function() {
 			}
 		}
 		return isAllowed;
-	}
+	};
 	
 	/**
 	 * Interface for reading enterprise application data
 	 * 
-	 * @param {string} enterprise application
+	 * @param {string} enterpriseApplication
 	 * @param {string} key
 	 * @method getApplicationData
 	 * @return 
@@ -241,13 +240,14 @@ ELSTR.User = function() {
 			var oEnterpriseApplication = enterpriseApplicationData[enterpriseApplication];
 			if (!YAHOO.lang.isUndefined(oEnterpriseApplication[key])){
 				return oEnterpriseApplication[key];
-			} else {
+			}
+			else {
 				return null;
 			}
 		} else {
 			return null;
 		}
-	}
+	};
 	
 	
 	/**
@@ -266,7 +266,7 @@ ELSTR.User = function() {
 			draggable : false,
 			close : false,
 			modal : true,
-			icon: YAHOO.widget.SimpleDialog.ICON_BLOCK, 			
+			icon: YAHOO.widget.SimpleDialog.ICON_BLOCK,
 			buttons : [ {
 				text : "Als anderer Benutzer anmelden",
 				handler : handleOtherUser
@@ -275,8 +275,7 @@ ELSTR.User = function() {
 		accessDeniedDialog.setHeader("ERROR");
 		accessDeniedDialog.setBody("Kein Zugriff auf diese Applikation");
 		accessDeniedDialog.render(document.body);
-	
-	}
+	};
 
 
 	/**
@@ -285,7 +284,7 @@ ELSTR.User = function() {
 	 */
 	this.getCurrentUsername = function(){
 		return currentUsername;
-	}
+	};
 
 	// ////////////////////////////////////////////////////////////
 	// Private functions
@@ -297,7 +296,7 @@ ELSTR.User = function() {
 		datasource.responseSchema = {
 			resultsList : "result"
 		};
-	}
+	};
 
 	var _renderLoginDialog = function() {
 
@@ -351,24 +350,18 @@ ELSTR.User = function() {
 		
 		loginDialogMessageContainer = document.createElement("div");
 		loginDialog.body.appendChild(loginDialogMessageContainer);
-		YAHOO.util.Dom.addClass(loginDialogMessageContainer, "loginDialogMessageContainer");
-
-	}
+		YDom.addClass(loginDialogMessageContainer, "loginDialogMessageContainer");
+	};
 	
 
 	var _renderLoginHandler = function() {
 		// Render the handler only if it exists
 		if (document.getElementById('loginHandler')) {
-			var loginHandler = document.getElementById('loginHandler');
-
-			var elLogin = YAHOO.util.Dom.getElementsByClassName('login',
-					'span', loginHandler);
-			var elLogout = YAHOO.util.Dom.getElementsByClassName('logout',
-					'span', loginHandler);
-			var elUser = YAHOO.util.Dom.getElementsByClassName('user', 'span',
-					loginHandler);
-			var elAdmin = YAHOO.util.Dom.getElementsByClassName('admin',
-					'span', loginHandler);
+			var loginHandler = document.getElementById('loginHandler'),
+			elLogin = YDom.getElementsByClassName('login','span', loginHandler),
+			elLogout = YDom.getElementsByClassName('logout','span', loginHandler),
+			elUser = YDom.getElementsByClassName('user', 'span',loginHandler),
+			elAdmin = YDom.getElementsByClassName('admin','span', loginHandler);
 
 			// Add event listerners
 			for ( var i = 0; i < elLogin.length; i++) {
@@ -386,60 +379,53 @@ ELSTR.User = function() {
 					that.openAdminConsole();
 				});
 			}
-
 		}
-
 		_updateLoginHandler();
-	}
+	};
 
 	var _updateLoginHandler = function() {
 		if (document.getElementById('loginHandler')) {
-			var loginHandler = document.getElementById('loginHandler');
-
-			var elLogin = YAHOO.util.Dom.getElementsByClassName('login',
-					'span', loginHandler);
-			var elLogout = YAHOO.util.Dom.getElementsByClassName('logout',
-					'span', loginHandler);
-			var elUser = YAHOO.util.Dom.getElementsByClassName('user', 'span',
-					loginHandler);
-			var elAdmin = YAHOO.util.Dom.getElementsByClassName('admin',
-					'span', loginHandler);
+			var loginHandler = document.getElementById('loginHandler'),
+			elLogin = YDom.getElementsByClassName('login','span', loginHandler),
+			elLogout = YDom.getElementsByClassName('logout','span', loginHandler),
+			elUser = YDom.getElementsByClassName('user', 'span',loginHandler),
+			elAdmin = YDom.getElementsByClassName('admin','span', loginHandler);
 
 			if (isAuth) {
 				for ( var i = 0; i < elLogin.length; i++) {
-					YAHOO.util.Dom.setStyle(elLogin[i], "display", "none");
+					YDom.setStyle(elLogin[i], "display", "none");
 				}
 				for ( var i = 0; i < elUser.length; i++) {
-					YAHOO.util.Dom.setStyle(elUser[i], "display", "");
+					YDom.setStyle(elUser[i], "display", "");
 					elUser[i].innerHTML = currentUsername;
 				}
 				for ( var i = 0; i < elLogout.length; i++) {
-					YAHOO.util.Dom.setStyle(elLogout[i], "display", "");
+					YDom.setStyle(elLogout[i], "display", "");
 				}
 			} else {
 				for ( var i = 0; i < elLogin.length; i++) {
-					YAHOO.util.Dom.setStyle(elLogin[i], "display", "");
+					YDom.setStyle(elLogin[i], "display", "");
 				}
 				for ( var i = 0; i < elUser.length; i++) {
-					YAHOO.util.Dom.setStyle(elUser[i], "display", "none");
+					YDom.setStyle(elUser[i], "display", "none");
 					elUser[i].innerHTML = "";
 				}
 				for ( var i = 0; i < elLogout.length; i++) {
-					YAHOO.util.Dom.setStyle(elLogout[i], "display", "none");
+					YDom.setStyle(elLogout[i], "display", "none");
 				}
 			}
 
 			if (isAdmin) {
 				for ( var i = 0; i < elAdmin.length; i++) {
-					YAHOO.util.Dom.setStyle(elAdmin[i], "display", "");
+					YDom.setStyle(elAdmin[i], "display", "");
 				}
 			} else {
 				for ( var i = 0; i < elAdmin.length; i++) {
-					YAHOO.util.Dom.setStyle(elAdmin[i], "display", "none");
+					YDom.setStyle(elAdmin[i], "display", "none");
 				}
 			}
 		}
-	}
+	};
 
 	var _authRequest = function(username, password, enterpriseApplication) {
 		var eApp = enterpriseApplication;
@@ -463,7 +449,7 @@ ELSTR.User = function() {
 					that.onAfterAuthEvent.fire(username, password);
 									
 					try {
-					    var oRequestPost = YAHOO.lang.JSON.parse(oRequest);
+						var oRequestPost = YAHOO.lang.JSON.parse(oRequest);
 						if (oRequestPost.params.enterpriseApplication != ''){
 							var enterpriseApplication = oRequestPost.params.enterpriseApplication;
 							
@@ -475,7 +461,7 @@ ELSTR.User = function() {
 
 					callbackFunction();
 				} else {
-					if (forceAuthentication == true && isAuth == false) {
+					if (forceAuthentication === true && isAuth === false) {
 						that.login(eApp);
 					}
 					
@@ -488,7 +474,7 @@ ELSTR.User = function() {
 
 				ELSTR.error.requestFailure(oRequest, oParsedResponse, oPayload);
 
-				if (forceAuthentication == true && isAuth == false) {
+				if (forceAuthentication === true && isAuth === false) {
 					that.login();
 				}
 
@@ -508,8 +494,7 @@ ELSTR.User = function() {
 			"id" : ELSTR.utils.uuid()
 		};
 
-		datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),
-				oCallback);
+		datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),	oCallback);
 
 		ELSTR.utils.cursorWait.show();
 	}
@@ -530,7 +515,7 @@ ELSTR.User = function() {
 				_updateLoginHandler();
 				that.onAfterLogoutEvent.fire();
 
-				if (forceAuthentication == true && isAuth == false) {
+				if (forceAuthentication === true && isAuth === false) {
 					that.login();
 				}
 
@@ -550,20 +535,19 @@ ELSTR.User = function() {
 			"id" : ELSTR.utils.uuid()
 		};
 
-		datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),
-				oCallback);
+		datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),	oCallback);
 
 		ELSTR.utils.cursorWait.show();
-	}
+	};
 	
 	var _clearPasswordValue = function(){
 		var isPasswordInput = function(el) {
 			return (el.getAttribute("name")=="password");
-		}
-		var elPassword = YAHOO.util.Dom.getElementsBy(isPasswordInput, "input","loginDialog");
+		};
+		var elPassword = YDom.getElementsBy(isPasswordInput, "input","dialogLogin");
 		for ( var i = 0; i < elPassword.length; i++) {
 			elPassword[i].value = "";
 		}
-	}
+	};
 	
-}
+};
