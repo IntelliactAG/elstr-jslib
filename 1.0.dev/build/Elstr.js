@@ -14,10 +14,8 @@ ELSTR = {
 	 * Load application Data from the server
 	 * 
 	 * @method loadAppData
-	 * @param {string}
-	 *            appName Name of the Application
-	 * @param {function}
-	 *            fn Callback function
+	 * @param {string} appName Name of the Application
+	 * @param {function} fn Callback function
 	 * @return {object} Object, where the appData ist loaded to
 	 */
 	loadAppData : function(appName, fn) {
@@ -81,7 +79,7 @@ ELSTR = {
 				loaderScript = 'jslib/elstr/' + LIBS.elstrVersion + '/build/cssLoader.php';
 			}
 			
-			for ( var i = 0; i < url.length; i++) {
+			for ( var i = 0, len = url.length; i < len; i++) {
 				if (i === 0) {
 					requestUrl = loaderScript + '?file'+i+'=' + url[i];				
 				} else {
@@ -206,7 +204,7 @@ ELSTR = {
 		_utf8_encode : function(string) {
 			string = string.replace(/\r\n/g, "\n");
 			var utftext = "";
-			for ( var n = 0; n < string.length; n++) {
+			for ( var n = 0, len = string.length; n < len; n++) {
 				var c = string.charCodeAt(n);
 				if (c < 128) {
 					utftext += String.fromCharCode(c);
