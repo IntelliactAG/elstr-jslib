@@ -1,14 +1,12 @@
 /*******************************************************************************
  * This is the main Object of ELSTR Framework Here all
  * 
- * ToDo: Initially I inteded to use YUI 3.0 initialization style here, but for
- * now I'll keep it simple.
  */
 
 // Build Namespaces
-if (ELSTR == undefined) {
+if (ELSTR === undefined) {
 	var ELSTR = {};
-};
+}
 
 ELSTR = {
 	widget : {},
@@ -23,8 +21,7 @@ ELSTR = {
 	 * @return {object} Object, where the appData ist loaded to
 	 */
 	loadAppData : function(appName, fn) {
-		var oDataSource = new YAHOO.util.XHRDataSource(
-				"services/ELSTR_ApplicationDataServer");
+		var oDataSource = new YAHOO.util.XHRDataSource("services/ELSTR_ApplicationDataServer");
 		oDataSource.connMethodPost = true;
 		oDataSource.connMgr.setDefaultPostHeader(false);
 		oDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
@@ -36,15 +33,13 @@ ELSTR = {
 			success : function(oRequest, oParsedResponse, oPayload) {
 
 				ELSTR.applicationData = oParsedResponse.results[0];
-
-				if (YAHOO.lang.isFunction(fn) == true) {
+				if (YAHOO.lang.isFunction(fn)) {
 					fn();
 				}
 
 			},
 			failure : function(oRequest, oParsedResponse, oPayload) {
 				ELSTR.error.requestFailure(oRequest, oParsedResponse, oPayload);
-
 			},
 			scope : {},
 			argument : {}
@@ -59,8 +54,7 @@ ELSTR = {
 			"id" : ELSTR.utils.uuid()
 		};
 
-		oDataSource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),
-				oCallback);
+		oDataSource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),oCallback);
 	},
 	/**
 	 * Load js and css resources
@@ -77,18 +71,18 @@ ELSTR = {
 	loader : function(type, url, fn) {
 
 		var requestUrl, loaderScript;
-		if (YAHOO.lang.isArray(url) && LIBS.elstrCombine == true) {
+		if (YAHOO.lang.isArray(url) && LIBS.elstrCombine === true) {
 			if (type == "script"){
 				// Use the Javascript loader
 				loaderScript = 'jslib/elstr/' + LIBS.elstrVersion + '/build/jsLoader.php';
 			} 
 			if (type == "css"){				// 
 				// Use the Stylesheet loader
-				loaderScript = 'jslib/elstr/' + LIBS.elstrVersion + '/build/cssLoader.php'
+				loaderScript = 'jslib/elstr/' + LIBS.elstrVersion + '/build/cssLoader.php';
 			}
 			
 			for ( var i = 0; i < url.length; i++) {
-				if (i == 0) {
+				if (i === 0) {
 					requestUrl = loaderScript + '?file'+i+'=' + url[i];				
 				} else {
 					requestUrl += '&file'+i+'=' + url[i];
@@ -101,7 +95,7 @@ ELSTR = {
 		if (type == "script") {
 			YAHOO.util.Get.script(requestUrl, {
 				onSuccess : function(obj) {
-					if (YAHOO.lang.isFunction(fn) == true) {
+					if (YAHOO.lang.isFunction(fn)) {
 						fn();
 					}
 				}
@@ -110,7 +104,7 @@ ELSTR = {
 		if (type == "css") {
 			YAHOO.util.Get.css(requestUrl, {
 				onSuccess : function(obj) {
-					if (YAHOO.lang.isFunction(fn) == true) {
+					if (YAHOO.lang.isFunction(fn)) {
 						fn();
 					}
 				}
@@ -124,14 +118,14 @@ ELSTR = {
 		 * @return object 
 		 */
 		cloneObj : function (obj){
-		  if(obj == null || typeof(obj) != 'object')
-		      return obj;
-		
-		  var clone = new obj.constructor();
-		  for(var key in obj)
-			  clone[key] = ELSTR.utils.cloneObj(obj[key]);
-		
-		  return clone;
+			if(obj == null || typeof(obj) != 'object'){
+				return obj;
+			}
+			var clone = new obj.constructor();
+			for(var key in obj){
+				clone[key] = ELSTR.utils.cloneObj(obj[key]);
+			}
+			return clone;
 		},
 		/**
 		 * Generate a random uuid. Modified script from:
@@ -141,9 +135,7 @@ ELSTR = {
 		 */
 		uuid : function() {
 			// Private array of chars to use
-			var CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
-					.split('');
-
+			var CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
 			var chars = CHARS, uuid = [];
 
 			// rfc4122, version 4 form
@@ -172,7 +164,7 @@ ELSTR = {
 		 */
 		clearChilds : function(el) {
 			while(el.firstChild) {
-			    el.removeChild(el.firstChild);
+				el.removeChild(el.firstChild);
 			}
 			/*if (el.hasChildNodes()) {
 				while (el.hasChildNodes()) {
@@ -190,12 +182,12 @@ ELSTR = {
 		 */
 		cursorWait : {
 			show : function() {
-				if (YAHOO.util.Dom.hasClass(document.body, "cursorWait") == false) {
+				if (!YAHOO.util.Dom.hasClass(document.body, "cursorWait")) {
 					YAHOO.util.Dom.addClass(document.body, "cursorWait");
 				}
 			},
 			hide : function() {
-				if (YAHOO.util.Dom.hasClass(document.body, "cursorWait") == true) {
+				if (YAHOO.util.Dom.hasClass(document.body, "cursorWait")) {
 					YAHOO.util.Dom.removeClass(document.body, "cursorWait");
 				}
 			}
@@ -226,15 +218,12 @@ ELSTR = {
 					utftext += String.fromCharCode(((c >> 6) & 63) | 128);
 					utftext += String.fromCharCode((c & 63) | 128);
 				}
-
 			}
 			return utftext;
 		},
 		// private method for UTF-8 decoding
 		_utf8_decode : function(utftext) {
-			var string = "";
-			var i = 0;
-			var c = c1 = c2 = 0;
+			var string = "", i = 0, c = 0, c1 = 0, c2 = 0;
 			while (i < utftext.length) {
 				c = utftext.charCodeAt(i);
 				if (c < 128) {
@@ -247,13 +236,24 @@ ELSTR = {
 				} else {
 					c2 = utftext.charCodeAt(i + 1);
 					c3 = utftext.charCodeAt(i + 2);
-					string += String.fromCharCode(((c & 15) << 12)
-							| ((c2 & 63) << 6) | (c3 & 63));
+					string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
 					i += 3;
 				}
-
 			}
 			return string;
+		},
+		/**
+		 * Check if it is a mobile device
+		 *
+		 * @method isMobile
+		 */
+		isMobile : function(){
+			if(YAHOO.env.ua.mobile !== null){
+				//console.log(YAHOO.env.ua);
+				return true;
+			} else {
+				return false;
+			}
 		},
 		// logging console
 		logger : {
@@ -279,51 +279,47 @@ ELSTR = {
 			var log = function(){
 				YAHOO.log(logMsg, logCategory, logSource);
 				ELSTR.utils.logger.panel.show();
-			}
+			};
 			
 			if(ELSTR.utils.logger.status == 0){
 				
 				//Create this loader instance and ask for the Button module
-			    var loader = new YAHOO.util.YUILoader({
-			    	base : 'jslib/yui/' + LIBS.yuiVersion + '/build/',
-			    	loadOptional : true,
-			    	filter: LIBS.yuiFilter,
-			    	combine: LIBS.yuiCombine,		    	
-			        require: ['logger'],
-			        onSuccess: function() {
-			    	
-				    	ELSTR.utils.logger.panel = new YAHOO.widget.Panel("elstrLoggerPanel", { 
-				    		fixedcenter : true,
-				    		visible:false, 
-				    		draggable:true, 
+				var loader = new YAHOO.util.YUILoader({
+					base : 'jslib/yui/' + LIBS.yuiVersion + '/build/',
+					loadOptional : true,
+					filter: LIBS.yuiFilter,
+					combine: LIBS.yuiCombine,
+					require: ['logger'],
+					onSuccess: function() {
+						ELSTR.utils.logger.panel = new YAHOO.widget.Panel("elstrLoggerPanel", {
+							fixedcenter : true,
+							visible:false,
+							draggable:true,
 							width : '300px',
 							height : '300px',
-				    		close:true } 
-				    	);
-				    	ELSTR.utils.logger.panel.setHeader("Elstr logging console");
-				    	ELSTR.utils.logger.panel.setBody("");
-				    	ELSTR.utils.logger.panel.render(document.body);
-				    	
+							close:true
+						});
+						ELSTR.utils.logger.panel.setHeader("Elstr logging console");
+						ELSTR.utils.logger.panel.setBody("");
+						ELSTR.utils.logger.panel.render(document.body);
+						ELSTR.utils.logger.reader = new YAHOO.widget.LogReader(ELSTR.utils.logger.panel.body , {
+							logReaderEnabled: true,
+							draggable: false,
+							newestOnTop: true,
+							footerEnabled : false,
+							height: '220px',
+							width: '280px'
+						});
 
-			            ELSTR.utils.logger.reader = new YAHOO.widget.LogReader(ELSTR.utils.logger.panel.body , {
-			                logReaderEnabled: true,
-			                draggable: false,
-			                newestOnTop: true,
-			                footerEnabled : false,
-			                height: '220px',
-			                width: '280px'
-			            });
-
-			            ELSTR.utils.logger.status = 2;
-			            ELSTR.utils.logger.event.fire();			            
-			        }
-			    });
-			    //Call insert, only choosing the JS files, so the skin doesn't over write my custom css
-			    loader.insert({}, 'js');
+						ELSTR.utils.logger.status = 2;
+						ELSTR.utils.logger.event.fire();
+					}
+				});
+				//Call insert, only choosing the JS files, so the skin doesn't over write my custom css
+				loader.insert({}, 'js');
 				
-			    ELSTR.utils.logger.status = 1;	
-			    
-			    ELSTR.utils.logger.event.subscribe(log);
+				ELSTR.utils.logger.status = 1;
+				ELSTR.utils.logger.event.subscribe(log);
 			    
 			} else if (ELSTR.utils.logger.status == 1){
 				ELSTR.utils.logger.event.subscribe(log);
@@ -335,43 +331,41 @@ ELSTR = {
 	},
 	error : {
 		requestFailure : function (oRequest, oResponse, oPayload, oDataSource, oCallback){
-		
 			var status = oResponse.status;
 			var responseText =  oResponse.responseText;
-			
 			//console.log(oResponse);
 			
 			try {
-			    var parsedResponse = YAHOO.lang.JSON.parse(responseText);
+				var parsedResponse = YAHOO.lang.JSON.parse(responseText);
 			}
 			catch (e) {
-			    ELSTR.utils.log(e,"error");
-			    ELSTR.utils.log("Request: " + oRequest);			    
-			    return;
+				ELSTR.utils.log(e,"error");
+				ELSTR.utils.log("Request: " + oRequest);
+				return;
 			}
 			 
 			switch(status) {
-			case 401:
-				//console.log(status);				
-				var enterpriseApplication = parsedResponse.error.data.context;
+				case 401:
+					//console.log(status);
+					var enterpriseApplication = parsedResponse.error.data.context;
 
-				if (YAHOO.lang.isUndefined( ELSTR.user.enterpriseApplicationAuthEvent[enterpriseApplication] )){
-					ELSTR.user.login(enterpriseApplication);
-				}				
-				ELSTR.user.enterpriseApplicationAuthEvent[enterpriseApplication].subscribe(function(type, args){
-					oDataSource.sendRequest(oRequest, oCallback);
-		        });			  
-				//console.log(parsedResponse);
-				//console.log(oDataSource);
-				//console.log(oCallback);
-			  break;
+					if (YAHOO.lang.isUndefined( ELSTR.user.enterpriseApplicationAuthEvent[enterpriseApplication] )){
+						ELSTR.user.login(enterpriseApplication);
+					}
+					ELSTR.user.enterpriseApplicationAuthEvent[enterpriseApplication].subscribe(function(type, args){
+						oDataSource.sendRequest(oRequest, oCallback);
+					});
+					//console.log(parsedResponse);
+					//console.log(oDataSource);
+					//console.log(oCallback);
+					break;
 				
-			default:				
-			    ELSTR.utils.log("Request failed!","error");
-				ELSTR.utils.log("Status: " + status);
-			    ELSTR.utils.log("Response: " + responseText);
+				default:
+					ELSTR.utils.log("Request failed!","error");
+					ELSTR.utils.log("Status: " + status);
+					ELSTR.utils.log("Response: " + responseText);
 			}
 			
 		}
 	}
-}
+};
