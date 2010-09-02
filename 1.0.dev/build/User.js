@@ -522,7 +522,7 @@ ELSTR.User = function() {
 			},
 			failure : function(oRequest, oParsedResponse, oPayload) {
 				ELSTR.utils.cursorWait.hide();
-				alert("Request failed!");
+				ELSTR.error.requestFailure(oRequest, oParsedResponse, oPayload);
 			},
 			scope : {},
 			argument : {}

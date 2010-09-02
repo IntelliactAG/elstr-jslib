@@ -236,7 +236,7 @@ ELSTR.Admin = function() {
 
 			},
 			failure : function(oRequest, oParsedResponse, oPayload) {
-				alert("Request failed!");
+				ELSTR.error.requestFailure(oRequest, oParsedResponse, oPayload);
 			},	
 			scope : {},
 			argument : {}
@@ -263,7 +263,7 @@ ELSTR.Admin = function() {
 				_loadResourceDataTable();
 			},
 			failure : function(oRequest, oParsedResponse, oPayload) {
-				alert("Request failed!");
+				ELSTR.error.requestFailure(oRequest, oParsedResponse, oPayload);
 				fnCallback(false, newValue);
 				_loadResourceDataTable();
 			},
@@ -337,7 +337,7 @@ ELSTR.Admin = function() {
 				_loadResourceDataTable();
 			},
 			failure : function(oRequest, oParsedResponse, oPayload) {
-				alert("Request failed!");
+				ELSTR.error.requestFailure(oRequest, oParsedResponse, oPayload);
 				_loadResourceDataTable();
 			},
 			scope : {},
@@ -371,7 +371,7 @@ ELSTR.Admin = function() {
 				_recreateResourceWidget();
 			},
 			failure : function(oRequest, oParsedResponse, oPayload) {
-				alert("Request failed!");
+				ELSTR.error.requestFailure(oRequest, oParsedResponse, oPayload);
 				_loadRoleDataTable();
 				_recreateResourceWidget();
 			},
