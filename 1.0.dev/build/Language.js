@@ -10,8 +10,8 @@ if (ELSTR === undefined) {
  * 'languageSelection' haben Die im Frontend gerenderte Sprache wird mit der
  * Klasse 'selected' markiert
  * <ul class="languageSelection">
- * <li class="selected" name="de"> Deutsch </li>
- * <li name="en"> English </li>
+ *     <li name="de"> Deutsch </li>
+ *     <li name="en"> English </li>
  * </ul>
  * 
  * To use this component the following YUI components ar required YUI
@@ -79,7 +79,7 @@ ELSTR.Language = function(){
 	 */
 	this.init = function(serviceUrl, resource, drawOnLoaded, fnInitComplete){
 
-		_renderLanguageSelection();
+		_renderLanguageSelection(resource);
 
 		// Die als selected markierte Sprache laden
 		if (serviceUrl !== undefined && resource !== undefined) {
@@ -250,7 +250,12 @@ ELSTR.Language = function(){
 		return selectionElements;
 	};
     
-	var _renderLanguageSelection = function(){
+	var _renderLanguageSelection = function(resource){
+		var currentLang;
+		if (resource !== undefined){
+			currentLang = resource.current;
+		}
+
 		var selectionElements = _getLanguageSelectionElements();
 		var onClickUpdateLanguage = function(){
 			if (!YDom.hasClass(this, "selected")) {
@@ -261,6 +266,14 @@ ELSTR.Language = function(){
         
 		for (var i = 0,len = selectionElements.length; i < len; i++) {
 			YEvent.addListener(selectionElements[i], "click", onClickUpdateLanguage);
+
+			// Remove any selected
+			YDom.removeClass(selectionElements[i],"selected");
+			// Add selected class to current language
+			if(selectionElements[i].getAttribute("name") == currentLang){
+				YDom.addClass(selectionElements[i],"selected");
+			}
+
 		}  
 	};
     
