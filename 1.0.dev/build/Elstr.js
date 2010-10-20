@@ -8,7 +8,13 @@ if (ELSTR === undefined) {
 	var ELSTR = {};
 }
 
+/**
+    @namespace ELSTR Namespace.
+*/
 ELSTR = {
+        /**
+         * @namespace Package containing all ELSTR widgets
+         */
 	widget : {},
 	/**
 	 * Load application Data from the server
@@ -26,7 +32,9 @@ ELSTR = {
 		oDataSource.responseSchema = {
 			resultsList : "result"
 		};
-
+                /**
+                 * Callbackobject
+                 */
 		var oCallback = {
 			success : function(oRequest, oParsedResponse, oPayload) {
 
@@ -109,6 +117,9 @@ ELSTR = {
 			});
 		}
 	},
+        /**
+         * @namespace Package containing ELSTR utility methods
+         */
 	utils : {
 		/**
 		 * Clones a literal object 
@@ -176,7 +187,6 @@ ELSTR = {
 		 * Public mehtod for showing a wating cursor
 		 * 
 		 * Needs a CSS Class .cursorWait - Example: .cursorWait { cursor: wait; }
-		 * 
 		 */
 		cursorWait : {
 			show : function() {
@@ -327,6 +337,9 @@ ELSTR = {
 			}
 		}
 	},
+        /**
+         * @namespace Package containing all ELSTR error handling
+         */
 	error : {
 		requestFailure : function (oRequest, oResponse, oPayload, oDataSource, oCallback){
 			var status = oResponse.status;
