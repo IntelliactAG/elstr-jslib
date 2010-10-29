@@ -3,18 +3,14 @@
  * 
  */
 
-// Build Namespaces
-if (ELSTR === undefined) {
-	var ELSTR = {};
-}
 
 /**
-    @namespace ELSTR Namespace.
-*/
-ELSTR = {
-        /**
-         * @namespace Package containing all ELSTR widgets
-         */
+ * @namespace ELSTR Namespace.
+ */
+var ELSTR = {
+	/**
+	 * @namespace Package containing all ELSTR widgets
+	 */
 	widget : {},
 	/**
 	 * Load application Data from the server
@@ -32,9 +28,9 @@ ELSTR = {
 		oDataSource.responseSchema = {
 			resultsList : "result"
 		};
-                /**
-                 * Callbackobject
-                 */
+		/**
+		 * Callbackobject
+		 */
 		var oCallback = {
 			success : function(oRequest, oParsedResponse, oPayload) {
 
@@ -117,9 +113,9 @@ ELSTR = {
 			});
 		}
 	},
-        /**
-         * @namespace Package containing ELSTR utility methods
-         */
+	/**
+	 * @namespace Package containing ELSTR utility methods
+	 */
 	utils : {
 		/**
 		 * Clones a literal object 
@@ -127,7 +123,7 @@ ELSTR = {
 		 * @return object 
 		 */
 		cloneObj : function (obj){
-			if(obj == null || typeof(obj) != 'object'){
+			if(obj === null || typeof(obj) != 'object'){
 				return obj;
 			}
 			var clone = new obj.constructor();
@@ -175,13 +171,6 @@ ELSTR = {
 			while(el.firstChild) {
 				el.removeChild(el.firstChild);
 			}
-			/*if (el.hasChildNodes()) {
-				while (el.hasChildNodes()) {
-					var elFirstChild = el.firstChild;
-					ELSTR.utils.clearChilds(elFirstChild);
-					el.removeChild(elFirstChild);					
-				}
-			}*/
 		},
 		/**
 		 * Public mehtod for showing a wating cursor
@@ -337,9 +326,9 @@ ELSTR = {
 			}
 		}
 	},
-        /**
-         * @namespace Package containing all ELSTR error handling
-         */
+	/**
+	 * @namespace Package containing all ELSTR error handling
+	 */
 	error : {
 		requestFailure : function (oRequest, oResponse, oPayload, oDataSource, oCallback){
 			var status = oResponse.status;
