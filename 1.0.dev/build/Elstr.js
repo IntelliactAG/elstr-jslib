@@ -21,7 +21,7 @@ var ELSTR = {
 	 * @return {object} Object, where the appData ist loaded to
 	 */
 	loadAppData : function(appName, fn) {
-		var oDataSource = new YAHOO.util.XHRDataSource("services/ELSTR_ApplicationDataServer");
+		var oDataSource = new YAHOO.util.XHRDataSource("/services/ELSTR_ApplicationDataServer");
 		oDataSource.connMethodPost = true;
 		oDataSource.connMgr.setDefaultPostHeader(false);
 		oDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
@@ -76,11 +76,11 @@ var ELSTR = {
 		if (YAHOO.lang.isArray(url) && LIBS.elstrCombine) {
 			if (type == "script"){
 				// Use the Javascript loader
-				loaderScript = 'jslib/elstr/' + LIBS.elstrVersion + '/build/jsLoader.php';
+				loaderScript = '/jslib/elstr/' + LIBS.elstrVersion + '/build/jsLoader.php';
 			} 
 			if (type == "css"){				// 
 				// Use the Stylesheet loader
-				loaderScript = 'jslib/elstr/' + LIBS.elstrVersion + '/build/cssLoader.php';
+				loaderScript = '/jslib/elstr/' + LIBS.elstrVersion + '/build/cssLoader.php';
 			}
 			
 			for ( var i = 0, len = url.length; i < len; i++) {
@@ -282,7 +282,7 @@ var ELSTR = {
 				
 				//Create this loader instance and ask for the Button module
 				var loader = new YAHOO.util.YUILoader({
-					base : 'jslib/yui/' + LIBS.yuiVersion + '/build/',
+					base : '/jslib/yui/' + LIBS.yuiVersion + '/build/',
 					loadOptional : true,
 					filter: LIBS.yuiFilter,
 					combine: LIBS.yuiCombine,
