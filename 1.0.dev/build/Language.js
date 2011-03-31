@@ -234,7 +234,9 @@ ELSTR.Language = function(){
 		});
 	};
     
-    
+	this.currentIsLoaded = function(){
+		return currentIsLoaded
+	}
     
 	// ////////////////////////////////////////////////////////////
 	// Private functions
