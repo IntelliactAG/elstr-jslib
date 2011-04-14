@@ -8,7 +8,7 @@ if (ELSTR === undefined) {
  * 
  * Beispiel eines Widgets/Markups im HTML. Die Liste (UL) muss die Klasse
  * 'languageSelection' haben Die im Frontend gerenderte Sprache wird mit der
- * Klasse 'selected' markiert
+ * Klasse 'elstr_lang_selected' markiert
  * <ul class="languageSelection">
  *     <li name="de"> Deutsch </li>
  *     <li name="en"> English </li>
@@ -79,9 +79,10 @@ ELSTR.Language = function(){
 	 */
 	this.init = function(serviceUrl, resource, drawOnLoaded, fnInitComplete){
 
-		_renderLanguageSelection(resource);
+		// THis mehtods causes a but in IE with Tabviews
+                _renderLanguageSelection(resource);
 
-		// Die als selected markierte Sprache laden
+		// Die als elstr_lang_selected markierte Sprache laden
 		if (serviceUrl !== undefined && resource !== undefined) {
             
 			datasource = new YAHOO.util.XHRDataSource(serviceUrl);
@@ -260,7 +261,7 @@ ELSTR.Language = function(){
 
 		var selectionElements = _getLanguageSelectionElements();
 		var onClickUpdateLanguage = function(){
-			if (!YDom.hasClass(this, "selected")) {
+			if (!YDom.hasClass(this, "elstr_lang_selected")) {
 				var lang = this.getAttribute("name");
 				that.change(lang);
 			}
@@ -269,11 +270,11 @@ ELSTR.Language = function(){
 		for (var i = 0,len = selectionElements.length; i < len; i++) {
 			YEvent.addListener(selectionElements[i], "click", onClickUpdateLanguage);
 
-			// Remove any selected
-			YDom.removeClass(selectionElements[i],"selected");
-			// Add selected class to current language
+			// Remove any elstr_lang_selected
+			YDom.removeClass(selectionElements[i],"elstr_lang_selected");
+			// Add elstr_lang_selected class to current language
 			if(selectionElements[i].getAttribute("name") == currentLang){
-				YDom.addClass(selectionElements[i],"selected");
+				YDom.addClass(selectionElements[i],"elstr_lang_selected");
 			}
 
 		}  
@@ -284,17 +285,17 @@ ELSTR.Language = function(){
 		var selectionElements = _getLanguageSelectionElements();
         
 		for (var i = 0; i < selectionElements.length; i++) {
-			YDom.removeClass(selectionElements[i], "selected");
+			YDom.removeClass(selectionElements[i], "elstr_lang_selected");
             
 			if (selectionElements[i].getAttribute("name") == currentLanguage) {
-				YDom.addClass(selectionElements[i], "selected");
+				YDom.addClass(selectionElements[i], "elstr_lang_selected");
 			}
 		}
 	};
     
 	var _getCurrentLanguage = function(){
 		if (currentLanguage === null) {
-			var selectedLiElement = YDom.getElementsByClassName("selected", "li", widgetElement)[0];
+			var selectedLiElement = YDom.getElementsByClassName("elstr_lang_selected", "li", widgetElement)[0];
 			currentLanguage = selectedLiElement.getAttribute("name");
 		}
 		return currentLanguage;
