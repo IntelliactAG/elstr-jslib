@@ -258,10 +258,7 @@ ELSTR.Language = function(){
     };
     
     var _renderLanguageSelection = function(resource){
-        var currentLang;
-        if (resource !== undefined){
-            currentLang = resource.current;
-        }
+        var currentLang, resourceIsObject = false;
 
         var selectionElements = _getLanguageSelectionElements();
         var onClickUpdateLanguage = function(){
@@ -270,17 +267,21 @@ ELSTR.Language = function(){
                 that.change(lang);
             }
         };
-        
+        if (YAHOO.lang.isObject(resource)){
+            currentLang = resource.current;
+            resourceIsObject = true;
+        }
         for (var i = 0,len = selectionElements.length; i < len; i++) {
             YEvent.addListener(selectionElements[i], "click", onClickUpdateLanguage);
 
-            // Remove any selected
-            YDom.removeClass(selectionElements[i],"selected");
-            // Add selected class to current language
-            if(selectionElements[i].getAttribute("name") == currentLang){
-                YDom.addClass(selectionElements[i],"selected");
+            if(resourceIsObject){
+                // Remove any selected
+                YDom.removeClass(selectionElements[i],"selected");
+                // Add selected class to current language
+                if(selectionElements[i].getAttribute("name") == currentLang){
+                    YDom.addClass(selectionElements[i],"selected");
+                }  
             }
-
         }
     };
     
