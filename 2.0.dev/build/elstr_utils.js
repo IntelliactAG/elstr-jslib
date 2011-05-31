@@ -131,6 +131,19 @@ YUI.add('elstr_utils', function(Y) {
             return utf8_decode(unescape(string));
         },
         /**
+		 * Check if it is a mobile device
+		 *
+		 * @method isMobile
+		 */
+        isMobile : function(){
+            if(Y.UA.mobile !== null){
+                //console.log(YAHOO.env.ua);
+                return true;
+            } else {
+                return false;
+            }
+        },
+        /**
 		 * Log elstr (error) messages
 		 * 
 		 * @method loader
@@ -153,5 +166,5 @@ YUI.add('elstr_utils', function(Y) {
     }
  
 }, '2.0.0' /* module version */, {
-    requires: ['base','node']
+    requires: ['base','node','elstr_utilscss']
 });

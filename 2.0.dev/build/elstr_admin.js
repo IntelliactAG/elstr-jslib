@@ -2,23 +2,22 @@
  * @author egli@intelliact.ch
  */
 
-YUI.add('elstr_lang', function(Y) {
+YUI.add('elstr_admin', function(Y) {
  
     // private properties or functions
     var anyObject = {},
     anyFunction = function(){
-        Y.log("anyFunction of elstr lang");
+        Y.log("anyFunction of elstr admin");
     };
 
     Y.namespace('ELSTR');
-    Y.ELSTR.lang = {
+    Y.ELSTR.admin = {
         // public properties or functions
         init : function(){
             // Any init stuff here
             anyFunction();
-            Y.log("elstr lang init complete");
-            
-            //TODO: Check to use YUI.intl here
+            Y.log("elstr admin init complete");
+           
             
         }
     }
