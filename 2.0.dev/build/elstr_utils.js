@@ -101,6 +101,8 @@ YUI.add('elstr_utils', function(Y) {
 		 * @param el: dom-node
 		 */
         clearChilds : function(el) {
+            // Use the empty method of the yui3 node module
+            // Excample Y.one("#id").empty(true);
             while(el.firstChild) {
                 el.removeChild(el.firstChild);
             }

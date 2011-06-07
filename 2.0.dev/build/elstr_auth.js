@@ -47,14 +47,14 @@ YUI.add('elstr_auth', function(Y) {
         var enterpriseApplication = loginDialog.enterpriseApplication;
         _clearPasswordValue();
         // Clear all child nodes of the message container element
-        Y.one("#loginDialog .loginDialogMessageContainer").empty();
+        Y.one("#loginDialog .loginDialogMessageContainer").empty(true);
         
         _authRequest(username, password, enterpriseApplication);
     },
     _handleCancel = function() {
         _clearPasswordValue();
         // Clear all child nodes of the message container element
-        Y.one("#loginDialog .loginDialogMessageContainer").empty();
+        Y.one("#loginDialog .loginDialogMessageContainer").empty(true);
         loginDialog.hide();
     },
     _clearPasswordValue = function(){
