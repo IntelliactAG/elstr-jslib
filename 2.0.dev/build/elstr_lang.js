@@ -7,7 +7,6 @@ YUI.add('elstr_lang', function(Y) {
     // private properties or functions
     var anyObject = {},
     anyFunction = function(){
-        Y.log("anyFunction of elstr lang");
     };
 
     Y.namespace('ELSTR');
@@ -15,14 +14,12 @@ YUI.add('elstr_lang', function(Y) {
         // public properties or functions
         init : function(){
             // Any init stuff here
-            anyFunction();
             Y.log("elstr lang init complete");
-            
-            //TODO: Check to use YUI.intl here
-            
+            //NOT IMPLEMENTED JET
+            //TODO: Check to use YUI 3: Internationalization
         }
     }
  
-}, '2.0.0' /* module version */, {
+}, '2.0' /* module version */, {
     requires: ['base','node']
 });

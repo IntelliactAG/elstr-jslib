@@ -19,9 +19,12 @@ YUI.add('elstr_admin', function(Y) {
             Y.log("elstr admin init complete");
            
             
+        },
+        openAdminConsole : function(){
+            
         }
     }
  
-}, '2.0.0' /* module version */, {
+}, '2.0' /* module version */, {
     requires: ['base','node']
 });

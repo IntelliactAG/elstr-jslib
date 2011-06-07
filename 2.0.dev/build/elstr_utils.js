@@ -165,6 +165,6 @@ YUI.add('elstr_utils', function(Y) {
         }
     }
  
-}, '2.0.0' /* module version */, {
+}, '2.0' /* module version */, {
     requires: ['base','node','elstr_utilscss']
 });
