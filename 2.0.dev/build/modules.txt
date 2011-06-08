@@ -1,0 +1,30 @@
+{
+    elstr_utils: {
+        path: 'elstr_utils.js',
+        requires: ['base','node','elstr_utilscss']
+    },
+    elstr_utilscss: {
+        path: 'utils/assets/utils.css',
+        type: 'css'
+    },
+    elstr_lang: {
+        path: 'elstr_lang.js',
+        requires: ['base','node','elstr_utils']
+    },
+    elstr_error: {
+        path: 'elstr_error.js',
+        requires: ['json-parse','elstr_utils']
+    },
+    elstr_user: {
+        path: 'elstr_user.js',
+        requires: ['base','node','event-custom','elstr_utils']
+    },
+    elstr_auth: {
+        path: 'elstr_auth.js',
+        requires: ['base','node','overlay','io','json','event','elstr_user']
+    },                
+    elstr_admin: {
+        path: 'elstr_admin.js',
+        requires: ['yui2-event','yui2-connection','yui2-json','yui2-button','yui2-container','yui2-datasource','yui2-datatable','base','node','elstr_user','elstr_auth','elstr_error']
+    }
+}

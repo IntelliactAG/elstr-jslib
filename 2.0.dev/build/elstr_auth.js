@@ -4,7 +4,7 @@
  * MARKUP examples
  * 
  * Required for Authentication: 
- * <div id="loginDialog">
+ * <div id="loginDialog" style="display: none;">
  *     <div class="yui3-widget-hd">
  *         Anmelden
  *     </div>

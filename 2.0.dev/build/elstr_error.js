@@ -20,6 +20,7 @@ YUI.add('elstr_error', function(Y) {
             catch (e) {
                 Y.ELSTR.utils.log(e,"error");
                 Y.ELSTR.utils.log("Request: " + oRequest,"info");
+                Y.ELSTR.utils.log("Response: " + responseText,"info");
                 return;
             }
 			 

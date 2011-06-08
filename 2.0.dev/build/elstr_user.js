@@ -47,7 +47,7 @@ YUI.add('elstr_user', function(Y) {
                     Y.ELSTR.auth.logout();
                 });
             });  
-            nodeLoginHandler.one(".logout").on("click", function(e) {
+            nodeLoginHandler.one(".admin").on("click", function(e) {
                 Y.use('elstr_admin', function (Y) {
                     Y.ELSTR.admin.openAdminConsole();
                 });
@@ -114,14 +114,7 @@ YUI.add('elstr_user', function(Y) {
          * @return {Boolean} True, if the values were valid
          */
         init : function(authRequired){
-            
-            // Hide the #dialogLogin if it exists
-            // The dialog is rendered later in the elstr_auth module
-            var nodeLoginDialog = Y.one("#loginDialog");
-            if(nodeLoginDialog){
-                nodeLoginDialog.setStyle("display","none");
-            }
-            
+                       
             // Init the user object
             if (Y.Lang.isObject(ELSTR.applicationData.user)) {
                 currentUsername = ELSTR.applicationData.user.username;

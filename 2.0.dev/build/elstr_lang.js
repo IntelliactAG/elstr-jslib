@@ -17,6 +17,10 @@ YUI.add('elstr_lang', function(Y) {
             Y.log("elstr lang init complete");
             //NOT IMPLEMENTED JET
             //TODO: Check to use YUI 3: Internationalization
+        },
+        text : function(textid){
+            //NOT IMPLEMENTED JET
+            return textid;
         }
     }
  
