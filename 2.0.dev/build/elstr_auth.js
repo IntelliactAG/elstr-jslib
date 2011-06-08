@@ -144,9 +144,7 @@ YUI.add('elstr_auth', function(Y) {
                         if (Y.ELSTR.user.forceAuthentication() === true && Y.ELSTR.user.isAuth() === false) {
                             Y.ELSTR.auth.login(eApp);
                         }
-            			
-                        //TODO: Use ELSTR.lang.alert here
-                        Y.one("#loginDialog .loginDialogMessageContainer").append(responseMessages[0]);
+                        Y.ELSTR.lang.alert("info",responseMessages[0],"#loginDialog .loginDialogMessageContainer");
                     } 
                 },
                 failure:function(id, o){
@@ -203,7 +201,8 @@ YUI.add('elstr_auth', function(Y) {
 
                 loginDialog.enterpriseApplication = enterpriseApplication;
             }
-            loginDialog.show();            
+            loginDialog.show();
+            Y.one("#loginDialog .username input").focus();
         },
         logout : function(){
             Y.ELSTR.auth.init();

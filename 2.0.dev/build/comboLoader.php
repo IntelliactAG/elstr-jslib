@@ -25,7 +25,7 @@ for ($i = 0; $i < $count; $i++) {
         if ($contentType == "css") {
             // $contentType == "css"
             $fileContent = file_get_contents($file);
-            $deltaPath = "../../../../" . substr($file, 0, strrpos($file, "/"));
+            $deltaPath = substr($file, 0, strrpos($file, "/"));
             $fileContent = preg_replace('#url\("#', 'url("' . $deltaPath . '/', $fileContent);
             $fileContent = preg_replace('#url\(\'#', 'url(\'' . $deltaPath . '/', $fileContent);
             $contentString .= $fileContent . "\r\n";
