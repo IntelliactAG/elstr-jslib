@@ -179,8 +179,7 @@ YUI.add('elstr_auth', function(Y) {
         Y.ELSTR.utils.cursorWait.show();
     };
 
-    Y.namespace('ELSTR');
-    Y.ELSTR.auth = {
+    Y.namespace('ELSTR').auth = {
         // public properties or functions
         init : function(){
             if(isInit === false){
@@ -211,5 +210,5 @@ YUI.add('elstr_auth', function(Y) {
     }
  
 }, '2.0' /* module version */, {
-    requires: ['base','node']
+    requires: ['base','node','overlay','io','json','event','elstr_user']
 });

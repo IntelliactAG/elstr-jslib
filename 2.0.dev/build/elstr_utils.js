@@ -47,8 +47,7 @@ YUI.add('elstr_utils', function(Y) {
         return string;
     };
 
-    Y.namespace('ELSTR');
-    Y.ELSTR.utils = {
+    Y.namespace('ELSTR').utils = {
         // public properties or functions
         
         /**
@@ -102,7 +101,7 @@ YUI.add('elstr_utils', function(Y) {
 		 */
         clearChilds : function(el) {
             // Use the empty method of the yui3 node module
-            // Excample Y.one("#id").empty(true);
+            // Example: Y.one("#id").empty(true);
             while(el.firstChild) {
                 el.removeChild(el.firstChild);
             }

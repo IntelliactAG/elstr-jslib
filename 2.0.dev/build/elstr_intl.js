@@ -10,8 +10,7 @@ YUI.add('elstr_intl', function(Y) {
     // private properties or functions
     var isInit = false;
 
-    Y.namespace('ELSTR');
-    Y.ELSTR.intl = {
+    Y.namespace('ELSTR').intl = {
         // public properties or functions
         init : function(){
             //TODO: Check to use YUI 3: Internationalization
@@ -36,5 +35,5 @@ YUI.add('elstr_intl', function(Y) {
     }
  
 }, '2.0' /* module version */, {
-    requires: ['base','node']
+    requires: ['base','node','io','json','event-custom','elstr_lang']
 });

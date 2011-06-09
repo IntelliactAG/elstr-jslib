@@ -307,8 +307,7 @@ YUI.add('elstr_admin', function(Y) {
         }
     };
 
-    Y.namespace('ELSTR');
-    Y.ELSTR.admin = {
+    Y.namespace('ELSTR').admin = {
         // public properties or functions
         init : function(){
             if(isInit === false){
@@ -327,5 +326,5 @@ YUI.add('elstr_admin', function(Y) {
     }
  
 }, '2.0' /* module version */, {
-    requires: ['base','node']
+    requires: ['yui2-event','yui2-connection','yui2-json','yui2-button','yui2-container','yui2-datasource','yui2-datatable','base','node','elstr_user','elstr_auth','elstr_error']
 });

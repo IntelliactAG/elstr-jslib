@@ -102,8 +102,7 @@ YUI.add('elstr_user', function(Y) {
         }        
     };
 
-    Y.namespace('ELSTR');
-    Y.ELSTR.user = {
+    Y.namespace('ELSTR').user = {
         // public properties or functions
         
         /**
@@ -245,5 +244,5 @@ YUI.add('elstr_user', function(Y) {
     }
  
 }, '2.0' /* module version */, {
-    requires: ['base','node']
+    requires: ['base','node','event-custom','elstr_utils']
 });

@@ -6,8 +6,7 @@ YUI.add('elstr_error', function(Y) {
  
     // No private properties or functions
    
-    Y.namespace('ELSTR');
-    Y.ELSTR.error = {
+    Y.namespace('ELSTR').error = {
         // public properties or functions
         requestFailure : function (oRequest, oResponse, oPayload, oDataSource, oCallback){
             var status = oResponse.status;
@@ -49,5 +48,5 @@ YUI.add('elstr_error', function(Y) {
     }
  
 }, '2.0' /* module version */, {
-    requires: ['base','node']
+    requires: ['json-parse','elstr_utils']
 });

@@ -49,8 +49,7 @@ YUI.add('elstr_lang', function(Y) {
         }
     };
     
-    Y.namespace('ELSTR');
-    Y.ELSTR.lang = {
+    Y.namespace('ELSTR').lang = {
         // public properties or functions
         init : function(){
             //TODO: Check to use YUI 3: Internationalization
@@ -121,5 +120,5 @@ YUI.add('elstr_lang', function(Y) {
     }
  
 }, '2.0' /* module version */, {
-    requires: ['base','node']
+    requires: ['base','node','elstr_utils']
 });
