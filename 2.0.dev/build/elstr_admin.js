@@ -75,6 +75,7 @@ YUI.add('elstr_admin', function(Y) {
         datasource = new YAHOO.util.XHRDataSource("services/ELSTR_WidgetServer_JSON_Admin");
         datasource.connMethodPost = true;
         datasource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+        datasource.connXhrMode = "queueRequests";
         datasource.responseSchema = {
             resultsList : "result"
         };
@@ -309,7 +310,7 @@ YUI.add('elstr_admin', function(Y) {
 
     Y.namespace('ELSTR').admin = {
         // public properties or functions
-        init : function(){
+        initializer : function(){
             if(isInit === false){
                 Y.one("body").addClass("yui-skin-sam");
                 _renderConsoleDialog();
@@ -320,7 +321,7 @@ YUI.add('elstr_admin', function(Y) {
             }
         },
         openAdminConsole : function(){
-            Y.ELSTR.admin.init();
+            Y.ELSTR.admin.initializer();
             consoleDialog.show();
         }
     }

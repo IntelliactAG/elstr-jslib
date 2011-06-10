@@ -63,20 +63,35 @@ YUI.add('elstr_lang', function(Y) {
          * @method alert
          * @param {String} priority The priority of the alert Message (error, warning, info, tip, help)
          * @param {String} textid The id of the text in the TMX-File OR The text of the message
-         * @param {String} nodeSelector of a dom element or the dom element. if set, the message is rendered into the specified element
          * @return {Boolean} True
          */
-        alert : function(priority, textid, nodeSelector){       
-            if(Y.Lang.isUndefined(nodeSelector) === true){
-                // No element defined
-                // Show an alert box
-                //NOT IMPLEMENTED YET
-                Y.ELSTR.utils.log(Y.ELSTR.lang.text(textid),priority,"application");
-            } else {
-                Y.one(nodeSelector).append("<div class='"+priority+"' textid='"+textid+"'>"+Y.ELSTR.lang.text(textid)+"</div>");
-            }
+        message : function(textid, priority){   
+            // Show an message overlay
+            Y.use('elstr_message',function(Y){
+                var message = new Y.ELSTR.Message({
+                    message : Y.ELSTR.lang.text(textid),
+                    priorty : priority,
+                    visible:true,
+                    centered:true,
+                    width:"10em"
+                })
+                message.render(document.body);                
+            })
             return true;
         },
+        /**
+         * Gibt eine Meldung in der geladenen Sprache in einem Container aus
+         * 
+         * @method alert
+         * @param {String} nodeSelector of a dom element or the dom element. if set, the message is rendered into the specified element
+         * @param {String} textid The id of the text in the TMX-File OR The text of the message
+         * @param {String} priority The priority of the alert Message (error, warning, info, tip, help)
+         * @return {Boolean} True
+         */
+        messageInContainer : function(nodeSelector, textid, priority){       
+            Y.one(nodeSelector).append("<div class='"+priority+"' textid='"+textid+"'>"+Y.ELSTR.lang.text(textid)+"</div>");       
+            return true;
+        },        
         /**
          * Returns the text in the current language
          * 

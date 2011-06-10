@@ -7,6 +7,10 @@
         path: 'utils/assets/utils.css',
         type: 'css'
     },
+    elstr_api: {
+        path: 'elstr_api.js',
+        requires: ['base']
+    },
     elstr_lang: {
         path: 'elstr_lang.js',
         requires: ['base','node','elstr_utils']
@@ -15,17 +19,29 @@
         path: 'elstr_intl.js',
         requires: ['base','node','io','json','event-custom','elstr_lang']
     },
+    elstr_message: {
+        path: 'elstr_message.js',
+        requires: ['base','node','overlay','elstr_messagecss']
+    }, 
+    elstr_messagecss: {
+        path: 'message/assets/message.css',
+        type: 'css'
+    }, 
     elstr_error: {
         path: 'elstr_error.js',
         requires: ['json-parse','elstr_utils']
     },
     elstr_user: {
         path: 'elstr_user.js',
-        requires: ['base','node','event-custom','elstr_utils']
+        requires: ['base','widget','node','event-custom','elstr_utils']
     },
     elstr_auth: {
         path: 'elstr_auth.js',
-        requires: ['base','node','overlay','io','json','event','elstr_user']
+        requires: ['base','node','overlay','io','json','event','elstr_user','elstr_authcss']
+    }, 
+    elstr_authcss: {
+        path: 'auth/assets/auth.css',
+        type: 'css'
     },              
     elstr_admin: {
         path: 'elstr_admin.js',
