@@ -184,7 +184,7 @@ YUI.add('elstr_auth', function (Y) {
                             if (that.get("forceAuthentication") === true) {
                                 that.login(eApp);
                             }
-                            Y.ELSTR.lang.messageInContainer("#loginDialog .loginDialogMessageContainer",responseMessages[0],"info");
+                            Y.APP.lang.messageInContainer("#loginDialog .loginDialogMessageContainer",responseMessages[0],"info");
                         } 
                     },
                     failure:function(id, o){

@@ -15,7 +15,7 @@ YUI.add('elstr_admin', function(Y) {
     _renderConsoleDialog = function() {
     
         var bodyHtml = "";
-        bodyHtml += "<h3><span textid='Roles'>"+Y.ELSTR.lang.text('Roles')+"</span></h3>";
+        bodyHtml += "<h3><span textid='Roles'>"+Y.APP.lang.text('Roles')+"</span></h3>";
         bodyHtml += "<div>";
         bodyHtml += "	<select id='elstrAdminConsoleRoleHandlerMode' style='margin:5px 0 10px 0;vertical-align:top;'>";
         bodyHtml += "		<option value='add'>Add</option>";
@@ -25,7 +25,7 @@ YUI.add('elstr_admin', function(Y) {
         bodyHtml += "	<button id='elstrAdminConsoleRoleHandlerButton' type='button'>Go!</button>";
         bodyHtml += "</div>";
         bodyHtml += "<div id='elstrAdminConsoleRoleWidget'></div>";
-        bodyHtml += "<h3><span textid='Resources'>"+Y.ELSTR.lang.text('Resources')+"</span></h3>";
+        bodyHtml += "<h3><span textid='Resources'>"+Y.APP.lang.text('Resources')+"</span></h3>";
         bodyHtml += "<div>";
         bodyHtml += "	<select id='elstrAdminConsoleResourceHandlerMode' style='margin:5px 0 10px 0;vertical-align:top;'>";
         bodyHtml += "		<option value='add'>Add</option>";
@@ -56,11 +56,11 @@ YUI.add('elstr_admin', function(Y) {
             width : window.innerWidth - 40 + 'px',
             height : window.innerHeight - 40 + 'px',
             buttons : [ {
-                text : "<span textid='Close'>"+Y.ELSTR.lang.text('Close')+"</span>",
+                text : "<span textid='Close'>"+Y.APP.lang.text('Close')+"</span>",
                 handler : handleClose
             } ]
         });
-        consoleDialog.setHeader("<span textid='Admin Console'>"+Y.ELSTR.lang.text('Admin Console')+"</span>");
+        consoleDialog.setHeader("<span textid='Admin Console'>"+Y.APP.lang.text('Admin Console')+"</span>");
         consoleDialog.setBody(bodyHtml);
         consoleDialog.render(document.body);
         YAHOO.util.Dom.setStyle(consoleDialog.body,"overflow","auto");

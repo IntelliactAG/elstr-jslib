@@ -13,12 +13,12 @@
     },
     elstr_lang: {
         path: 'elstr_lang.js',
-        requires: ['base','node','elstr_utils']
+        requires: ['base','widget','node','elstr_utils','elstr_langcss']
     },
-    elstr_intl: {
-        path: 'elstr_intl.js',
-        requires: ['base','node','io','json','event-custom','elstr_lang']
-    },
+    elstr_langcss: {
+        path: 'lang/assets/lang.css',
+        type: 'css'
+    }, 
     elstr_message: {
         path: 'elstr_message.js',
         requires: ['base','node','overlay','elstr_messagecss']
