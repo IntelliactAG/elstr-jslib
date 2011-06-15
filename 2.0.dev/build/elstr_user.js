@@ -36,7 +36,7 @@ YUI.add('elstr_user', function (Y) {
               
             // TODO: implement correct auth handling
             Y.on('elstr_auth:successfulLogout', this._onSuccessfulLogout);  
-            Y.on('elstr_auth:successfulAuth', this._onSuccessfulAuth);  
+            Y.on('elstr_auth:successfulAuth', this._onSuccessfulAuth); 
             if (this.get("forceAuthentication") === true && this.get("isAuth") === false) {
                 this._login();
             }
@@ -53,14 +53,13 @@ YUI.add('elstr_user', function (Y) {
         },
 
         bindUI: function () {
-            var that = this;
             var contentBox = this.get('contentBox');
             contentBox.one(".login").on("click", function(e) {
-                that._login();
-            });
+                this._login();
+            },this);
             contentBox.one(".logout").on("click", function(e) {
-                that._logout();
-            });  
+                this._logout();
+            },this);  
             contentBox.one(".admin").on("click", function(e) {
                 Y.use('elstr_admin', function (Y) {
                     Y.ELSTR.admin.openAdminConsole();
@@ -226,7 +225,6 @@ YUI.add('elstr_user', function (Y) {
             forceAuthentication: {
                 value: false,
                 validator: Y.Lang.isBoolean,
-                readOnly: true,
                 writeOnce: "initOnly"
             },
             username: {

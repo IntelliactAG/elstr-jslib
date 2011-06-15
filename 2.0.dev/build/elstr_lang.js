@@ -31,12 +31,6 @@ YUI.add('elstr_lang', function (Y) {
                 ELSTR.applicationData.language = "empty after reading it to the language widget";
             } 
               
-            // TODO: implement correct auth handling
-            Y.on('elstr_auth:successfulLogout', this._onSuccessfulLogout);  
-            Y.on('elstr_auth:successfulAuth', this._onSuccessfulAuth);  
-            if (this.get("forceAuthentication") === true && this.get("isAuth") === false) {
-                this._login();
-            }
         },
 
         destructor: function () {
@@ -46,17 +40,16 @@ YUI.add('elstr_lang', function (Y) {
 
         renderUI: function () {            
         // Always loaded from markup
-        // E.g. srcNode:"#loginHandler"
+        // E.g. srcNode:".languageSelection"
         },
 
         bindUI: function () {
-            var that = this;
             var contentBox = this.get('contentBox');
             contentBox.all("li").on("click", function(e) {
                 if(e.target.hasClass("selected") === false){
-                    that.change(e.target.getAttribute("name"));
+                    this.change(e.target.getAttribute("name"));
                 }
-            });
+            },this);
         },
 
         syncUI: function () {

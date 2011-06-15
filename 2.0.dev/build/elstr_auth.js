@@ -58,19 +58,21 @@ YUI.add('elstr_auth', function (Y) {
             var that = this;
             var contentBox = this.get('contentBox');
             contentBox.one(".login").on("click", function(e) {
-                that._handleSubmit();
-            });
+                this._handleSubmit();
+            },this);
             var enterListener = Y.on('key', function(e) {
                 that._handleSubmit();
             }, '#loginDialog', 'down:13', Y);
             
+            Y.log(this.get("forceAuthentication"));
             if (this.get("forceAuthentication") === true){
                 contentBox.one(".cancel").remove(true); 
             } else {
                 contentBox.one(".cancel").on("click",function(e) {
-                    that._handleCancel();
-                });                 
-            }  
+                    this._handleCancel();
+                },this);                 
+            }
+            Y.on("resize", this._handleWindowResize, window, this);
         },
 
         syncUI: function () {
@@ -218,6 +220,10 @@ YUI.add('elstr_auth', function (Y) {
                 }
             });
             Y.ELSTR.utils.cursorWait.show();
+        },
+        
+        _handleWindowResize : function(){
+            this.set("centered",true);
         }
        
         
@@ -226,7 +232,6 @@ YUI.add('elstr_auth', function (Y) {
             forceAuthentication: {
                 value: false,
                 validator: Y.Lang.isBoolean,
-                readOnly: true,
                 writeOnce: "initOnly"
             }           
         }

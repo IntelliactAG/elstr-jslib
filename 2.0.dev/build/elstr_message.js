@@ -32,37 +32,42 @@ YUI.add('elstr_message', function (Y) {
         },
 
         bindUI: function () {
-            var that = this;
             this.on('footerContentChange',function(e){
-                that.get("contentBox").one(".close").on("click", function(e) {
-                    that.hide();
+                this.get("contentBox").one(".close").on("click", function(e) {
+                    this.hide();
                 });
-            });
+            },this);
             
             this.on("visibleChange",function(e){
                 if(e.newVal === false){
-                    that.destroy();
+                    this.destroy();
                 }
-            })
+            },this);
+            
+            Y.on("resize", this._handleWindowResize, window, this);
         },
 
         syncUI: function () {
             
-        }
+        },
     
-    //
-    // PUBLIC FUNCTIONS
-    //
+        //
+        // PUBLIC FUNCTIONS
+        //
      
     
-    //
-    // PRRIVATE VARIABLES
-    //
+        //
+        // PRRIVATE VARIABLES
+        //
 
 
-    //
-    // PRRIVATE FUNCTIONS
-    //      
+        //
+        // PRRIVATE FUNCTIONS
+        //  
+
+        _handleWindowResize : function(){
+            this.set("centered",true);
+        }
         
     }, {
         ATTRS: {
