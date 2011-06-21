@@ -84,6 +84,7 @@ ELSTR.Admin = function() {
 	var _createDatasource = function() {
 		datasource = new YAHOO.util.XHRDataSource("services/ELSTR_WidgetServer_JSON_Admin");
 		datasource.connMethodPost = true;
+        datasource.connXhrMode = "queueRequests";
 		datasource.responseType = YAHOO.util.DataSource.TYPE_JSON;
 		datasource.responseSchema = {
 			resultsList : "result"
