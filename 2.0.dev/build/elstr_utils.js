@@ -27,7 +27,7 @@ YUI.add('elstr_utils', function(Y) {
     },
     // private method for UTF-8 decoding
     utf8_decode = function(utftext) {
-        var string = "", i = 0, c = 0, c1 = 0, c2 = 0;
+        var string = "", i = 0, c = 0, c1 = 0, c2 = 0, c3 = 0;
         while (i < utftext.length) {
             c = utftext.charCodeAt(i);
             if (c < 128) {
