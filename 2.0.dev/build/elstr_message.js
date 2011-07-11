@@ -83,24 +83,6 @@ YUI.add('elstr_message', function (Y) {
     })
 
 }, '2.0', {
-    requires: ['base','widget','node','elstr_utils'],
+    requires: ['base','node','overlay','elstr_messagecss'],
     skinnable: false
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
