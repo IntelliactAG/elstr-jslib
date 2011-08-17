@@ -155,7 +155,7 @@ YUI.add('elstr_admin', function(Y) {
 
             },
             failure : function(oRequest, oParsedResponse, oPayload) {
-                Y.ELSTR.error.requestFailure(oRequest, oParsedResponse, oPayload);
+                Y.ELSTR.Error.requestFailure(oRequest, oParsedResponse, oPayload);
             },	
             scope : {},
             argument : {}
@@ -165,7 +165,7 @@ YUI.add('elstr_admin', function(Y) {
             "jsonrpc" : "2.0",
             "method" : "getRoleList",
             "params" : {},
-            "id" : Y.ELSTR.utils.uuid()
+            "id" : Y.ELSTR.Utils.uuid()
         };
         datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),oCallback);
     },
@@ -180,7 +180,7 @@ YUI.add('elstr_admin', function(Y) {
                 _loadResourceDataTable();
             },
             failure : function(oRequest, oParsedResponse, oPayload) {
-                Y.ELSTR.error.requestFailure(oRequest, oParsedResponse, oPayload);
+                Y.ELSTR.Error.requestFailure(oRequest, oParsedResponse, oPayload);
                 fnCallback(false, newValue);
                 _loadResourceDataTable();
             },
@@ -196,7 +196,7 @@ YUI.add('elstr_admin', function(Y) {
                 roleName : column.key,
                 accessRight : newValue
             },
-            "id" : Y.ELSTR.utils.uuid()
+            "id" : Y.ELSTR.Utils.uuid()
         };
         datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),oCallback);
     },
@@ -218,7 +218,7 @@ YUI.add('elstr_admin', function(Y) {
             "jsonrpc" : "2.0",
             "method" : "getResourceDataTable",
             "params" : {},
-            "id" : Y.ELSTR.utils.uuid()
+            "id" : Y.ELSTR.Utils.uuid()
         };
         datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),oCallback);
     },
@@ -240,7 +240,7 @@ YUI.add('elstr_admin', function(Y) {
             "jsonrpc" : "2.0",
             "method" : "getRoleList",
             "params" : {},
-            "id" : Y.ELSTR.utils.uuid()
+            "id" : Y.ELSTR.Utils.uuid()
         };
         datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),oCallback);
     },
@@ -250,7 +250,7 @@ YUI.add('elstr_admin', function(Y) {
                 _loadResourceDataTable();
             },
             failure : function(oRequest, oParsedResponse, oPayload) {
-                Y.ELSTR.error.requestFailure(oRequest, oParsedResponse, oPayload);
+                Y.ELSTR.Error.requestFailure(oRequest, oParsedResponse, oPayload);
                 _loadResourceDataTable();
             },
             scope : {},
@@ -270,7 +270,7 @@ YUI.add('elstr_admin', function(Y) {
                     resourceName : resource,
                     type : type
                 },
-                "id" : Y.ELSTR.utils.uuid()
+                "id" : Y.ELSTR.Utils.uuid()
             };
 
             datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),oCallback);
@@ -283,7 +283,7 @@ YUI.add('elstr_admin', function(Y) {
                 _recreateResourceWidget();
             },
             failure : function(oRequest, oParsedResponse, oPayload) {
-                Y.ELSTR.error.requestFailure(oRequest, oParsedResponse, oPayload);
+                Y.ELSTR.Error.requestFailure(oRequest, oParsedResponse, oPayload);
                 _loadRoleDataTable();
                 _recreateResourceWidget();
             },
@@ -302,13 +302,13 @@ YUI.add('elstr_admin', function(Y) {
                     mode : mode,
                     roleName : role
                 },
-                "id" : Y.ELSTR.utils.uuid()
+                "id" : Y.ELSTR.Utils.uuid()
             };
             datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),	oCallback);
         }
     };
 
-    Y.namespace('ELSTR').admin = {
+    Y.namespace('ELSTR').Admin = {
         // public properties or functions
         initializer : function(){
             if(isInit === false){
@@ -321,7 +321,7 @@ YUI.add('elstr_admin', function(Y) {
             }
         },
         openAdminConsole : function(){
-            Y.ELSTR.admin.initializer();
+            Y.ELSTR.Admin.initializer();
             consoleDialog.show();
         }
     }

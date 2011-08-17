@@ -6,7 +6,7 @@ YUI.add('elstr_error', function(Y) {
  
     // No private properties or functions
    
-    Y.namespace('ELSTR').error = {
+    Y.namespace('ELSTR').Error = {
         // public properties or functions
         requestFailure : function (oRequest, oResponse, oPayload, oDataSource, oCallback){
             var status = oResponse.status;
@@ -17,9 +17,9 @@ YUI.add('elstr_error', function(Y) {
                 var parsedResponse = Y.JSON.parse(responseText);
             }
             catch (e) {
-                Y.ELSTR.utils.log(e,"error");
-                Y.ELSTR.utils.log("Request: " + oRequest,"info");
-                Y.ELSTR.utils.log("Response: " + responseText,"info");
+                Y.ELSTR.Utils.log(e,"error");
+                Y.ELSTR.Utils.log("Request: " + oRequest,"info");
+                Y.ELSTR.Utils.log("Response: " + responseText,"info");
                 return;
             }
 			 
@@ -36,14 +36,14 @@ YUI.add('elstr_error', function(Y) {
                     break;
 				
                 default:
-                    Y.ELSTR.utils.log("Request failed!","error");
-                    Y.ELSTR.utils.log("Status: " + status,"info");
-                    Y.ELSTR.utils.log("Response: " + responseText,"info");
+                    Y.ELSTR.Utils.log("Request failed!","error");
+                    Y.ELSTR.Utils.log("Status: " + status,"info");
+                    Y.ELSTR.Utils.log("Response: " + responseText,"info");
             }			
         },
         unhandledException : function(e){
-            Y.ELSTR.utils.log(e,"error");
-            Y.ELSTR.utils.log("Unhandled Exception","info");            
+            Y.ELSTR.Utils.log(e,"error");
+            Y.ELSTR.Utils.log("Unhandled Exception","info");            
         }
     }
  

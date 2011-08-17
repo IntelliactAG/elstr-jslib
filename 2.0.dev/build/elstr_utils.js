@@ -47,7 +47,7 @@ YUI.add('elstr_utils', function(Y) {
         return string;
     };
 
-    Y.namespace('ELSTR').utils = {
+    Y.namespace('ELSTR').Utils = {
         // public properties or functions
         
         /**
@@ -61,7 +61,7 @@ YUI.add('elstr_utils', function(Y) {
             }
             var clone = new obj.constructor();
             for(var key in obj){
-                clone[key] = Y.ELSTR.utils.cloneObj(obj[key]);
+                clone[key] = Y.ELSTR.Utils.cloneObj(obj[key]);
             }
             return clone;
         },

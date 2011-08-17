@@ -143,20 +143,20 @@ YUI.add('elstr_auth', function (Y) {
                     password : password,
                     enterpriseApplication : enterpriseApplication
                 },
-                "id" : Y.ELSTR.utils.uuid()
+                "id" : Y.ELSTR.Utils.uuid()
             },
             request = Y.io("services/ELSTR_AuthServer", {
                 method:"POST",
                 data:Y.JSON.stringify(oRequestPost),
                 on: {
                     success:function(id, o){
-                        Y.ELSTR.utils.cursorWait.hide();
+                        Y.ELSTR.Utils.cursorWait.hide();
                         try {
                             var parsedResponse = Y.JSON.parse(o.responseText);
                         }
                         catch (e) {
-                            Y.ELSTR.utils.log(e,"error");
-                            Y.ELSTR.utils.log("Response: " + o.responseText,"info");
+                            Y.ELSTR.Utils.log(e,"error");
+                            Y.ELSTR.Utils.log("Response: " + o.responseText,"info");
                             return;
                         }
                         var responseAction = parsedResponse.result.action;
@@ -190,12 +190,12 @@ YUI.add('elstr_auth', function (Y) {
                         } 
                     },
                     failure:function(id, o){
-                        Y.ELSTR.utils.cursorWait.hide();
-                        Y.ELSTR.error.requestFailure(null, o);                  
+                        Y.ELSTR.Utils.cursorWait.hide();
+                        Y.ELSTR.Error.requestFailure(null, o);                  
                     }
                 }
             });
-            Y.ELSTR.utils.cursorWait.show();
+            Y.ELSTR.Utils.cursorWait.show();
         },
         _logoutRequest : function() {
             var that = this,
@@ -203,23 +203,23 @@ YUI.add('elstr_auth', function (Y) {
                 "jsonrpc" : "2.0",
                 "method" : "logout",
                 "params" : {},
-                "id" : Y.ELSTR.utils.uuid()
+                "id" : Y.ELSTR.Utils.uuid()
             },
             request = Y.io("services/ELSTR_AuthServer", {
                 method:"POST",
                 data:Y.JSON.stringify(oRequestPost),
                 on: {
                     success:function(id, o){
-                        Y.ELSTR.utils.cursorWait.hide();                        
+                        Y.ELSTR.Utils.cursorWait.hide();                        
                         that.fire('successfulLogout');             
                     },
                     failure:function(id, o){
-                        Y.ELSTR.utils.cursorWait.hide();
-                        Y.ELSTR.error.requestFailure(null, o);                 
+                        Y.ELSTR.Utils.cursorWait.hide();
+                        Y.ELSTR.Error.requestFailure(null, o);                 
                     }
                 }
             });
-            Y.ELSTR.utils.cursorWait.show();
+            Y.ELSTR.Utils.cursorWait.show();
         },
         
         _handleWindowResize : function(){

@@ -62,7 +62,7 @@ YUI.add('elstr_user', function (Y) {
             },this);  
             contentBox.one(".admin").on("click", function(e) {
                 Y.use('elstr_admin', function (Y) {
-                    Y.ELSTR.admin.openAdminConsole();
+                    Y.ELSTR.Admin.openAdminConsole();
                 });
             }); 
         },
