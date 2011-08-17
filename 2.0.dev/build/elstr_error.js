@@ -7,7 +7,7 @@ YUI.add('elstr_error', function(Y) {
     // No private properties or functions
    
     Y.namespace('ELSTR').Error = {
-        // public properties or functions
+        // Use this for elstr 1.0 and YUI2
         requestFailure : function (oRequest, oResponse, oPayload, oDataSource, oCallback){
             var status = oResponse.status;
             var responseText =  oResponse.responseText;
@@ -35,12 +35,50 @@ YUI.add('elstr_error', function(Y) {
                     });
                     break;
 				
-                default:
+                default:                                       
                     Y.ELSTR.Utils.log("Request failed!","error");
                     Y.ELSTR.Utils.log("Status: " + status,"info");
                     Y.ELSTR.Utils.log("Response: " + responseText,"info");
             }			
         },
+        // Use this for elstr 2.0 and YUI3
+        datasourceCallbackFailure : function (oError,oDataSource){
+            var parsedResponse,
+            status = oError.data.status,
+            statusText = oError.data.statusText,
+            responseText =  oError.data.responseText;
+
+            switch(status) {
+                case 401:
+                    try {
+                        parsedResponse = Y.JSON.parse(responseText);
+                    }
+                    catch (e) {
+                        Y.ELSTR.Utils.log("Request to server failed! " + oError.error.message + " | Status: " + status + " " + statusText,"error");
+                        Y.ELSTR.Utils.log("Response: " + responseText,"info");
+                        return;
+                    }
+                    
+                    var enterpriseApplication = parsedResponse.error.data.context;
+
+                    if (Y.Lang.isUndefined( Y.ELSTR.user.enterpriseApplicationAuthEvent[enterpriseApplication] )){
+                        Y.ELSTR.user.login(enterpriseApplication);
+                    }
+                    Y.ELSTR.user.enterpriseApplicationAuthEvent[enterpriseApplication].subscribe(function(type, args){
+                        oDataSource.sendRequest({
+                            request:oError.request,
+                            callback: oError.callback
+                        });           
+                    });
+                    
+                    break;
+				
+                default:                   
+                    Y.log(oError);
+                    Y.ELSTR.Utils.log("Request to server failed! " + oError.error.message + " | Status: " + status + " " + statusText,"error");
+                    Y.ELSTR.Utils.log("Response: " + responseText,"info");                    
+            }			
+        },        
         unhandledException : function(e){
             Y.ELSTR.Utils.log(e,"error");
             Y.ELSTR.Utils.log("Unhandled Exception","info");            
