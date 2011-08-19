@@ -33,7 +33,7 @@
 
 
 YUI.add('elstr_auth', function (Y) {
-    Y.namespace('ELSTR').Auth = Y.Base.create('elstr_auth', Y.Overlay, [], {
+    Y.namespace('ELSTR').Auth = Y.Base.create('elstr_auth', Y.Panel, [], {
                 
         //
         // WIDGET FUNCTIONS
@@ -238,7 +238,7 @@ YUI.add('elstr_auth', function (Y) {
     })
 
 }, '2.0', {
-    requires: ['base','widget','node','elstr_utils'],
+    requires: ['base','node','panel','io','json','event','elstr_user','elstr_authcss'],
     skinnable: false
 });
 

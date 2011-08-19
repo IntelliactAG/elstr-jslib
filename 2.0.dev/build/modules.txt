@@ -37,7 +37,7 @@
     },
     elstr_auth: {
         path: 'elstr_auth.js',
-        requires: ['base','node','overlay','io','json','event','elstr_user','elstr_authcss']
+        requires: ['base','node','panel','io','json','event','elstr_user','elstr_authcss']
     }, 
     elstr_authcss: {
         path: 'auth/assets/auth.css',

@@ -188,7 +188,9 @@ YUI.add('elstr_user', function (Y) {
                     srcNode:"#loginDialog",
                     visible:false,
                     centered:true,
+                    modal: true,
                     width:"20em",
+                    buttons: [],
                     forceAuthentication:that.get("forceAuthentication"),
                     after: {
                         successfulAuth : function(result){
