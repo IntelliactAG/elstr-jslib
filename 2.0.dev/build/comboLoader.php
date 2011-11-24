@@ -26,8 +26,14 @@ for ($i = 0; $i < $count; $i++) {
             // $contentType == "css"
             $fileContent = file_get_contents($file);
             $deltaPath = substr($file, 0, strrpos($file, "/"));
-            $fileContent = preg_replace('#url\("#', 'url("' . $deltaPath . '/', $fileContent);
-            $fileContent = preg_replace('#url\(\'#', 'url(\'' . $deltaPath . '/', $fileContent);
+            // Damit das Ersetzen mit und ohne Hochkommas funktioniert wurde folgendes Vorgehen gewählt
+            // 1. Einfügen des deltaPath nach jeder öffnenden Klammer von url()           
+            $fileContent = preg_replace('#url\(#', 'url(' . $deltaPath . '/', $fileContent);
+            // 2. und 3. War der Ursrungspfad in Hochkommas url('') oder url("") wird der deltaPath direkt nach der öffnenden Klammer wieder entfernt
+            // Bsp. url(deltaPath'originPath') nach url('deltaPath+originPath')
+            $fileContent = preg_replace('#url\(' . $deltaPath . '"#', 'url("' . $deltaPath . '/', $fileContent);
+            $fileContent = preg_replace('#url\(' . $deltaPath . '\'#', 'url(\'' . $deltaPath . '/', $fileContent);
+
             $contentString .= $fileContent . "\r\n";
         } else {
             // $contentType == "js"
