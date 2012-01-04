@@ -1,10 +1,16 @@
 /**
+ * The amdin module provides all functionallity to allow admin tasks.
+ * Currently this includes only the definition of the ACL
+ *
+ * @module elstr_admin
+ * @Namespace ELSTR
+ * @requires 'yui2-event','yui2-connection','yui2-json','yui2-button','yui2-container','yui2-datasource','yui2-datatable','base','node','elstr_user','elstr_auth','elstr_error'
  * @author egli@intelliact.ch
  */
 
+
 YUI.add('elstr_admin', function(Y) {
- 
-    // private properties or functions
+
     var isInit = false,
     YAHOO = Y.YUI2,
     consoleDialog,
@@ -12,6 +18,13 @@ YUI.add('elstr_admin', function(Y) {
     resourceDataTable,
     roleDataTable,
     anyObject = {},
+
+    /**
+     * Render the dialog
+     * @method _renderConsoleDialog
+     * @private
+     * @for Admin
+     */
     _renderConsoleDialog = function() {
     
         var bodyHtml = "";
@@ -71,6 +84,12 @@ YUI.add('elstr_admin', function(Y) {
         var roleHandlerButton = new YAHOO.widget.Button("elstrAdminConsoleRoleHandlerButton");
         roleHandlerButton.on("click", _onRoleHandlerButtonClick);
     },
+    /**
+     * Create the Datasource objects
+     * @method _createDatasource
+     * @private
+     * @for Admin
+     */
     _createDatasource = function() {
         datasource = new YAHOO.util.XHRDataSource("services/ELSTR_WidgetServer_JSON_Admin");
         datasource.connMethodPost = true;
@@ -80,6 +99,13 @@ YUI.add('elstr_admin', function(Y) {
             resultsList : "result"
         };
     },
+
+    /**
+     * Renderer of the role widget
+     * @method _renderRoleWidget
+     * @private
+     * @for Admin
+     */
     _renderRoleWidget = function() {
         var oColumnDefs = [];
         oColumnDefs[oColumnDefs.length] = {
@@ -97,10 +123,24 @@ YUI.add('elstr_admin', function(Y) {
         roleDataTable.subscribe("cellClickEvent",roleDataTable.onEventShowCellEditor);
         _loadRoleDataTable();
     },
+
+    /**
+     * Create the Datasource objects
+     * @method _createDatasource
+     * @private
+     * @for Admin
+     */
     _recreateResourceWidget = function(){
         resourceDataTable.destroy();
         _renderResourceWidget();
     },
+
+    /**
+     * Renderer of the ressource widget
+     * @method _renderResourceWidget
+     * @private
+     * @for Admin
+     */
     _renderResourceWidget = function() {
         var oCallback = {
             // if our XHR call is successful, we want to make use
@@ -169,6 +209,15 @@ YUI.add('elstr_admin', function(Y) {
         };
         datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),oCallback);
     },
+
+    /**
+     * Update access rights
+     * @method _updateAccessRight
+     * @private
+     * @param {function} fnCallback  Callback function: function(bool:success, object:newValue)
+     * @param {object} newValue      Any value which will be passed to the callback function
+     * @for Admin
+     */
     _updateAccessRight = function(fnCallback, newValue) {
 
         var data = this.getRecord()._oData;
@@ -200,6 +249,13 @@ YUI.add('elstr_admin', function(Y) {
         };
         datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),oCallback);
     },
+
+    /**
+     * Laod the resource datatable
+     * @method _loadResourceDataTable
+     * @private
+     * @for Admin
+     */
     _loadResourceDataTable = function() {
         var oCallback = {
             success : resourceDataTable.onDataReturnInitializeTable,			
@@ -222,6 +278,13 @@ YUI.add('elstr_admin', function(Y) {
         };
         datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),oCallback);
     },
+
+    /**
+     * Load the role datatable
+     * @method _loadRoleDataTable
+     * @private
+     * @for Admin
+     */
     _loadRoleDataTable = function() {
         var oCallback = {
             success : roleDataTable.onDataReturnInitializeTable,
@@ -244,6 +307,13 @@ YUI.add('elstr_admin', function(Y) {
         };
         datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),oCallback);
     },
+
+    /**
+     * Eventhandler for resource actions
+     * @method _onResourceHandlerButtonClick
+     * @private
+     * @for Admin
+     */
     _onResourceHandlerButtonClick = function() {
         var oCallback = {
             success : function(oRequest, oParsedResponse, oPayload) {
@@ -276,6 +346,13 @@ YUI.add('elstr_admin', function(Y) {
             datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),oCallback);
         }
     },
+
+    /**
+     * Eventhandler for role actions
+     * @method _onRoleHandlerButtonClick
+     * @private
+     * @for Admin
+     */
     _onRoleHandlerButtonClick = function() {
         var oCallback = {
             success : function(oRequest, oParsedResponse, oPayload) {
@@ -308,8 +385,18 @@ YUI.add('elstr_admin', function(Y) {
         }
     };
 
+    /**
+     * Admin provides a Widget to allow admin tasks such as ACL definition
+     *
+     * @class Admin
+     * @namespace ELSTR
+     * @constructor
+     */
     Y.namespace('ELSTR').Admin = {
-        // public properties or functions
+        /**
+         * A custom initializer method
+         * @method initializer
+         */
         initializer : function(){
             if(isInit === false){
                 Y.one("body").addClass("yui-skin-sam");
@@ -320,6 +407,11 @@ YUI.add('elstr_admin', function(Y) {
                 isInit = true;
             }
         },
+
+        /**
+         * Open the admin console
+         * @method openAdminConsole
+         */
         openAdminConsole : function(){
             Y.ELSTR.Admin.initializer();
             consoleDialog.show();

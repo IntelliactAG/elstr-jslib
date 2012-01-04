@@ -1,27 +1,46 @@
 /**
- * Text and language handling for Elstr applications
- * 
- * MARKUP examples
- * 
- * Required for language selection
- * Current language has the class selected 
- * <ul class="languageSelection">
- *     <li name="de"> Deutsch </li>
- *     <li name="en"> English </li>
- * </ul>
- *  
- * 
+ * Module to privide a Widget and functionallity for multilanguage handling
+ * in Elstr applications.
+ *
+ * @module elstr_lang
+ * @namespace ELSTR
+ * @requires ...
  * @author egli@intelliact.ch
  * @copyright Intelliact AG, 2011
  */
 
 YUI.add('elstr_lang', function (Y) {
+
+    /**
+     * Text and language handling for Elstr applications
+     *
+     * MARKUP examples
+     *
+     * Required for language selection
+     * Current language has the class selected
+     * 
+     *     <ul class="languageSelection">
+     *         <li name="de"> Deutsch </li>
+     *         <li name="en"> English </li>
+     *     </ul>
+     *
+     *
+     * @class Lang
+     * @extends YUI.Widget
+     * @namespace ELSTR
+     * @param config {Object} Configuration object
+     */
     Y.namespace('ELSTR').Lang = Y.Base.create('elstr_lang', Y.Widget, [], {
                 
         //
         // WIDGET FUNCTIONS
         //
-
+        
+        /**
+         * Designated initializer
+         *
+         * @method initializer
+         */
         initializer: function () {           
             // Init the language object from DOM
             if (Y.Lang.isObject(ELSTR.applicationData.language)) {
@@ -33,16 +52,33 @@ YUI.add('elstr_lang', function (Y) {
               
         },
 
+        /**
+         * Designated destructor
+         *
+         * @method destructor
+         */
         destructor: function () {
             // Remove all click listeners
             this.get('contentBox').purge(true);
         },
 
+       /**
+         * renderUI implementation
+         *
+         * The auth UI is allways loaded from markup, never rendered at runtime
+         * @method renderUI
+         */
         renderUI: function () {            
         // Always loaded from markup
         // E.g. srcNode:".languageSelection"
         },
 
+        /**
+         * bindUI implementation
+         *
+         * Hooks up events for the widget
+         * @method bindUI
+         */
         bindUI: function () {
             var contentBox = this.get('contentBox');
             contentBox.all("li").on("click", function(e) {
@@ -51,7 +87,12 @@ YUI.add('elstr_lang', function (Y) {
                 }
             },this);
         },
-
+        
+        /**
+         * syncUI implementation
+         *
+         * @method syncUI
+         */
         syncUI: function () {
             this._updateLanguageSelection();
         },
@@ -64,7 +105,7 @@ YUI.add('elstr_lang', function (Y) {
          * Gibt eine Meldung in der geladenen Sprache aus List of priorities error
          * warning info tip help
          * 
-         * @method alert
+         * @method message
          * @param {String} priority The priority of the alert Message (error, warning, info, tip, help)
          * @param {String} textid The id of the text in the TMX-File OR The text of the message
          * @return {Boolean} True
@@ -94,7 +135,7 @@ YUI.add('elstr_lang', function (Y) {
         /**
          * Gibt eine Meldung in der geladenen Sprache in einem Container aus
          * 
-         * @method alert
+         * @method messageInContainer
          * @param {String} nodeSelector of a dom element or the dom element. if set, the message is rendered into the specified element
          * @param {String} textid The id of the text in the TMX-File OR The text of the message
          * @param {String} priority The priority of the alert Message (error, warning, info, tip, help)
@@ -107,7 +148,7 @@ YUI.add('elstr_lang', function (Y) {
         /**
          * Returns the text in the current language
          * 
-         * @method alert
+         * @method text
          * @param {String} textid The id of the text in the TMX-File OR The text of the message
          * @return {String} The (translated) text in the current language OR
          *         undefined, if the textid does not exist
@@ -174,21 +215,60 @@ YUI.add('elstr_lang', function (Y) {
         }
         
     }, {
+        /**
+         * Static property used to define the default attribute configuration of
+         * the Widget.
+         *
+         * @property ATTRS
+         * @type {Object}
+         * @protected
+         * @static
+         */
         ATTRS: {
+            /**
+             * The current langunage
+             *
+             * @attribute currentLanguage
+             * @readonly
+             * @type {String}
+             * @default true
+             */
             currentLanguage: {
                 value: null,
                 validator: Y.Lang.isString,
                 readOnly: true
             },
+            /**
+             * All loaded language modules
+             *
+             * @attribute loadedModules
+             * @readonly
+             * @type {Array}
+             * @default Empty array
+             */
             loadedModules: {
                 value: [],
                 validator: Y.Lang.isArray,
                 readOnly: true
             },
+            /**
+             * Width of the generated message box
+             *
+             * @attribute messageWidth
+             * @type {String}
+             * @default "20em"
+             */
             messageWidth: {
                 value: "20em",
                 validator: Y.Lang.isString
             },
+            /**
+             * Z-Index of the generated mmessage box
+             *
+             * @attribute currentLanguage
+             * @type {Number}
+             * @default 1000
+             */
             messageZIndex: {
                 value: 1000,
                 validator: Y.Lang.isNumber

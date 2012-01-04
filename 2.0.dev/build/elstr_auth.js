@@ -1,59 +1,103 @@
 /**
- * User handling for Elstr applications
- * 
- * MARKUP examples
- * 
- * Required for Authentication: 
- * <div id="loginDialog" style="display: none;">
- *     <div class="yui3-widget-hd">
- *         Anmelden
- *     </div>
- *     <div class="yui3-widget-bd">
- *         <div class="username">
- *             <label for="username">Username</label>
- *             <input type="text" name="username" />
- *         </div>
- *         <div class="password">
- *             <label for="password">Password</label>
- *             <input type="password" name="password" />
- *         </div>
- *         <div class="loginDialogMessageContainer">      
- *         </div>
- *     </div>
- *     <div class="yui3-widget-ft">
- *         <div class="login button">Anmelden</div>
- *         <div class="cancel button">Abbrechen</div>
- *     </div>    
- * </div>
- *  
- * 
+ * Module to privide a Widget and functionallity to handle user authentication
+ * and access to the frontend. Access to data is controlled by the backend.
+ *
+ * @module elstr_auth
+ * @namespace ELSTR
+ * @requires ...
  * @author egli@intelliact.ch
  * @copyright Intelliact AG, 2011
  */
 
-
 YUI.add('elstr_auth', function (Y) {
+
+    /**
+     * Authentication widget and handling for Elstr applications
+     *
+     * MARKUP example, required for Authentication:
+     * 
+     *     <div id="loginDialog" style="display: none;">
+     *       <div class="yui3-widget-hd">
+     *         Anmelden
+     *       </div>
+     *       <div class="yui3-widget-bd">
+     *         <div class="username">
+     *             <label for="username">Username</label>
+     *             <input type="text" name="username" />
+     *         </div>
+     *         <div class="password">
+     *             <label for="password">Password</label>
+     *             <input type="password" name="password" />
+     *         </div>
+     *         <div class="loginDialogMessageContainer">
+     *         </div>
+     *       </div>
+     *       <div class="yui3-widget-ft">
+     *         <div class="login button">Anmelden</div>
+     *         <div class="cancel button">Abbrechen</div>
+     *       </div>
+     *     </div>
+     * 
+     * @class Auth
+     * @extends YUI.Panel
+     * @namespace ELSTR
+     * @param config {Object} Configuration object
+     */
+    
     Y.namespace('ELSTR').Auth = Y.Base.create('elstr_auth', Y.Panel, [], {
-                
-        //
-        // WIDGET FUNCTIONS
-        //
+
+        /**
+         * Notification event fired after successful authentication
+         *
+         * @event successfulAuth
+         * @param event {EventFacade}  Event faced containing the following extra Property:
+         *  <dl>
+         *      <dt>result</dt>
+         *          <dd>The result object of the authentication request</dd>
+         *  </dl>
+         * @type {Event.Custom}
+         */
+
+        /**
+         * Notification event fired after successful logout
+         *
+         * @event successfulLogout
+         * @param event {EventFacade}  Default event faceade
+         * @type {Event.Custom}
+         */
 
         initializer: function () {
         // 
         },
 
+
+        /**
+         * Designated destructor
+         *
+         * @method destructor
+         */
         destructor: function () {
             // Remove all click listeners
             this.get('contentBox').purge(true);
         },
 
+        /**
+         * renderUI implementation
+         *
+         * The auth UI is allways loaded from markup, never rendered at runtime
+         * @method renderUI
+         */
         renderUI: function () {            
-            // Always loaded from markup
             // Remove any diyplay none settings       
             this.get('contentBox').setStyle("display","");
         },
 
+        /**
+         * bindUI implementation
+         *
+         * Hooks up events for the widget
+         * @method bindUI
+         */
         bindUI: function () {
             var that = this;
             var contentBox = this.get('contentBox');
@@ -83,6 +127,12 @@ YUI.add('elstr_auth', function (Y) {
         // PUBLIC FUNCTIONS
         //
 
+        /**
+         * Open the login dialog for an enterprise application
+         * 
+         * @method login
+         * @param {String} enterpriseApplication Name of the enterprise application
+         */
         login : function(enterpriseApplication){
             if(Y.Lang.isUndefined(enterpriseApplication) || enterpriseApplication == ''){
                 this._enterpriseApplication = '';
@@ -97,6 +147,12 @@ YUI.add('elstr_auth', function (Y) {
             this.show();
             this.get('contentBox').one(".username input").focus();
         },
+
+        /**
+         * Logout the current User
+         *
+         * @method logout
+         */
         logout : function(){
             this._logoutRequest();
         },        
@@ -228,7 +284,24 @@ YUI.add('elstr_auth', function (Y) {
        
         
     }, {
+
+        /**
+         * Static property used to define the default attribute configuration of
+         * the Widget.
+         *
+         * @property ATTRS
+         * @type {Object}
+         * @protected
+         * @static
+         */
         ATTRS: {
+            /**
+             * If this attribute is true, authentication is forced (no anonymous access)
+             *
+             * @attribute forceAuthentication
+             * @type {Bool}
+             * @default flase
+             */
             forceAuthentication: {
                 value: false,
                 validator: Y.Lang.isBoolean,

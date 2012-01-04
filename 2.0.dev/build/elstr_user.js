@@ -1,28 +1,46 @@
+
 /**
- * User handling for Elstr applications
- * 
- * MARKUP example
- * 
- * Required for Authentication: 
- * 	<div id="loginHandler">
- *		<span class="login clickable">Anmelden</span>
- *		<span class="logout clickable">Abmelden</span>
- *		<span class="user"></span>
- *		<span class="admin clickable">Admin</span>
- *	</div>
- *  
- * 
+ * Module to privide a Widget and functionallity to handle basic user funtions
+ * such as login, logout, admin in Elstr applicationss.
+ *
+ * @module elstr_user
+ * @namespace ELSTR
+ * @requires ...
  * @author egli@intelliact.ch
  * @copyright Intelliact AG, 2011
  */
 
 YUI.add('elstr_user', function (Y) {
+
+    /**
+     * User handling for Elstr applications
+     *
+     * MARKUP example
+     *
+     * Required for Authentication:
+     *     <div id="loginHandler">
+     *		<span class="login clickable">Anmelden</span>
+     *		<span class="logout clickable">Abmelden</span>
+     *		<span class="user"></span>
+     *		<span class="admin clickable">Admin</span>
+     *     </div>
+     *
+     * @class User
+     * @extends YUI.Widget
+     * @namespace ELSTR
+     * @param config {Object} Configuration object
+     */
     Y.namespace('ELSTR').User = Y.Base.create('elstr_user', Y.Widget, [], {
                 
         //
         // WIDGET FUNCTIONS
         //
-
+        
+        /**
+         * Designated initializer
+         *
+         * @method initializer
+         */
         initializer: function () {
             // Init the user object from DOM
             if (Y.Lang.isObject(ELSTR.applicationData.user)) {
@@ -42,16 +60,33 @@ YUI.add('elstr_user', function (Y) {
             }
         },
 
+        /**
+         * Designated initializer
+         *
+         * @method initializer
+         */
         destructor: function () {
             // Remove all click listeners
             this.get('contentBox').purge(true);
         },
 
+        /**
+         * renderUI implementation
+         *
+         * The auth UI is allways loaded from markup, never rendered at runtime
+         * @method renderUI
+         */
         renderUI: function () {            
         // Always loaded from markup
         // E.g. srcNode:"#loginHandler"
         },
 
+        /**
+         * bindUI implementation
+         *
+         * Hooks up events for the widget
+         * @method bindUI
+         */
         bindUI: function () {
             var contentBox = this.get('contentBox');
             contentBox.one(".login").on("click", function(e) {
@@ -79,8 +114,7 @@ YUI.add('elstr_user', function (Y) {
         /**
          * Returns if the user has allowed access to a resource
          * 
-         * @param {string/array}
-         *            resource name of a resource
+         * @param {string/array} resource Name of a resource
          * @method resourceAllowed
          * @return {Boolean} If the resource is allowed
          */

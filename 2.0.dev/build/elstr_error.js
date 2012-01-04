@@ -1,13 +1,35 @@
 /**
+ * Module for consistent error handling throught Elstr applications
+ *
+ * @module elstr_error
+ * @namespace ELSTR
+ * @requires json-parse,elstr_utils
  * @author egli@intelliact.ch
  */
 
 YUI.add('elstr_error', function(Y) {
  
-    // No private properties or functions
+    /**
+     * Static class prividing generic error and request failure handlers
+     *
+     * @class Error
+     * @static
+     * @namespace ELSTR
+     */
    
     Y.namespace('ELSTR').Error = {
-        // Use this for elstr 1.0 and YUI2
+        /**
+         * Handler for genereal request failures. In case of a a 401 error, try a login
+         * and repeate the request.
+         *
+         * @method requestFailure
+         * @static
+         * @param {Object} oRequest
+         * @param {Object} oResponse
+         * @param {Object} oPayload
+         * @param {Object} oDataSource
+         * @param {Function} oCallback
+         */
         requestFailure : function (oRequest, oResponse, oPayload, oDataSource, oCallback){
             var status = oResponse.status;
             var responseText =  oResponse.responseText;
@@ -39,9 +61,18 @@ YUI.add('elstr_error', function(Y) {
                     Y.ELSTR.Utils.log("Request failed!","error");
                     Y.ELSTR.Utils.log("Status: " + status,"info");
                     Y.ELSTR.Utils.log("Response: " + responseText,"info");
-            }			
+            }		
         },
-        // Use this for elstr 2.0 and YUI3
+
+        /**
+         * Handler for datasource request failures. In case of a a 401 error, try a login
+         * and repeate the request.
+         *
+         * @method requestFailure
+         * @static
+         * @param {Object} oError
+         * @param {Object} oDataSource
+         */
         datasourceCallbackFailure : function (oError,oDataSource){
             var parsedResponse,
             status = oError.data.status,
@@ -78,7 +109,15 @@ YUI.add('elstr_error', function(Y) {
                     Y.ELSTR.Utils.log("Request to server failed! " + oError.error.message + " | Status: " + status + " " + statusText,"error");
                     Y.ELSTR.Utils.log("Response: " + responseText,"info");                    
             }			
-        },        
+        },
+
+        /**
+         * Generig error handler which logs the error
+         *
+         * @method unhandledException
+         * @static
+         * @param {Object} e
+         */
         unhandledException : function(e){
             Y.ELSTR.Utils.log(e,"error");
             Y.ELSTR.Utils.log("Unhandled Exception","info");            
