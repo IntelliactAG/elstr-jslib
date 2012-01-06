@@ -1,12 +1,12 @@
 {
-    "name": "Elstr 2.0",
+    "name": "Elstr Frontent 2.0",
     "description": "The YUI3 based frontend to the ELSTR Framework",
     "version": "2.0",
     "url": "elstrtools/doc/api",
     "options": {
         "linkNatives": "true",
         "attributesEmit": "true",
-        "paths": [ "." ],
+        "paths": [ "./jslib/elstr/2.0.dev" ],
         "outdir": "./doc"
     }
 }
