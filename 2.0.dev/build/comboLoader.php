@@ -26,6 +26,10 @@ for ($i = 0; $i < $count; $i++) {
             // $contentType == "css"
             $fileContent = file_get_contents($file);
             $deltaPath = substr($file, 0, strrpos($file, "/"));
+
+            // Maskieren von Strings url(data: mit denen direkt Daten übergeben werden
+            $fileContent = preg_replace('#url\(data:#', 'urlDataDoNotConvert', $fileContent);
+
             // Damit das Ersetzen mit und ohne Hochkommas funktioniert wurde folgendes Vorgehen gewählt
             // 1. Einfügen des deltaPath nach jeder öffnenden Klammer von url()           
             $fileContent = preg_replace('#url\(#', 'url(' . $deltaPath . '/', $fileContent);
@@ -33,6 +37,9 @@ for ($i = 0; $i < $count; $i++) {
             // Bsp. url(deltaPath'originPath') nach url('deltaPath+originPath')
             $fileContent = preg_replace('#url\(' . $deltaPath . '"#', 'url("' . $deltaPath . '/', $fileContent);
             $fileContent = preg_replace('#url\(' . $deltaPath . '\'#', 'url(\'' . $deltaPath . '/', $fileContent);
+
+            // Entmaskieren der Strings url(data:
+            $fileContent = preg_replace('#urlDataDoNotConvert#', 'url(data:', $fileContent);
 
             $contentString .= $fileContent . "\r\n";
         } else {
