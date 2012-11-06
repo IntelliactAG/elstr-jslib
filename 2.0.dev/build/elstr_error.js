@@ -57,11 +57,11 @@ YUI.add('elstr_error', function(Y) {
                     });
                     break;
 				
-                default:                                       
+                default:
                     Y.ELSTR.Utils.log("Request failed!","error");
                     Y.ELSTR.Utils.log("Status: " + status,"info");
                     Y.ELSTR.Utils.log("Response: " + responseText,"info");
-            }		
+            }
         },
 
         /**
@@ -99,16 +99,16 @@ YUI.add('elstr_error', function(Y) {
                         oDataSource.sendRequest({
                             request:oError.request,
                             callback: oError.callback
-                        });           
+                        });
                     });
                     
                     break;
 				
-                default:                   
+                default:
                     Y.log(oError);
-                    Y.ELSTR.Utils.log("Request to server failed! " + oError.error.message + " | Status: " + status + " " + statusText,"error");
-                    Y.ELSTR.Utils.log("Response: " + responseText,"info");                    
-            }			
+                    Y.log("Request to server failed! " + oError.error.message + " | Status: " + status + " " + statusText,"error");
+                    Y.log("Response: " + responseText,"info");
+            }
         },
 
         /**
@@ -120,7 +120,7 @@ YUI.add('elstr_error', function(Y) {
          */
         unhandledException : function(e){
             Y.ELSTR.Utils.log(e,"error");
-            Y.ELSTR.Utils.log("Unhandled Exception","info");            
+            Y.ELSTR.Utils.log("Unhandled Exception","info");
         }
     }
  
