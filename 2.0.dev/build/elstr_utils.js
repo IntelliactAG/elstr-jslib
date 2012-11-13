@@ -163,6 +163,20 @@ YUI.add('elstr_utils', function(Y) {
                 }
                 Y.log(logMsg, logCategory,  logSource);
             });
+        },
+        /**
+         * Get the correct window location href
+         * 
+         * @method getWindowLocationBase
+         */
+        getWindowLocationBase: function() {
+            var windowLocationBase, windowLocationHref = window.location.href;
+            if (Y.one('base')) {
+                windowLocationBase = Y.one('base').get('href');
+            } else {
+                windowLocationBase = windowLocationHref.substr(0, windowLocationHref.lastIndexOf("/") + 1);
+            }
+            return windowLocationBase;
         }
     }
  
