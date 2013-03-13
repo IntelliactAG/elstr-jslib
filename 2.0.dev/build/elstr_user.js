@@ -209,11 +209,11 @@ YUI.add('elstr_user', function (Y) {
         _onSuccessfulLogout : function() {
             this._set("isAuth",false);
             this._set("isAdmin",false);
-            this._set("username","anonymous");             
+            this._set("username","anonymous");
             this.syncUI();
             if (this.get("forceAuthentication") === true) {
                 this._login();
-            }        
+            }
         },
         _createAuthWidget : function(){
             var that = this;
@@ -223,7 +223,7 @@ YUI.add('elstr_user', function (Y) {
                     visible:false,
                     centered:true,
                     modal: true,
-                    width:"20em",
+                    width:that.get('loginDialogWidth'),
                     buttons: [],
                     forceAuthentication:that.get("forceAuthentication"),
                     after: {
@@ -237,23 +237,23 @@ YUI.add('elstr_user', function (Y) {
                 });
                 that._auth.render();
                 that.fire("_authCreated");
-            });            
+            });
         },
-        _login : function(){            
-            if(Y.Lang.isNull(this._auth) === true){               
+        _login : function(){
+            if(Y.Lang.isNull(this._auth) === true){
                 this._createAuthWidget();
                 this.after("_authCreated",this._login);
             } else {
                 this._auth.login();
             }
         },
-        _logout : function(){            
+        _logout : function(){
             if(Y.Lang.isNull(this._auth) === true){
                 this._createAuthWidget();
-                this.after("_authCreated",this._logout);                
+                this.after("_authCreated",this._logout);
             } else {
                 this._auth.logout();
-            }            
+            }
         }
         
     }, {
@@ -277,17 +277,22 @@ YUI.add('elstr_user', function (Y) {
                 value: false,
                 validator: Y.Lang.isBoolean,
                 readOnly: true
-            },  
+            },
+            loginDialogWidth: {
+                value: "20em",
+                validator: Y.Lang.isString,
+                readOnly: false
+            },
             resourcesAllowed: {
                 value: [],
                 validator: Y.Lang.isArray,
-                readOnly: true                    
+                readOnly: true
             },
             enterpriseApplicationData: {
-                readOnly: true                    
-            }             
+                readOnly: true
+            }
         }
-    })
+    });
 
 }, '2.0', {
     requires: ['base','widget','node','elstr_utils'],
