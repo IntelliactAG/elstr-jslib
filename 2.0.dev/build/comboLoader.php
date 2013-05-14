@@ -35,8 +35,8 @@ for ($i = 0; $i < $count; $i++) {
             $fileContent = preg_replace('#url\(#', 'url(' . $deltaPath . '/', $fileContent);
             // 2. und 3. War der Ursrungspfad in Hochkommas url('') oder url("") wird der deltaPath direkt nach der öffnenden Klammer wieder entfernt
             // Bsp. url(deltaPath'originPath') nach url('deltaPath+originPath')
-            $fileContent = preg_replace('#url\(' . $deltaPath . '"#', 'url("' . $deltaPath . '/', $fileContent);
-            $fileContent = preg_replace('#url\(' . $deltaPath . '\'#', 'url(\'' . $deltaPath . '/', $fileContent);
+            $fileContent = preg_replace('#url\(' . $deltaPath . '/"#', 'url("' . $deltaPath . '/', $fileContent);
+            $fileContent = preg_replace('#url\(' . $deltaPath . '/\'#', 'url(\'' . $deltaPath . '/', $fileContent);               
 
             // Entmaskieren der Strings url(data:
             $fileContent = preg_replace('#urlDataDoNotConvert#', 'url(data:', $fileContent);
