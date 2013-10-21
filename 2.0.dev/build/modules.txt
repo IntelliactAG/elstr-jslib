@@ -33,8 +33,12 @@
     },
     elstr_user: {
         path: 'elstr_user.js',
-        requires: ['base','widget','node','event-custom','elstr_utils']
+        requires: ['base','widget','node','event-custom','elstr_utils','elstr_usercss']
     },
+    elstr_usercss: {
+        path: 'user/assets/user.css',
+        type: 'css'
+    },    
     elstr_auth: {
         path: 'elstr_auth.js',
         requires: ['base','node','panel','io','json','event','elstr_user','elstr_authcss']
