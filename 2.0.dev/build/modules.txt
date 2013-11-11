@@ -7,6 +7,10 @@
         path: 'utils/assets/utils.css',
         type: 'css'
     },
+    elstr_managestale: {
+        path: 'utils/elstr_managestale.js',
+        requires: ['datasource-local']
+    },
     elstr_api: {
         path: 'elstr_api.js',
         requires: ['base']
