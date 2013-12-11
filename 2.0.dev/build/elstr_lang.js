@@ -4,7 +4,6 @@
  *
  * @module elstr_lang
  * @namespace ELSTR
- * @requires ...
  * @author egli@intelliact.ch
  * @copyright Intelliact AG, 2011
  */
@@ -24,7 +23,9 @@ YUI.add('elstr_lang', function (Y) {
      *         <li name="en"> English </li>
      *     </ul>
      *
-     *
+     * Example for multi lang element
+     * <span data-textid='myTextId'>my text</span>
+     * 
      * @class Lang
      * @extends YUI.Widget
      * @namespace ELSTR
@@ -41,15 +42,16 @@ YUI.add('elstr_lang', function (Y) {
          *
          * @method initializer
          */
-        initializer: function () {           
+        initializer: function () {
             // Init the language object from DOM
             if (Y.Lang.isObject(ELSTR.applicationData.language)) {
                 this._set("currentLanguage",ELSTR.applicationData.language.current);
                 this._set("loadedModules",ELSTR.applicationData.language.modules);
-                this._textFrontend = ELSTR.applicationData.language.translations;		
+                this._textFrontend = ELSTR.applicationData.language.translations;
                 ELSTR.applicationData.language = "empty after reading it to the language widget";
-            } 
-              
+            }
+            this._createDatasource();
+            Y.log("elstr_lang init complete");
         },
 
         /**
@@ -68,7 +70,7 @@ YUI.add('elstr_lang', function (Y) {
          * The auth UI is allways loaded from markup, never rendered at runtime
          * @method renderUI
          */
-        renderUI: function () {            
+        renderUI: function () {
         // Always loaded from markup
         // E.g. srcNode:".languageSelection"
         },
@@ -95,6 +97,7 @@ YUI.add('elstr_lang', function (Y) {
          */
         syncUI: function () {
             this._updateLanguageSelection();
+            this._draw();
         },
     
         //
@@ -110,7 +113,7 @@ YUI.add('elstr_lang', function (Y) {
          * @param {String} textid The id of the text in the TMX-File OR The text of the message
          * @return {Boolean} True
          */
-        message : function(textid, priority){  
+        message : function(textid, priority){
             var that = this;
             // Show an message overlay
             Y.use('elstr_message',function(Y){
@@ -124,14 +127,15 @@ YUI.add('elstr_lang', function (Y) {
                     on:{
                         "destroy":function(e){
                             // Preparation for stacking support
-                        }  
+                        }
                     }
                 });
-                message.render(document.body);      
+                message.render(document.body);
                 that.set("messageZIndex",that.get("messageZIndex")+1);
-            })            
+            });
             return true;
         },
+
         /**
          * Gibt eine Meldung in der geladenen Sprache in einem Container aus
          * 
@@ -141,10 +145,11 @@ YUI.add('elstr_lang', function (Y) {
          * @param {String} priority The priority of the alert Message (error, warning, info, tip, help)
          * @return {Boolean} True
          */
-        messageInContainer : function(nodeSelector, textid, priority){       
-            Y.one(nodeSelector).append("<div class='"+priority+"' textid='"+textid+"'>"+this.text(textid)+"</div>");       
+        messageInContainer : function(nodeSelector, textid, priority){
+            Y.one(nodeSelector).append("<div class='"+priority+"' textid='"+textid+"'>"+this.text(textid)+"</div>");
             return true;
-        },        
+        },
+
         /**
          * Returns the text in the current language
          * 
@@ -162,6 +167,7 @@ YUI.add('elstr_lang', function (Y) {
             }
             return messageText;
         },
+
         /**
          * Changes the Frontend Language
          * 
@@ -170,12 +176,45 @@ YUI.add('elstr_lang', function (Y) {
          * @return {Boolean} True
          */
         change : function(lang){
-            Y.use('io', function (Y) {
+            var that = this;
+
+            Y.use('datasource', function (Y) {
                 Y.log("load this lang: "+lang);
-                Y.log("NOT IMPLEMENTED");
+
+                var oRequestPost = {
+                    "jsonrpc": "2.0",
+                    "method": "load",
+                    "params": {
+                        "file": "", // Used for deprecated file api
+                        "lang": lang
+                    },
+                    "id": Y.ELSTR.Utils.uuid()
+                };
+                
+                var oCallbackStatus = {
+                    success: function(e) {
+                        var response = Y.JSON.parse(e.response.results[0].responseText);
+                        Y.log(response.result);
+                        that._textFrontend = response.result;
+                        that._set("currentLanguage",lang);
+                        that.syncUI();
+                    },
+                    failure: function(e) {
+                        Y.use('elstr_error', function(Y) {
+                            Y.ELSTR.Error.datasourceCallbackFailure(e, that._datasource);
+                        });
+                    }
+                };
+                that._datasource.sendRequest({
+                    request: Y.JSON.stringify(oRequestPost),
+                    callback: oCallbackStatus
+                });
+
             });
+
             return true;
-        }, 
+        },
+
         /**
          * Load an other language module
          * 
@@ -184,23 +223,50 @@ YUI.add('elstr_lang', function (Y) {
          * @return {Boolean} True
          */
         loadModule : function(module){
-            Y.use('io', function (Y) {
+            Y.use('datasource', function (Y) {
                 Y.log("load this module: "+module);
                 Y.log("NOT IMPLEMENTED");
             });
             return true;
-        },         
-        
-    
+        },
+
         //
         // PRRIVATE VARIABLES
         //
 
-        _textFrontend : [],
+        _textFrontend : {},
+        _datasource: null,
 
         //
         // PRRIVATE FUNCTIONS
         //
+
+        _draw: function() {
+            var textNodes;
+
+            // Using HTML5 attibute
+            textNodes = Y.all('[data-textid');
+            textNodes.each(function (textNode) {
+                var textid = textNode.getAttribute('data-textid');
+                textNode.setHTML(this.text(textid));
+            }, this);
+
+            // Using non standard deprecated elstr attribute
+            textNodes = Y.all('[textid');
+            textNodes.each(function (textNode) {
+                var textid = textNode.getAttribute('textid');
+                textNode.setHTML(this.text(textid));
+            }, this);
+        },
+
+        _createDatasource: function() {
+            this._datasource = new Y.DataSource.IO({
+                source: this.get('serviceUrl'),
+                ioConfig: {
+                    method: "POST"
+                }
+            });
+        },
 
         _updateLanguageSelection : function() {
             var that = this;
@@ -252,6 +318,17 @@ YUI.add('elstr_lang', function (Y) {
                 readOnly: true
             },
             /**
+             * Url of the Elstr language service
+             *
+             * @attribute serviceUrl
+             * @type {String}
+             * @default "services/ELSTR_LanguageServer"
+             */
+            serviceUrl: {
+                value: "services/ELSTR_LanguageServer",
+                validator: Y.Lang.isString
+            },
+            /**
              * Width of the generated message box
              *
              * @attribute messageWidth
@@ -272,9 +349,9 @@ YUI.add('elstr_lang', function (Y) {
             messageZIndex: {
                 value: 1000,
                 validator: Y.Lang.isNumber
-            }            
+            }
         }
-    })
+    });
 
 }, '2.0', {
     requires: ['base','widget','node','elstr_utils'],
