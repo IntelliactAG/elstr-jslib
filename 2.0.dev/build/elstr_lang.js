@@ -50,7 +50,6 @@ YUI.add('elstr_lang', function (Y) {
                 this._textFrontend = ELSTR.applicationData.language.translations;
                 ELSTR.applicationData.language = "empty after reading it to the language widget";
             }
-            this._createDatasource();
             Y.log("elstr_lang init complete");
         },
 
@@ -179,7 +178,11 @@ YUI.add('elstr_lang', function (Y) {
             var that = this;
 
             Y.use('datasource', function (Y) {
-                Y.log("load this lang: "+lang);
+                //Y.log("load this lang: "+lang);
+
+                if(!that._datasource){
+                    that._createDatasource();
+                }
 
                 var oRequestPost = {
                     "jsonrpc": "2.0",
