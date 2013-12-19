@@ -122,7 +122,7 @@ YUI.add('elstr_utils', function(Y) {
                     Y.one(document.body).removeClass("cursorWait");
                 }
             }
-        },		
+        },
         // public method for url encoding
         utf8_encode : function(string) {
             return escape(utf8_encode(string));
@@ -155,7 +155,7 @@ YUI.add('elstr_utils', function(Y) {
         log : function(msg, category, source){
             var logMsg = msg;
             var logCategory = category;
-            var logSource = source;								
+            var logSource = source;
             Y.use('console', function (Y) {
                 if(Y.Lang.isUndefined(console)){
                     console = new Y.Console();
@@ -178,7 +178,7 @@ YUI.add('elstr_utils', function(Y) {
             }
             return windowLocationBase;
         }
-    }
+    };
  
 }, '2.0' /* module version */, {
     requires: ['base','node','elstr_utilscss']

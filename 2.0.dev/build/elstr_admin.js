@@ -331,7 +331,7 @@ YUI.add('elstr_admin', function(Y) {
         var type = YAHOO.util.Dom.get("elstrAdminConsoleResourceHandlerType").value;
         var resource = YAHOO.util.Dom.get("elstrAdminConsoleResourceHandlerInput").value;
 
-        if (resource != '') {
+        if (resource !== '') {
             var oRequestPost = {
                 "jsonrpc" : "2.0",
                 "method" : "updateResource",
@@ -371,7 +371,7 @@ YUI.add('elstr_admin', function(Y) {
         var mode = YAHOO.util.Dom.get("elstrAdminConsoleRoleHandlerMode").value;
         var role = YAHOO.util.Dom.get("elstrAdminConsoleRoleHandlerInput").value;
 
-        if (role != '') {
+        if (role !== '') {
             var oRequestPost = {
                 "jsonrpc" : "2.0",
                 "method" : "updateRole",
@@ -403,7 +403,7 @@ YUI.add('elstr_admin', function(Y) {
                 _renderConsoleDialog();
                 _createDatasource();
                 _renderRoleWidget();
-                _renderResourceWidget();       
+                _renderResourceWidget();
                 isInit = true;
             }
         },
@@ -416,7 +416,7 @@ YUI.add('elstr_admin', function(Y) {
             Y.ELSTR.Admin.initializer();
             consoleDialog.show();
         }
-    }
+    };
  
 }, '2.0' /* module version */, {
     requires: ['yui2-event','yui2-connection','yui2-json','yui2-button','yui2-container','yui2-datasource','yui2-datatable','base','node','elstr_user','elstr_auth','elstr_error']

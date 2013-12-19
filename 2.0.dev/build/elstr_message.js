@@ -123,7 +123,7 @@ YUI.add('elstr_message', function (Y) {
                 validator: Y.Lang.isString
             }
         }
-    })
+    });
 
 }, '2.0', {
     requires: ['base','node','overlay','elstr_messagecss'],

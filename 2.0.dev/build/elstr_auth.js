@@ -134,7 +134,7 @@ YUI.add('elstr_auth', function (Y) {
          * @param {String} enterpriseApplication Name of the enterprise application
          */
         login : function(enterpriseApplication){
-            if(Y.Lang.isUndefined(enterpriseApplication) || enterpriseApplication == ''){
+            if(Y.Lang.isUndefined(enterpriseApplication) || enterpriseApplication === ''){
                 this._enterpriseApplication = '';
             } else {
                 // TODO enterpriseApplication auth events
@@ -155,7 +155,7 @@ YUI.add('elstr_auth', function (Y) {
          */
         logout : function(){
             this._logoutRequest();
-        },        
+        },
     
         //
         // PRRIVATE VARIABLES
@@ -206,9 +206,10 @@ YUI.add('elstr_auth', function (Y) {
                 data:Y.JSON.stringify(oRequestPost),
                 on: {
                     success:function(id, o){
+                        var parsedResponse;
                         Y.ELSTR.Utils.cursorWait.hide();
                         try {
-                            var parsedResponse = Y.JSON.parse(o.responseText);
+                            parsedResponse = Y.JSON.parse(o.responseText);
                         }
                         catch (e) {
                             Y.ELSTR.Utils.log(e,"error");
@@ -243,11 +244,11 @@ YUI.add('elstr_auth', function (Y) {
                                 that.login(eApp);
                             }
                             Y.APP.lang.messageInContainer("#loginDialog .loginDialogMessageContainer",responseMessages[0],"info");
-                        } 
+                        }
                     },
                     failure:function(id, o){
                         Y.ELSTR.Utils.cursorWait.hide();
-                        Y.ELSTR.Error.requestFailure(null, o);                  
+                        Y.ELSTR.Error.requestFailure(null, o);
                     }
                 }
             });
@@ -266,12 +267,12 @@ YUI.add('elstr_auth', function (Y) {
                 data:Y.JSON.stringify(oRequestPost),
                 on: {
                     success:function(id, o){
-                        Y.ELSTR.Utils.cursorWait.hide();                        
-                        that.fire('successfulLogout');             
+                        Y.ELSTR.Utils.cursorWait.hide();
+                        that.fire('successfulLogout');
                     },
                     failure:function(id, o){
                         Y.ELSTR.Utils.cursorWait.hide();
-                        Y.ELSTR.Error.requestFailure(null, o);                 
+                        Y.ELSTR.Error.requestFailure(null, o);
                     }
                 }
             });
@@ -306,9 +307,9 @@ YUI.add('elstr_auth', function (Y) {
                 value: false,
                 validator: Y.Lang.isBoolean,
                 writeOnce: "initOnly"
-            }           
+            }
         }
-    })
+    });
 
 }, '2.0', {
     requires: ['base','node','panel','io','json','event','elstr_user','elstr_authcss'],

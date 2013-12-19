@@ -33,10 +33,11 @@ YUI.add('elstr_error', function(Y) {
         requestFailure : function (oRequest, oResponse, oPayload, oDataSource, oCallback){
             var status = oResponse.status;
             var responseText =  oResponse.responseText;
+            var parsedResponse;
             //console.log(oResponse);
 			
             try {
-                var parsedResponse = Y.JSON.parse(responseText);
+                parsedResponse = Y.JSON.parse(responseText);
             }
             catch (e) {
                 Y.ELSTR.Utils.log(e,"error");
@@ -122,7 +123,7 @@ YUI.add('elstr_error', function(Y) {
             Y.ELSTR.Utils.log(e,"error");
             Y.ELSTR.Utils.log("Unhandled Exception","info");
         }
-    }
+    };
  
 }, '2.0' /* module version */, {
     requires: ['json-parse','elstr_utils']

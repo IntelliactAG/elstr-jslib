@@ -94,12 +94,12 @@ YUI.add('elstr_user', function (Y) {
             },this);
             contentBox.one(".logout").on("click", function(e) {
                 this._logout();
-            },this);  
+            },this);
             contentBox.one(".admin").on("click", function(e) {
                 Y.use('elstr_admin', function (Y) {
                     Y.ELSTR.Admin.openAdminConsole();
                 });
-            }); 
+            });
         },
 
         syncUI: function () {
@@ -126,8 +126,8 @@ YUI.add('elstr_user', function (Y) {
                 objectLiteralOfResourcesAllowed[resourcesAllowed[i]] = '';
             }
             if (Y.Lang.isArray(resource)) {
-                for ( var i = 0, len = resource.length; i < len; i++) {
-                    if (!(resource[i] in objectLiteralOfResourcesAllowed)) {
+                for ( var j = 0, len = resource.length; j < len; j++) {
+                    if (!(resource[j] in objectLiteralOfResourcesAllowed)) {
                         isAllowed = false;
                     }
                 }
@@ -189,7 +189,7 @@ YUI.add('elstr_user', function (Y) {
             } else {
                 contentBox.one(".login").setStyle("display","");
                 contentBox.one(".user").empty().setStyle("display","none");
-                contentBox.one(".logout").setStyle("display","none");                
+                contentBox.one(".logout").setStyle("display","none");
             }
    
             if(this.get("isAdmin") === true){
@@ -201,7 +201,7 @@ YUI.add('elstr_user', function (Y) {
         _onSuccessfulAuth : function(result) {
             this._set("isAuth",result.isAuth);
             this._set("isAdmin",result.isAdmin);
-            this._set("username",result.username);            
+            this._set("username",result.username);
             this._set("resourcesAllowed",result.resourcesAllowed);
             this._set("enterpriseApplicationData",result.enterpriseApplicationData);
             this.syncUI();
