@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>jslib\elstr\2.0.dev\build\elstr_admin.js - Elstr</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="../assets/css/logo.png" title="Elstr"></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 2.0.0</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="../classes/ELSTR.Admin.html">ELSTR.Admin</a></li>
+            
+                <li><a href="../classes/ELSTR.Api.html">ELSTR.Api</a></li>
+            
+                <li><a href="../classes/ELSTR.Auth.html">ELSTR.Auth</a></li>
+            
+                <li><a href="../classes/ELSTR.Error.html">ELSTR.Error</a></li>
+            
+                <li><a href="../classes/ELSTR.Lang.html">ELSTR.Lang</a></li>
+            
+                <li><a href="../classes/ELSTR.User.html">ELSTR.User</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+                <li><a href="../modules/elstr_admin.html">elstr_admin</a></li>
+            
+                <li><a href="../modules/elstr_api.html">elstr_api</a></li>
+            
+                <li><a href="../modules/elstr_auth.html">elstr_auth</a></li>
+            
+                <li><a href="../modules/elstr_error.html">elstr_error</a></li>
+            
+                <li><a href="../modules/elstr_lang.html">elstr_lang</a></li>
+            
+                <li><a href="../modules/elstr_message.html">elstr_message</a></li>
+            
+                <li><a href="../modules/elstr_user.html">elstr_user</a></li>
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: jslib\elstr\2.0.dev\build\elstr_admin.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+/**
+ * The amdin module provides all functionallity to allow admin tasks.
+ * Currently this includes only the definition of the ACL
+ *
+ * @module elstr_admin
+ * @Namespace ELSTR
+ * @requires &#x27;yui2-event&#x27;,&#x27;yui2-connection&#x27;,&#x27;yui2-json&#x27;,&#x27;yui2-button&#x27;,&#x27;yui2-container&#x27;,&#x27;yui2-datasource&#x27;,&#x27;yui2-datatable&#x27;,&#x27;base&#x27;,&#x27;node&#x27;,&#x27;elstr_user&#x27;,&#x27;elstr_auth&#x27;,&#x27;elstr_error&#x27;
+ * @author egli@intelliact.ch
+ */
+
+
+YUI.add(&#x27;elstr_admin&#x27;, function(Y) {
+
+    var isInit = false,
+    YAHOO = Y.YUI2,
+    consoleDialog,
+    datasource,
+    resourceDataTable,
+    roleDataTable,
+    anyObject = {},
+
+    /**
+     * Render the dialog
+     * @method _renderConsoleDialog
+     * @private
+     * @for Admin
+     */
+    _renderConsoleDialog = function() {
+    
+        var bodyHtml = &quot;&quot;;
+        bodyHtml += &quot;&lt;h3&gt;&lt;span textid=&#x27;Roles&#x27;&gt;&quot;+Y.APP.lang.text(&#x27;Roles&#x27;)+&quot;&lt;/span&gt;&lt;/h3&gt;&quot;;
+        bodyHtml += &quot;&lt;div&gt;&quot;;
+        bodyHtml += &quot;	&lt;select id=&#x27;elstrAdminConsoleRoleHandlerMode&#x27; style=&#x27;margin:5px 0 10px 0;vertical-align:top;&#x27;&gt;&quot;;
+        bodyHtml += &quot;		&lt;option value=&#x27;add&#x27;&gt;Add&lt;/option&gt;&quot;;
+        bodyHtml += &quot;		&lt;option value=&#x27;delete&#x27;&gt;Delete&lt;/option&gt;&quot;;
+        bodyHtml += &quot;	&lt;/select&gt;&quot;;
+        bodyHtml += &quot;	&lt;input id=&#x27;elstrAdminConsoleRoleHandlerInput&#x27; type=&#x27;text&#x27; value=&#x27;&#x27; size=&#x27;25&#x27; style=&#x27;margin:5px 0 10px 0;vertical-align:top;&#x27;&gt;&quot;;
+        bodyHtml += &quot;	&lt;button id=&#x27;elstrAdminConsoleRoleHandlerButton&#x27; type=&#x27;button&#x27;&gt;Go!&lt;/button&gt;&quot;;
+        bodyHtml += &quot;&lt;/div&gt;&quot;;
+        bodyHtml += &quot;&lt;div id=&#x27;elstrAdminConsoleRoleWidget&#x27;&gt;&lt;/div&gt;&quot;;
+        bodyHtml += &quot;&lt;h3&gt;&lt;span textid=&#x27;Resources&#x27;&gt;&quot;+Y.APP.lang.text(&#x27;Resources&#x27;)+&quot;&lt;/span&gt;&lt;/h3&gt;&quot;;
+        bodyHtml += &quot;&lt;div&gt;&quot;;
+        bodyHtml += &quot;	&lt;select id=&#x27;elstrAdminConsoleResourceHandlerMode&#x27; style=&#x27;margin:5px 0 10px 0;vertical-align:top;&#x27;&gt;&quot;;
+        bodyHtml += &quot;		&lt;option value=&#x27;add&#x27;&gt;Add&lt;/option&gt;&quot;;
+        bodyHtml += &quot;		&lt;option value=&#x27;delete&#x27;&gt;Delete&lt;/option&gt;&quot;;
+        bodyHtml += &quot;	&lt;/select&gt;&quot;;
+        bodyHtml += &quot;	&lt;input id=&#x27;elstrAdminConsoleResourceHandlerInput&#x27; type=&#x27;text&#x27; value=&#x27;&#x27; size=&#x27;50&#x27; style=&#x27;margin:5px 0 10px 0;vertical-align:top;&#x27;&gt;&quot;;
+        bodyHtml += &quot;	&lt;select id=&#x27;elstrAdminConsoleResourceHandlerType&#x27; style=&#x27;margin:5px 0 10px 0;vertical-align:top;&#x27;&gt;&quot;;
+        bodyHtml += &quot;		&lt;option value=&#x27;Application&#x27;&gt;Application&lt;/option&gt;&quot;;
+        bodyHtml += &quot;		&lt;option value=&#x27;Service&#x27;&gt;Service&lt;/option&gt;&quot;;
+        bodyHtml += &quot;		&lt;option value=&#x27;WidgetServer&#x27;&gt;WidgetServer&lt;/option&gt;&quot;;
+        bodyHtml += &quot;		&lt;option value=&#x27;Method&#x27;&gt;Method&lt;/option&gt;&quot;;
+        bodyHtml += &quot;	&lt;/select&gt;&quot;;
+        bodyHtml += &quot;	&lt;button id=&#x27;elstrAdminConsoleResourceHandlerButton&#x27; type=&#x27;button&#x27;&gt;Go!&lt;/button&gt;&quot;;
+        bodyHtml += &quot;&lt;/div&gt;&quot;;
+        bodyHtml += &quot;&lt;div id=&#x27;elstrAdminConsoleResourceWidget&#x27;&gt;&lt;/div&gt;&quot;;
+
+        var handleClose = function() {
+            consoleDialog.hide();
+        };
+
+        consoleDialog = new YAHOO.widget.Dialog(&quot;consoleDialog&quot;, {
+            postmethod : &quot;none&quot;,
+            visible : false,
+            fixedcenter : true,
+            draggable : true,
+            close : true,
+            modal : true,
+            width : window.innerWidth - 40 + &#x27;px&#x27;,
+            height : window.innerHeight - 40 + &#x27;px&#x27;,
+            buttons : [ {
+                text : &quot;&lt;span textid=&#x27;Close&#x27;&gt;&quot;+Y.APP.lang.text(&#x27;Close&#x27;)+&quot;&lt;/span&gt;&quot;,
+                handler : handleClose
+            } ]
+        });
+        consoleDialog.setHeader(&quot;&lt;span textid=&#x27;Admin Console&#x27;&gt;&quot;+Y.APP.lang.text(&#x27;Admin Console&#x27;)+&quot;&lt;/span&gt;&quot;);
+        consoleDialog.setBody(bodyHtml);
+        consoleDialog.render(document.body);
+        YAHOO.util.Dom.setStyle(consoleDialog.body,&quot;overflow&quot;,&quot;auto&quot;);
+
+        var resourceHandlerButton = new YAHOO.widget.Button(&quot;elstrAdminConsoleResourceHandlerButton&quot;);
+        resourceHandlerButton.on(&quot;click&quot;, _onResourceHandlerButtonClick);
+
+        var roleHandlerButton = new YAHOO.widget.Button(&quot;elstrAdminConsoleRoleHandlerButton&quot;);
+        roleHandlerButton.on(&quot;click&quot;, _onRoleHandlerButtonClick);
+    },
+    /**
+     * Create the Datasource objects
+     * @method _createDatasource
+     * @private
+     * @for Admin
+     */
+    _createDatasource = function() {
+        datasource = new YAHOO.util.XHRDataSource(&quot;services/ELSTR_WidgetServer_JSON_Admin&quot;);
+        datasource.connMethodPost = true;
+        datasource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+        datasource.connXhrMode = &quot;queueRequests&quot;;
+        datasource.responseSchema = {
+            resultsList : &quot;result&quot;
+        };
+    },
+
+    /**
+     * Renderer of the role widget
+     * @method _renderRoleWidget
+     * @private
+     * @for Admin
+     */
+    _renderRoleWidget = function() {
+        var oColumnDefs = [];
+        oColumnDefs[oColumnDefs.length] = {
+            key : &#x27;name&#x27;,
+            label : &#x27;Name&#x27;,
+            sortable : false,
+            resizeable : true
+        };
+
+        roleDataTable = new YAHOO.widget.DataTable(&quot;elstrAdminConsoleRoleWidget&quot;, oColumnDefs, datasource, {
+            initialLoad : false,
+            draggableColumns : true,
+            selectionMode : &quot;standard&quot;
+        });
+        roleDataTable.subscribe(&quot;cellClickEvent&quot;,roleDataTable.onEventShowCellEditor);
+        _loadRoleDataTable();
+    },
+
+    /**
+     * Create the Datasource objects
+     * @method _createDatasource
+     * @private
+     * @for Admin
+     */
+    _recreateResourceWidget = function(){
+        resourceDataTable.destroy();
+        _renderResourceWidget();
+    },
+
+    /**
+     * Renderer of the ressource widget
+     * @method _renderResourceWidget
+     * @private
+     * @for Admin
+     */
+    _renderResourceWidget = function() {
+        var oCallback = {
+            // if our XHR call is successful, we want to make use
+            // of the returned data and create child nodes.
+            success : function(oRequest, oParsedResponse, oPayload) {
+                var oColumnDefs = [];
+                oColumnDefs[oColumnDefs.length] = {
+                    key : &#x27;type&#x27;,
+                    label : &#x27;Type&#x27;,
+                    sortable : false,
+                    resizeable : true
+                };
+                oColumnDefs[oColumnDefs.length] = {
+                    key : &#x27;name&#x27;,
+                    label : &#x27;Name&#x27;,
+                    sortable : false,
+                    resizeable : true
+                };
+
+                var cellFormatter = function(elCell, oRecord, oColumn, oData) {
+                    elCell.innerHTML = oData;
+                    if (oData == &#x27;allow&#x27;) {
+                        YAHOO.util.Dom.setStyle(elCell,&#x27;background-color&#x27;, &#x27;#99ff99&#x27;);
+                    } else if (oData == &#x27;deny&#x27;) {
+                        YAHOO.util.Dom.setStyle(elCell,&#x27;background-color&#x27;, &#x27;#ff9999&#x27;);
+                    }
+                };
+
+                for ( var i = 0; i &lt; oParsedResponse.results.length; i++) {
+                    oColumnDefs[oColumnDefs.length] = {
+                        key : oParsedResponse.results[i].name,
+                        label : oParsedResponse.results[i].name,
+                        sortable : true,
+                        resizeable : true,
+                        formatter : cellFormatter,
+                        editor : new YAHOO.widget.RadioCellEditor( {
+                            radioOptions : [ &quot;allow&quot;, &quot;deny&quot;,&quot;inherit&quot; ],
+                            asyncSubmitter : _updateAccessRight,
+                            disableBtns : true
+                        })
+                    };
+                }
+
+                resourceDataTable = new YAHOO.widget.DataTable(&quot;elstrAdminConsoleResourceWidget&quot;, oColumnDefs,
+                    datasource, {
+                        initialLoad : false,
+                        draggableColumns : true,
+                        selectionMode : &quot;standard&quot;
+                    });
+                resourceDataTable.subscribe(&quot;cellClickEvent&quot;,resourceDataTable.onEventShowCellEditor);
+                _loadResourceDataTable();
+
+            },
+            failure : function(oRequest, oParsedResponse, oPayload) {
+                Y.ELSTR.Error.requestFailure(oRequest, oParsedResponse, oPayload);
+            },	
+            scope : {},
+            argument : {}
+        };
+
+        var oRequestPost = {
+            &quot;jsonrpc&quot; : &quot;2.0&quot;,
+            &quot;method&quot; : &quot;getRoleList&quot;,
+            &quot;params&quot; : {},
+            &quot;id&quot; : Y.ELSTR.Utils.uuid()
+        };
+        datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),oCallback);
+    },
+
+    /**
+     * Update access rights
+     * @method _updateAccessRight
+     * @private
+     * @param {function} fnCallback  Callback function: function(bool:success, object:newValue)
+     * @param {object} newValue      Any value which will be passed to the callback function
+     * @for Admin
+     */
+    _updateAccessRight = function(fnCallback, newValue) {
+
+        var data = this.getRecord()._oData;
+        var column = this.getColumn();
+
+        var oCallback = {
+            success : function(oRequest, oParsedResponse, oPayload) {
+                fnCallback(true, newValue);
+                _loadResourceDataTable();
+            },
+            failure : function(oRequest, oParsedResponse, oPayload) {
+                Y.ELSTR.Error.requestFailure(oRequest, oParsedResponse, oPayload);
+                fnCallback(false, newValue);
+                _loadResourceDataTable();
+            },
+            scope : {},
+            argument : {}
+        };
+
+        var oRequestPost = {
+            &quot;jsonrpc&quot; : &quot;2.0&quot;,
+            &quot;method&quot; : &quot;updateAccessRight&quot;,
+            &quot;params&quot; : {
+                resourceName : data.name,
+                roleName : column.key,
+                accessRight : newValue
+            },
+            &quot;id&quot; : Y.ELSTR.Utils.uuid()
+        };
+        datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),oCallback);
+    },
+
+    /**
+     * Laod the resource datatable
+     * @method _loadResourceDataTable
+     * @private
+     * @for Admin
+     */
+    _loadResourceDataTable = function() {
+        var oCallback = {
+            success : resourceDataTable.onDataReturnInitializeTable,			
+            failure : resourceDataTable.onDataReturnInitializeTable,
+            argument : resourceDataTable.getState(),
+            scope : resourceDataTable
+        };
+
+        // Show loading row
+        resourceDataTable.deleteRows(0,resourceDataTable.getRecordSet()._records.length);
+        resourceDataTable.addRow( {
+            name : &quot;&lt;div class=&#x27;loaderIcon&#x27;&gt;&lt;/div&gt; Loading ...&quot;
+        }, 0);
+
+        var oRequestPost = {
+            &quot;jsonrpc&quot; : &quot;2.0&quot;,
+            &quot;method&quot; : &quot;getResourceDataTable&quot;,
+            &quot;params&quot; : {},
+            &quot;id&quot; : Y.ELSTR.Utils.uuid()
+        };
+        datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),oCallback);
+    },
+
+    /**
+     * Load the role datatable
+     * @method _loadRoleDataTable
+     * @private
+     * @for Admin
+     */
+    _loadRoleDataTable = function() {
+        var oCallback = {
+            success : roleDataTable.onDataReturnInitializeTable,
+            failure : roleDataTable.onDataReturnInitializeTable,
+            argument : roleDataTable.getState(),
+            scope : roleDataTable
+        };
+
+        // Show loading row
+        roleDataTable.deleteRows(0,	roleDataTable.getRecordSet()._records.length);
+        roleDataTable.addRow( {
+            name : &quot;&lt;div class=&#x27;loaderIcon&#x27;&gt;&lt;/div&gt; Loading ...&quot;
+        }, 0);
+
+        var oRequestPost = {
+            &quot;jsonrpc&quot; : &quot;2.0&quot;,
+            &quot;method&quot; : &quot;getRoleList&quot;,
+            &quot;params&quot; : {},
+            &quot;id&quot; : Y.ELSTR.Utils.uuid()
+        };
+        datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),oCallback);
+    },
+
+    /**
+     * Eventhandler for resource actions
+     * @method _onResourceHandlerButtonClick
+     * @private
+     * @for Admin
+     */
+    _onResourceHandlerButtonClick = function() {
+        var oCallback = {
+            success : function(oRequest, oParsedResponse, oPayload) {
+                _loadResourceDataTable();
+            },
+            failure : function(oRequest, oParsedResponse, oPayload) {
+                Y.ELSTR.Error.requestFailure(oRequest, oParsedResponse, oPayload);
+                _loadResourceDataTable();
+            },
+            scope : {},
+            argument : {}
+        };
+
+        var mode = YAHOO.util.Dom.get(&quot;elstrAdminConsoleResourceHandlerMode&quot;).value;
+        var type = YAHOO.util.Dom.get(&quot;elstrAdminConsoleResourceHandlerType&quot;).value;
+        var resource = YAHOO.util.Dom.get(&quot;elstrAdminConsoleResourceHandlerInput&quot;).value;
+
+        if (resource !== &#x27;&#x27;) {
+            var oRequestPost = {
+                &quot;jsonrpc&quot; : &quot;2.0&quot;,
+                &quot;method&quot; : &quot;updateResource&quot;,
+                &quot;params&quot; : {
+                    mode : mode,
+                    resourceName : resource,
+                    type : type
+                },
+                &quot;id&quot; : Y.ELSTR.Utils.uuid()
+            };
+
+            datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),oCallback);
+        }
+    },
+
+    /**
+     * Eventhandler for role actions
+     * @method _onRoleHandlerButtonClick
+     * @private
+     * @for Admin
+     */
+    _onRoleHandlerButtonClick = function() {
+        var oCallback = {
+            success : function(oRequest, oParsedResponse, oPayload) {
+                _loadRoleDataTable();
+                _recreateResourceWidget();
+            },
+            failure : function(oRequest, oParsedResponse, oPayload) {
+                Y.ELSTR.Error.requestFailure(oRequest, oParsedResponse, oPayload);
+                _loadRoleDataTable();
+                _recreateResourceWidget();
+            },
+            scope : {},
+            argument : {}
+        };
+
+        var mode = YAHOO.util.Dom.get(&quot;elstrAdminConsoleRoleHandlerMode&quot;).value;
+        var role = YAHOO.util.Dom.get(&quot;elstrAdminConsoleRoleHandlerInput&quot;).value;
+
+        if (role !== &#x27;&#x27;) {
+            var oRequestPost = {
+                &quot;jsonrpc&quot; : &quot;2.0&quot;,
+                &quot;method&quot; : &quot;updateRole&quot;,
+                &quot;params&quot; : {
+                    mode : mode,
+                    roleName : role
+                },
+                &quot;id&quot; : Y.ELSTR.Utils.uuid()
+            };
+            datasource.sendRequest(YAHOO.lang.JSON.stringify(oRequestPost),	oCallback);
+        }
+    };
+
+    /**
+     * Admin provides a Widget to allow admin tasks such as ACL definition
+     *
+     * @class Admin
+     * @namespace ELSTR
+     * @constructor
+     */
+    Y.namespace(&#x27;ELSTR&#x27;).Admin = {
+        /**
+         * A custom initializer method
+         * @method initializer
+         */
+        initializer : function(){
+            if(isInit === false){
+                Y.one(&quot;body&quot;).addClass(&quot;yui-skin-sam&quot;);
+                _renderConsoleDialog();
+                _createDatasource();
+                _renderRoleWidget();
+                _renderResourceWidget();
+                isInit = true;
+            }
+        },
+
+        /**
+         * Open the admin console
+         * @method openAdminConsole
+         */
+        openAdminConsole : function(){
+            Y.ELSTR.Admin.initializer();
+            consoleDialog.show();
+        }
+    };
+ 
+}, &#x27;2.0&#x27; /* module version */, {
+    requires: [&#x27;yui2-event&#x27;,&#x27;yui2-connection&#x27;,&#x27;yui2-json&#x27;,&#x27;yui2-button&#x27;,&#x27;yui2-container&#x27;,&#x27;yui2-datasource&#x27;,&#x27;yui2-datatable&#x27;,&#x27;base&#x27;,&#x27;node&#x27;,&#x27;elstr_user&#x27;,&#x27;elstr_auth&#x27;,&#x27;elstr_error&#x27;]
+});
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

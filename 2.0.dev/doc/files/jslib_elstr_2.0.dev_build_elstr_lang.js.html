@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>jslib\elstr\2.0.dev\build\elstr_lang.js - Elstr</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="../assets/css/logo.png" title="Elstr"></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 2.0.0</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="../classes/ELSTR.Admin.html">ELSTR.Admin</a></li>
+            
+                <li><a href="../classes/ELSTR.Api.html">ELSTR.Api</a></li>
+            
+                <li><a href="../classes/ELSTR.Auth.html">ELSTR.Auth</a></li>
+            
+                <li><a href="../classes/ELSTR.Error.html">ELSTR.Error</a></li>
+            
+                <li><a href="../classes/ELSTR.Lang.html">ELSTR.Lang</a></li>
+            
+                <li><a href="../classes/ELSTR.User.html">ELSTR.User</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+                <li><a href="../modules/elstr_admin.html">elstr_admin</a></li>
+            
+                <li><a href="../modules/elstr_api.html">elstr_api</a></li>
+            
+                <li><a href="../modules/elstr_auth.html">elstr_auth</a></li>
+            
+                <li><a href="../modules/elstr_error.html">elstr_error</a></li>
+            
+                <li><a href="../modules/elstr_lang.html">elstr_lang</a></li>
+            
+                <li><a href="../modules/elstr_message.html">elstr_message</a></li>
+            
+                <li><a href="../modules/elstr_user.html">elstr_user</a></li>
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: jslib\elstr\2.0.dev\build\elstr_lang.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+/**
+ * Module to privide a Widget and functionallity for multilanguage handling
+ * in Elstr applications.
+ *
+ * @module elstr_lang
+ * @namespace ELSTR
+ * @author egli@intelliact.ch
+ * @copyright Intelliact AG, 2011
+ */
+
+YUI.add(&#x27;elstr_lang&#x27;, function (Y) {
+
+    /**
+     * Text and language handling for Elstr applications
+     *
+     * MARKUP examples
+     *
+     * Required for language selection
+     * Current language has the class selected
+     * 
+     *     &lt;ul class=&quot;languageSelection&quot;&gt;
+     *         &lt;li name=&quot;de&quot;&gt; Deutsch &lt;/li&gt;
+     *         &lt;li name=&quot;en&quot;&gt; English &lt;/li&gt;
+     *     &lt;/ul&gt;
+     *
+     * Example for multi lang element
+     * &lt;span data-textid=&#x27;myTextId&#x27;&gt;my text&lt;/span&gt;
+     * 
+     * @class Lang
+     * @extends YUI.Widget
+     * @namespace ELSTR
+     * @param config {Object} Configuration object
+     */
+    Y.namespace(&#x27;ELSTR&#x27;).Lang = Y.Base.create(&#x27;elstr_lang&#x27;, Y.Widget, [], {
+                
+        //
+        // WIDGET FUNCTIONS
+        //
+        
+        /**
+         * Designated initializer
+         *
+         * @method initializer
+         */
+        initializer: function () {
+            // Init the language object from DOM
+            if (Y.Lang.isObject(ELSTR.applicationData.language)) {
+                this._set(&quot;currentLanguage&quot;,ELSTR.applicationData.language.current);
+                this._set(&quot;loadedModules&quot;,ELSTR.applicationData.language.modules);
+                this._textFrontend = ELSTR.applicationData.language.translations;
+                ELSTR.applicationData.language = &quot;empty after reading it to the language widget&quot;;
+            }
+            Y.log(&quot;elstr_lang init complete&quot;);
+        },
+
+        /**
+         * Designated destructor
+         *
+         * @method destructor
+         */
+        destructor: function () {
+            // Remove all click listeners
+            this.get(&#x27;contentBox&#x27;).purge(true);
+        },
+
+       /**
+         * renderUI implementation
+         *
+         * The auth UI is allways loaded from markup, never rendered at runtime
+         * @method renderUI
+         */
+        renderUI: function () {
+        // Always loaded from markup
+        // E.g. srcNode:&quot;.languageSelection&quot;
+        },
+
+        /**
+         * bindUI implementation
+         *
+         * Hooks up events for the widget
+         * @method bindUI
+         */
+        bindUI: function () {
+            var contentBox = this.get(&#x27;contentBox&#x27;);
+            contentBox.all(&quot;li&quot;).on(&quot;click&quot;, function(e) {
+                if(e.target.hasClass(&quot;selected&quot;) === false){
+                    this.change(e.target.getAttribute(&quot;name&quot;));
+                }
+            },this);
+        },
+        
+        /**
+         * syncUI implementation
+         *
+         * @method syncUI
+         */
+        syncUI: function () {
+            this._updateLanguageSelection();
+            this._draw();
+        },
+    
+        //
+        // PUBLIC FUNCTIONS
+        //
+
+        /**
+         * Gibt eine Meldung in der geladenen Sprache aus List of priorities error
+         * warning info tip help
+         * 
+         * @method message
+         * @param {String} priority The priority of the alert Message (error, warning, info, tip, help)
+         * @param {String} textid The id of the text in the TMX-File OR The text of the message
+         * @return {Boolean} True
+         */
+        message : function(textid, priority){
+            var that = this;
+            // Show an message overlay
+            Y.use(&#x27;elstr_message&#x27;,function(Y){
+                var message = new Y.ELSTR.Message({
+                    message : that.text(textid),
+                    priorty : priority,
+                    visible:true,
+                    centered:true,
+                    width:that.get(&quot;messageWidth&quot;),
+                    zIndex:that.get(&quot;messageZIndex&quot;),
+                    on:{
+                        &quot;destroy&quot;:function(e){
+                            // Preparation for stacking support
+                        }
+                    }
+                });
+                message.render(document.body);
+                that.set(&quot;messageZIndex&quot;,that.get(&quot;messageZIndex&quot;)+1);
+            });
+            return true;
+        },
+
+        /**
+         * Gibt eine Meldung in der geladenen Sprache in einem Container aus
+         * 
+         * @method messageInContainer
+         * @param {String} nodeSelector of a dom element or the dom element. if set, the message is rendered into the specified element
+         * @param {String} textid The id of the text in the TMX-File OR The text of the message
+         * @param {String} priority The priority of the alert Message (error, warning, info, tip, help)
+         * @return {Boolean} True
+         */
+        messageInContainer : function(nodeSelector, textid, priority){
+            Y.one(nodeSelector).append(&quot;&lt;div class=&#x27;&quot;+priority+&quot;&#x27; textid=&#x27;&quot;+textid+&quot;&#x27;&gt;&quot;+this.text(textid)+&quot;&lt;/div&gt;&quot;);
+            return true;
+        },
+
+        /**
+         * Returns the text in the current language
+         * 
+         * @method text
+         * @param {String} textid The id of the text in the TMX-File OR The text of the message
+         * @return {String} The (translated) text in the current language OR
+         *         undefined, if the textid does not exist
+         */
+        text : function(textid){
+            var messageText;
+            if (Y.Lang.isUndefined(this._textFrontend[textid]) === false) {
+                messageText = this._textFrontend[textid];
+            } else {
+                messageText = textid;
+            }
+            return messageText;
+        },
+
+        /**
+         * Changes the Frontend Language
+         * 
+         * @method change
+         * @param {String} lang string of the new language to be loaded (e.g. &quot;de&quot; or &quot;en&quot;)
+         * @return {Boolean} True
+         */
+        change : function(lang){
+            var that = this;
+
+            Y.use(&#x27;datasource&#x27;, function (Y) {
+                //Y.log(&quot;load this lang: &quot;+lang);
+
+                if(!that._datasource){
+                    that._createDatasource();
+                }
+
+                var oRequestPost = {
+                    &quot;jsonrpc&quot;: &quot;2.0&quot;,
+                    &quot;method&quot;: &quot;load&quot;,
+                    &quot;params&quot;: {
+                        &quot;file&quot;: &quot;&quot;, // Used for deprecated file api
+                        &quot;lang&quot;: lang
+                    },
+                    &quot;id&quot;: Y.ELSTR.Utils.uuid()
+                };
+                
+                var oCallbackStatus = {
+                    success: function(e) {
+                        var response = Y.JSON.parse(e.response.results[0].responseText);
+                        Y.log(response.result);
+                        that._textFrontend = response.result;
+                        that._set(&quot;currentLanguage&quot;,lang);
+                        that.syncUI();
+                    },
+                    failure: function(e) {
+                        Y.use(&#x27;elstr_error&#x27;, function(Y) {
+                            Y.ELSTR.Error.datasourceCallbackFailure(e, that._datasource);
+                        });
+                    }
+                };
+                that._datasource.sendRequest({
+                    request: Y.JSON.stringify(oRequestPost),
+                    callback: oCallbackStatus
+                });
+
+            });
+
+            return true;
+        },
+
+        /**
+         * Load an other language module
+         * 
+         * @method change
+         * @param {String} module to be loaded (e.g. &quot;admin&quot;)
+         * @return {Boolean} True
+         */
+        loadModule : function(module){
+            Y.use(&#x27;datasource&#x27;, function (Y) {
+                Y.log(&quot;load this module: &quot;+module);
+                Y.log(&quot;NOT IMPLEMENTED&quot;);
+            });
+            return true;
+        },
+
+        //
+        // PRRIVATE VARIABLES
+        //
+
+        _textFrontend : {},
+        _datasource: null,
+
+        //
+        // PRRIVATE FUNCTIONS
+        //
+
+        _draw: function() {
+            var textNodes;
+
+            // Using HTML5 attibute
+            textNodes = Y.all(&#x27;[data-textid&#x27;);
+            textNodes.each(function (textNode) {
+                var textid = textNode.getAttribute(&#x27;data-textid&#x27;);
+                textNode.setHTML(this.text(textid));
+            }, this);
+
+            // Using non standard deprecated elstr attribute
+            textNodes = Y.all(&#x27;[textid&#x27;);
+            textNodes.each(function (textNode) {
+                var textid = textNode.getAttribute(&#x27;textid&#x27;);
+                textNode.setHTML(this.text(textid));
+            }, this);
+        },
+
+        _createDatasource: function() {
+            this._datasource = new Y.DataSource.IO({
+                source: this.get(&#x27;serviceUrl&#x27;),
+                ioConfig: {
+                    method: &quot;POST&quot;
+                }
+            });
+        },
+
+        _updateLanguageSelection : function() {
+            var that = this;
+            var contentBox = this.get(&#x27;contentBox&#x27;);
+            contentBox.all(&quot;li&quot;).each(function(n){
+                if(n.getAttribute(&quot;name&quot;) == that.get(&quot;currentLanguage&quot;)){
+                    n.addClass(&quot;selected&quot;);
+                } else {
+                    n.removeClass(&quot;selected&quot;);
+                }
+            });
+        }
+        
+    }, {
+        /**
+         * Static property used to define the default attribute configuration of
+         * the Widget.
+         *
+         * @property ATTRS
+         * @type {Object}
+         * @protected
+         * @static
+         */
+        ATTRS: {
+            /**
+             * The current langunage
+             *
+             * @attribute currentLanguage
+             * @readonly
+             * @type {String}
+             * @default true
+             */
+            currentLanguage: {
+                value: null,
+                validator: Y.Lang.isString,
+                readOnly: true
+            },
+            /**
+             * All loaded language modules
+             *
+             * @attribute loadedModules
+             * @readonly
+             * @type {Array}
+             * @default Empty array
+             */
+            loadedModules: {
+                value: [],
+                validator: Y.Lang.isArray,
+                readOnly: true
+            },
+            /**
+             * Url of the Elstr language service
+             *
+             * @attribute serviceUrl
+             * @type {String}
+             * @default &quot;services/ELSTR_LanguageServer&quot;
+             */
+            serviceUrl: {
+                value: &quot;services/ELSTR_LanguageServer&quot;,
+                validator: Y.Lang.isString
+            },
+            /**
+             * Width of the generated message box
+             *
+             * @attribute messageWidth
+             * @type {String}
+             * @default &quot;20em&quot;
+             */
+            messageWidth: {
+                value: &quot;20em&quot;,
+                validator: Y.Lang.isString
+            },
+            /**
+             * Z-Index of the generated mmessage box
+             *
+             * @attribute currentLanguage
+             * @type {Number}
+             * @default 1000
+             */
+            messageZIndex: {
+                value: 1000,
+                validator: Y.Lang.isNumber
+            }
+        }
+    });
+
+}, &#x27;2.0&#x27;, {
+    requires: [&#x27;base&#x27;,&#x27;widget&#x27;,&#x27;node&#x27;,&#x27;elstr_utils&#x27;],
+    skinnable: false
+});
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

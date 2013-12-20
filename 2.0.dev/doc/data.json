@@ -1,0 +1,1339 @@
+{
+    "project": {
+        "name": "Elstr",
+        "description": "The Elstr project",
+        "version": "2.0.0",
+        "url": ""
+    },
+    "files": {
+        "jslib\\elstr\\2.0.dev\\build\\elstr_admin.js": {
+            "name": "jslib\\elstr\\2.0.dev\\build\\elstr_admin.js",
+            "modules": {
+                "elstr_admin": 1
+            },
+            "classes": {
+                "ELSTR.Admin": 1
+            },
+            "fors": {
+                "Admin": 1,
+                "ELSTR.Admin": 1
+            },
+            "namespaces": {
+                "ELSTR": 1
+            }
+        },
+        "jslib\\elstr\\2.0.dev\\build\\elstr_api.js": {
+            "name": "jslib\\elstr\\2.0.dev\\build\\elstr_api.js",
+            "modules": {
+                "elstr_api": 1
+            },
+            "classes": {
+                "ELSTR.Api": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "ELSTR": 1
+            }
+        },
+        "jslib\\elstr\\2.0.dev\\build\\elstr_auth.js": {
+            "name": "jslib\\elstr\\2.0.dev\\build\\elstr_auth.js",
+            "modules": {
+                "elstr_auth": 1
+            },
+            "classes": {
+                "ELSTR.Auth": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "ELSTR": 1
+            }
+        },
+        "jslib\\elstr\\2.0.dev\\build\\elstr_error.js": {
+            "name": "jslib\\elstr\\2.0.dev\\build\\elstr_error.js",
+            "modules": {
+                "elstr_error": 1
+            },
+            "classes": {
+                "ELSTR.Error": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "ELSTR": 1
+            }
+        },
+        "jslib\\elstr\\2.0.dev\\build\\elstr_lang.js": {
+            "name": "jslib\\elstr\\2.0.dev\\build\\elstr_lang.js",
+            "modules": {
+                "elstr_lang": 1
+            },
+            "classes": {
+                "ELSTR.Lang": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "ELSTR": 1
+            }
+        },
+        "jslib\\elstr\\2.0.dev\\build\\elstr_message.js": {
+            "name": "jslib\\elstr\\2.0.dev\\build\\elstr_message.js",
+            "modules": {
+                "elstr_message": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {
+                "ELSTR": 1
+            }
+        },
+        "jslib\\elstr\\2.0.dev\\build\\elstr_user.js": {
+            "name": "jslib\\elstr\\2.0.dev\\build\\elstr_user.js",
+            "modules": {
+                "elstr_user": 1
+            },
+            "classes": {
+                "ELSTR.User": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "ELSTR": 1
+            }
+        },
+        "jslib\\elstr\\2.0.dev\\build\\elstr_utils.js": {
+            "name": "jslib\\elstr\\2.0.dev\\build\\elstr_utils.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "elstr_admin": {
+            "name": "elstr_admin",
+            "submodules": {},
+            "classes": {
+                "ELSTR.Admin": 1
+            },
+            "fors": {
+                "Admin": 1,
+                "ELSTR.Admin": 1
+            },
+            "namespaces": {
+                "ELSTR": 1
+            },
+            "tag": "module",
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_admin.js",
+            "line": 388,
+            "description": "The amdin module provides all functionallity to allow admin tasks.\nCurrently this includes only the definition of the ACL",
+            "requires": [
+                "'yui2-event'",
+                "'yui2-connection'",
+                "'yui2-json'",
+                "'yui2-button'",
+                "'yui2-container'",
+                "'yui2-datasource'",
+                "'yui2-datatable'",
+                "'base'",
+                "'node'",
+                "'elstr_user'",
+                "'elstr_auth'",
+                "'elstr_error'"
+            ],
+            "author": "egli@intelliact.ch"
+        },
+        "elstr_api": {
+            "name": "elstr_api",
+            "submodules": {},
+            "classes": {
+                "ELSTR.Api": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "ELSTR": 1
+            },
+            "tag": "module",
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_api.js",
+            "line": 11,
+            "description": "Module to privide acces to information of API calls to the Elstr server",
+            "requires": [
+                "base"
+            ],
+            "author": "egli@intelliact.ch"
+        },
+        "elstr_auth": {
+            "name": "elstr_auth",
+            "submodules": {},
+            "classes": {
+                "ELSTR.Auth": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "ELSTR": 1
+            },
+            "tag": "module",
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_auth.js",
+            "line": 14,
+            "description": "Module to privide a Widget and functionallity to handle user authentication\nand access to the frontend. Access to data is controlled by the backend.",
+            "requires": [
+                "..."
+            ],
+            "author": "egli@intelliact.ch",
+            "copyright": "Intelliact AG, 2011"
+        },
+        "elstr_error": {
+            "name": "elstr_error",
+            "submodules": {},
+            "classes": {
+                "ELSTR.Error": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "ELSTR": 1
+            },
+            "tag": "module",
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_error.js",
+            "line": 12,
+            "description": "Module for consistent error handling throught Elstr applications",
+            "requires": [
+                "json-parse",
+                "elstr_utils"
+            ],
+            "author": "egli@intelliact.ch"
+        },
+        "elstr_lang": {
+            "name": "elstr_lang",
+            "submodules": {},
+            "classes": {
+                "ELSTR.Lang": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "ELSTR": 1
+            },
+            "tag": "module",
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_lang.js",
+            "line": 13,
+            "description": "Module to privide a Widget and functionallity for multilanguage handling\nin Elstr applications.",
+            "author": "egli@intelliact.ch",
+            "copyright": "Intelliact AG, 2011"
+        },
+        "elstr_message": {
+            "name": "elstr_message",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {
+                "ELSTR": 1
+            },
+            "tag": "module",
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_message.js",
+            "line": 1,
+            "description": "Module to privide a Widget and functionallity for consistent\nmessages along Elstr applications.",
+            "requires": [
+                "..."
+            ],
+            "author": "egli@intelliact.ch",
+            "copyright": "Intelliact AG, 2011"
+        },
+        "elstr_user": {
+            "name": "elstr_user",
+            "submodules": {},
+            "classes": {
+                "ELSTR.User": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "ELSTR": 1
+            },
+            "tag": "module",
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_user.js",
+            "line": 15,
+            "description": "Module to privide a Widget and functionallity to handle basic user funtions\nsuch as login, logout, admin in Elstr applicationss.",
+            "requires": [
+                "..."
+            ],
+            "author": "egli@intelliact.ch",
+            "copyright": "Intelliact AG, 2011"
+        }
+    },
+    "classes": {
+        "ELSTR.Admin": {
+            "name": "ELSTR.Admin",
+            "shortname": "Admin",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "elstr_admin",
+            "namespace": "ELSTR",
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_admin.js",
+            "line": 388,
+            "description": "Admin provides a Widget to allow admin tasks such as ACL definition",
+            "is_constructor": 1
+        },
+        "ELSTR.Api": {
+            "name": "ELSTR.Api",
+            "shortname": "ELSTR.Api",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "elstr_api",
+            "namespace": "ELSTR",
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_api.js",
+            "line": 11,
+            "description": "Create an Api provider which tells us what kind of request we deal with\nand wich parameters are submitted",
+            "extends": "YUI.Base",
+            "params": [
+                {
+                    "name": "config",
+                    "description": "Configuration object",
+                    "type": "Object"
+                }
+            ],
+            "is_constructor": 1
+        },
+        "ELSTR.Auth": {
+            "name": "ELSTR.Auth",
+            "shortname": "ELSTR.Auth",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "elstr_auth",
+            "namespace": "ELSTR",
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_auth.js",
+            "line": 14,
+            "description": "Authentication widget and handling for Elstr applications\n\nMARKUP example, required for Authentication:\n\n    <div id=\"loginDialog\" style=\"display: none;\">\n      <div class=\"yui3-widget-hd\">\n        Anmelden\n      </div>\n      <div class=\"yui3-widget-bd\">\n        <div class=\"username\">\n            <label for=\"username\">Username</label>\n            <input type=\"text\" name=\"username\" />\n        </div>\n        <div class=\"password\">\n            <label for=\"password\">Password</label>\n            <input type=\"password\" name=\"password\" />\n        </div>\n        <div class=\"loginDialogMessageContainer\">\n        </div>\n      </div>\n      <div class=\"yui3-widget-ft\">\n        <div class=\"login button\">Anmelden</div>\n        <div class=\"cancel button\">Abbrechen</div>\n      </div>\n    </div>",
+            "extends": "YUI.Panel",
+            "params": [
+                {
+                    "name": "config",
+                    "description": "Configuration object",
+                    "type": "Object"
+                }
+            ]
+        },
+        "ELSTR.Error": {
+            "name": "ELSTR.Error",
+            "shortname": "ELSTR.Error",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "elstr_error",
+            "namespace": "ELSTR",
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_error.js",
+            "line": 12,
+            "description": "Static class prividing generic error and request failure handlers",
+            "static": 1
+        },
+        "ELSTR.Lang": {
+            "name": "ELSTR.Lang",
+            "shortname": "ELSTR.Lang",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "elstr_lang",
+            "namespace": "ELSTR",
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_lang.js",
+            "line": 13,
+            "description": "Text and language handling for Elstr applications\n\nMARKUP examples\n\nRequired for language selection\nCurrent language has the class selected\n\n    <ul class=\"languageSelection\">\n        <li name=\"de\"> Deutsch </li>\n        <li name=\"en\"> English </li>\n    </ul>\n\nExample for multi lang element\n<span data-textid='myTextId'>my text</span>",
+            "extends": "YUI.Widget",
+            "params": [
+                {
+                    "name": "config",
+                    "description": "Configuration object",
+                    "type": "Object"
+                }
+            ]
+        },
+        "ELSTR.User": {
+            "name": "ELSTR.User",
+            "shortname": "ELSTR.User",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "elstr_user",
+            "namespace": "ELSTR",
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_user.js",
+            "line": 15,
+            "description": "User handling for Elstr applications\n\nMARKUP example\n\nRequired for Authentication:\n    <div id=\"loginHandler\">\n\t\t<span class=\"login clickable\">Anmelden</span>\n\t\t<span class=\"logout clickable\">Abmelden</span>\n\t\t<span class=\"user\"></span>\n\t\t<span class=\"admin clickable\">Admin</span>\n    </div>",
+            "extends": "YUI.Widget",
+            "params": [
+                {
+                    "name": "config",
+                    "description": "Configuration object",
+                    "type": "Object"
+                }
+            ]
+        }
+    },
+    "classitems": [
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_admin.js",
+            "line": 22,
+            "description": "Render the dialog",
+            "itemtype": "method",
+            "name": "_renderConsoleDialog",
+            "access": "private",
+            "tagname": "",
+            "class": "ELSTR.Admin",
+            "module": "elstr_admin"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_admin.js",
+            "line": 87,
+            "description": "Create the Datasource objects",
+            "itemtype": "method",
+            "name": "_createDatasource",
+            "access": "private",
+            "tagname": "",
+            "class": "ELSTR.Admin",
+            "module": "elstr_admin",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_admin.js",
+            "line": 103,
+            "description": "Renderer of the role widget",
+            "itemtype": "method",
+            "name": "_renderRoleWidget",
+            "access": "private",
+            "tagname": "",
+            "class": "ELSTR.Admin",
+            "module": "elstr_admin",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_admin.js",
+            "line": 127,
+            "description": "Create the Datasource objects",
+            "itemtype": "method",
+            "name": "_createDatasource",
+            "access": "private",
+            "tagname": "",
+            "class": "ELSTR.Admin",
+            "module": "elstr_admin",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_admin.js",
+            "line": 138,
+            "description": "Renderer of the ressource widget",
+            "itemtype": "method",
+            "name": "_renderResourceWidget",
+            "access": "private",
+            "tagname": "",
+            "class": "ELSTR.Admin",
+            "module": "elstr_admin",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_admin.js",
+            "line": 213,
+            "description": "Update access rights",
+            "itemtype": "method",
+            "name": "_updateAccessRight",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "fnCallback",
+                    "description": "Callback function: function(bool:success, object:newValue)",
+                    "type": "Function"
+                },
+                {
+                    "name": "newValue",
+                    "description": "Any value which will be passed to the callback function",
+                    "type": "Object"
+                }
+            ],
+            "class": "ELSTR.Admin",
+            "module": "elstr_admin",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_admin.js",
+            "line": 253,
+            "description": "Laod the resource datatable",
+            "itemtype": "method",
+            "name": "_loadResourceDataTable",
+            "access": "private",
+            "tagname": "",
+            "class": "ELSTR.Admin",
+            "module": "elstr_admin",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_admin.js",
+            "line": 282,
+            "description": "Load the role datatable",
+            "itemtype": "method",
+            "name": "_loadRoleDataTable",
+            "access": "private",
+            "tagname": "",
+            "class": "ELSTR.Admin",
+            "module": "elstr_admin",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_admin.js",
+            "line": 311,
+            "description": "Eventhandler for resource actions",
+            "itemtype": "method",
+            "name": "_onResourceHandlerButtonClick",
+            "access": "private",
+            "tagname": "",
+            "class": "ELSTR.Admin",
+            "module": "elstr_admin",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_admin.js",
+            "line": 350,
+            "description": "Eventhandler for role actions",
+            "itemtype": "method",
+            "name": "_onRoleHandlerButtonClick",
+            "access": "private",
+            "tagname": "",
+            "class": "ELSTR.Admin",
+            "module": "elstr_admin",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_admin.js",
+            "line": 396,
+            "description": "A custom initializer method",
+            "itemtype": "method",
+            "name": "initializer",
+            "class": "ELSTR.Admin",
+            "module": "elstr_admin",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_admin.js",
+            "line": 411,
+            "description": "Open the admin console",
+            "itemtype": "method",
+            "name": "openAdminConsole",
+            "class": "ELSTR.Admin",
+            "module": "elstr_admin",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_api.js",
+            "line": 23,
+            "description": "Designated initializer",
+            "itemtype": "method",
+            "name": "initializer",
+            "class": "ELSTR.Api",
+            "module": "elstr_api",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_api.js",
+            "line": 46,
+            "description": "Static property used to define the default attribute configuration of\nthe class.",
+            "itemtype": "property",
+            "name": "ATTRS",
+            "type": "{Object}",
+            "access": "protected",
+            "tagname": "",
+            "static": 1,
+            "class": "ELSTR.Api",
+            "module": "elstr_api",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_api.js",
+            "line": 56,
+            "description": "Declares if the request is an API request or not",
+            "itemtype": "attribute",
+            "name": "isApiRequest",
+            "type": "{Bool}",
+            "default": "flase",
+            "class": "ELSTR.Api",
+            "module": "elstr_api",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_api.js",
+            "line": 67,
+            "description": "Declares if the API request has been executed [veryfiy with marco]",
+            "itemtype": "attribute",
+            "name": "isExecuted",
+            "type": "{Bool}",
+            "default": "flase",
+            "class": "ELSTR.Api",
+            "module": "elstr_api",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_api.js",
+            "line": 78,
+            "description": "An object holding the parameters set by the API request",
+            "itemtype": "attribute",
+            "name": "parameters",
+            "type": "{Object}",
+            "default": "Empty object",
+            "class": "ELSTR.Api",
+            "module": "elstr_api",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_auth.js",
+            "line": 49,
+            "description": "Notification event fired after successful authentication",
+            "itemtype": "event",
+            "name": "successfulAuth",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "Event faced containing the following extra Property:\n <dl>\n     <dt>result</dt>\n         <dd>The result object of the authentication request</dd>\n </dl>",
+                    "type": "EventFacade"
+                }
+            ],
+            "type": "{Event.Custom}",
+            "class": "ELSTR.Auth",
+            "module": "elstr_auth",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_auth.js",
+            "line": 61,
+            "description": "Notification event fired after successful logout",
+            "itemtype": "event",
+            "name": "successfulLogout",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "Default event faceade",
+                    "type": "EventFacade"
+                }
+            ],
+            "type": "{Event.Custom}",
+            "class": "ELSTR.Auth",
+            "module": "elstr_auth",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_auth.js",
+            "line": 74,
+            "description": "Designated destructor",
+            "itemtype": "method",
+            "name": "destructor",
+            "class": "ELSTR.Auth",
+            "module": "elstr_auth",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_auth.js",
+            "line": 84,
+            "description": "renderUI implementation\n\nThe auth UI is allways loaded from markup, never rendered at runtime",
+            "itemtype": "method",
+            "name": "renderUI",
+            "class": "ELSTR.Auth",
+            "module": "elstr_auth",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_auth.js",
+            "line": 95,
+            "description": "bindUI implementation\n\nHooks up events for the widget",
+            "itemtype": "method",
+            "name": "bindUI",
+            "class": "ELSTR.Auth",
+            "module": "elstr_auth",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_auth.js",
+            "line": 130,
+            "description": "Open the login dialog for an enterprise application",
+            "itemtype": "method",
+            "name": "login",
+            "params": [
+                {
+                    "name": "enterpriseApplication",
+                    "description": "Name of the enterprise application",
+                    "type": "String"
+                }
+            ],
+            "class": "ELSTR.Auth",
+            "module": "elstr_auth",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_auth.js",
+            "line": 151,
+            "description": "Logout the current User",
+            "itemtype": "method",
+            "name": "logout",
+            "class": "ELSTR.Auth",
+            "module": "elstr_auth",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_auth.js",
+            "line": 289,
+            "description": "Static property used to define the default attribute configuration of\nthe Widget.",
+            "itemtype": "property",
+            "name": "ATTRS",
+            "type": "{Object}",
+            "access": "protected",
+            "tagname": "",
+            "static": 1,
+            "class": "ELSTR.Auth",
+            "module": "elstr_auth",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_auth.js",
+            "line": 299,
+            "description": "If this attribute is true, authentication is forced (no anonymous access)",
+            "itemtype": "attribute",
+            "name": "forceAuthentication",
+            "type": "{Bool}",
+            "default": "flase",
+            "class": "ELSTR.Auth",
+            "module": "elstr_auth",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_error.js",
+            "line": 21,
+            "description": "Handler for genereal request failures. In case of a a 401 error, try a login\nand repeate the request.",
+            "itemtype": "method",
+            "name": "requestFailure",
+            "static": 1,
+            "params": [
+                {
+                    "name": "oRequest",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "oResponse",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "oPayload",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "oDataSource",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "oCallback",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "class": "ELSTR.Error",
+            "module": "elstr_error",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_error.js",
+            "line": 68,
+            "description": "Handler for datasource request failures. In case of a a 401 error, try a login\nand repeate the request.",
+            "itemtype": "method",
+            "name": "requestFailure",
+            "static": 1,
+            "params": [
+                {
+                    "name": "oError",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "oDataSource",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "ELSTR.Error",
+            "module": "elstr_error",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_error.js",
+            "line": 115,
+            "description": "Generig error handler which logs the error",
+            "itemtype": "method",
+            "name": "unhandledException",
+            "static": 1,
+            "params": [
+                {
+                    "name": "e",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "ELSTR.Error",
+            "module": "elstr_error",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_lang.js",
+            "line": 40,
+            "description": "Designated initializer",
+            "itemtype": "method",
+            "name": "initializer",
+            "class": "ELSTR.Lang",
+            "module": "elstr_lang",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_lang.js",
+            "line": 56,
+            "description": "Designated destructor",
+            "itemtype": "method",
+            "name": "destructor",
+            "class": "ELSTR.Lang",
+            "module": "elstr_lang",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_lang.js",
+            "line": 66,
+            "description": "renderUI implementation\n\nThe auth UI is allways loaded from markup, never rendered at runtime",
+            "itemtype": "method",
+            "name": "renderUI",
+            "class": "ELSTR.Lang",
+            "module": "elstr_lang",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_lang.js",
+            "line": 77,
+            "description": "bindUI implementation\n\nHooks up events for the widget",
+            "itemtype": "method",
+            "name": "bindUI",
+            "class": "ELSTR.Lang",
+            "module": "elstr_lang",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_lang.js",
+            "line": 92,
+            "description": "syncUI implementation",
+            "itemtype": "method",
+            "name": "syncUI",
+            "class": "ELSTR.Lang",
+            "module": "elstr_lang",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_lang.js",
+            "line": 106,
+            "description": "Gibt eine Meldung in der geladenen Sprache aus List of priorities error\nwarning info tip help",
+            "itemtype": "method",
+            "name": "message",
+            "params": [
+                {
+                    "name": "priority",
+                    "description": "The priority of the alert Message (error, warning, info, tip, help)",
+                    "type": "String"
+                },
+                {
+                    "name": "textid",
+                    "description": "The id of the text in the TMX-File OR The text of the message",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "True",
+                "type": "Boolean"
+            },
+            "class": "ELSTR.Lang",
+            "module": "elstr_lang",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_lang.js",
+            "line": 138,
+            "description": "Gibt eine Meldung in der geladenen Sprache in einem Container aus",
+            "itemtype": "method",
+            "name": "messageInContainer",
+            "params": [
+                {
+                    "name": "nodeSelector",
+                    "description": "of a dom element or the dom element. if set, the message is rendered into the specified element",
+                    "type": "String"
+                },
+                {
+                    "name": "textid",
+                    "description": "The id of the text in the TMX-File OR The text of the message",
+                    "type": "String"
+                },
+                {
+                    "name": "priority",
+                    "description": "The priority of the alert Message (error, warning, info, tip, help)",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "True",
+                "type": "Boolean"
+            },
+            "class": "ELSTR.Lang",
+            "module": "elstr_lang",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_lang.js",
+            "line": 152,
+            "description": "Returns the text in the current language",
+            "itemtype": "method",
+            "name": "text",
+            "params": [
+                {
+                    "name": "textid",
+                    "description": "The id of the text in the TMX-File OR The text of the message",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "The (translated) text in the current language OR\n        undefined, if the textid does not exist",
+                "type": "String"
+            },
+            "class": "ELSTR.Lang",
+            "module": "elstr_lang",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_lang.js",
+            "line": 170,
+            "description": "Changes the Frontend Language",
+            "itemtype": "method",
+            "name": "change",
+            "params": [
+                {
+                    "name": "lang",
+                    "description": "string of the new language to be loaded (e.g. \"de\" or \"en\")",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "True",
+                "type": "Boolean"
+            },
+            "class": "ELSTR.Lang",
+            "module": "elstr_lang",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_lang.js",
+            "line": 221,
+            "description": "Load an other language module",
+            "itemtype": "method",
+            "name": "change",
+            "params": [
+                {
+                    "name": "module",
+                    "description": "to be loaded (e.g. \"admin\")",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "True",
+                "type": "Boolean"
+            },
+            "class": "ELSTR.Lang",
+            "module": "elstr_lang",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_lang.js",
+            "line": 287,
+            "description": "Static property used to define the default attribute configuration of\nthe Widget.",
+            "itemtype": "property",
+            "name": "ATTRS",
+            "type": "{Object}",
+            "access": "protected",
+            "tagname": "",
+            "static": 1,
+            "class": "ELSTR.Lang",
+            "module": "elstr_lang",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_lang.js",
+            "line": 297,
+            "description": "The current langunage",
+            "itemtype": "attribute",
+            "name": "currentLanguage",
+            "readonly": "",
+            "type": "{String}",
+            "default": "true",
+            "class": "ELSTR.Lang",
+            "module": "elstr_lang",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_lang.js",
+            "line": 310,
+            "description": "All loaded language modules",
+            "itemtype": "attribute",
+            "name": "loadedModules",
+            "readonly": "",
+            "type": "{Array}",
+            "default": "Empty array",
+            "class": "ELSTR.Lang",
+            "module": "elstr_lang",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_lang.js",
+            "line": 323,
+            "description": "Url of the Elstr language service",
+            "itemtype": "attribute",
+            "name": "serviceUrl",
+            "type": "{String}",
+            "default": "\"services/ELSTR_LanguageServer\"",
+            "class": "ELSTR.Lang",
+            "module": "elstr_lang",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_lang.js",
+            "line": 334,
+            "description": "Width of the generated message box",
+            "itemtype": "attribute",
+            "name": "messageWidth",
+            "type": "{String}",
+            "default": "\"20em\"",
+            "class": "ELSTR.Lang",
+            "module": "elstr_lang",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_lang.js",
+            "line": 345,
+            "description": "Z-Index of the generated mmessage box",
+            "itemtype": "attribute",
+            "name": "currentLanguage",
+            "type": "{Number}",
+            "default": "1000",
+            "class": "ELSTR.Lang",
+            "module": "elstr_lang",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_message.js",
+            "line": 26,
+            "description": "Designated destructor",
+            "itemtype": "method",
+            "name": "destructor",
+            "class": "ELSTR.User",
+            "module": "elstr_message",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_message.js",
+            "line": 36,
+            "description": "renderUI implementation",
+            "itemtype": "method",
+            "name": "renderUI",
+            "class": "ELSTR.User",
+            "module": "elstr_message",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_message.js",
+            "line": 48,
+            "description": "bindUI implementation\n\nHooks up events for the widget",
+            "itemtype": "method",
+            "name": "bindUI",
+            "class": "ELSTR.User",
+            "module": "elstr_message",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_message.js",
+            "line": 93,
+            "description": "Static property used to define the default attribute configuration of\nthe Widget.",
+            "itemtype": "property",
+            "name": "ATTRS",
+            "type": "{Object}",
+            "access": "protected",
+            "tagname": "",
+            "static": 1,
+            "class": "ELSTR.User",
+            "module": "elstr_message",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_message.js",
+            "line": 103,
+            "description": "The message",
+            "itemtype": "attribute",
+            "name": "message",
+            "type": "{String}",
+            "default": "\"\"",
+            "class": "ELSTR.User",
+            "module": "elstr_message",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_message.js",
+            "line": 114,
+            "description": "Priority of the message (has currently no effect on the widget)",
+            "itemtype": "attribute",
+            "name": "priorty",
+            "type": "{String}",
+            "default": "\"\"",
+            "class": "ELSTR.User",
+            "module": "elstr_message",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_user.js",
+            "line": 39,
+            "description": "Designated initializer",
+            "itemtype": "method",
+            "name": "initializer",
+            "class": "ELSTR.User",
+            "module": "elstr_user",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_user.js",
+            "line": 63,
+            "description": "Designated initializer",
+            "itemtype": "method",
+            "name": "initializer",
+            "class": "ELSTR.User",
+            "module": "elstr_user",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_user.js",
+            "line": 73,
+            "description": "renderUI implementation\n\nThe auth UI is allways loaded from markup, never rendered at runtime",
+            "itemtype": "method",
+            "name": "renderUI",
+            "class": "ELSTR.User",
+            "module": "elstr_user",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_user.js",
+            "line": 84,
+            "description": "bindUI implementation\n\nHooks up events for the widget",
+            "itemtype": "method",
+            "name": "bindUI",
+            "class": "ELSTR.User",
+            "module": "elstr_user",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_user.js",
+            "line": 114,
+            "description": "Returns if the user has allowed access to a resource",
+            "params": [
+                {
+                    "name": "resource",
+                    "description": "Name of a resource",
+                    "type": "String/array"
+                }
+            ],
+            "itemtype": "method",
+            "name": "resourceAllowed",
+            "return": {
+                "description": "If the resource is allowed",
+                "type": "Boolean"
+            },
+            "class": "ELSTR.User",
+            "module": "elstr_user",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_user.js",
+            "line": 141,
+            "description": "Interface for reading enterprise application data",
+            "params": [
+                {
+                    "name": "enterpriseApplication",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "key",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "itemtype": "method",
+            "name": "getEnterpriseApplicationData",
+            "return": {
+                "description": ""
+            },
+            "class": "ELSTR.User",
+            "module": "elstr_user",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_user.js",
+            "line": 163,
+            "description": "Shows a modal access denied Panel",
+            "class": "ELSTR.User",
+            "module": "elstr_user",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_utils.js",
+            "line": 1,
+            "author": "egli@intelliact.ch",
+            "class": "",
+            "module": "elstr_user",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_utils.js",
+            "line": 53,
+            "description": "Clones a literal object",
+            "return": {
+                "description": "object"
+            },
+            "class": "",
+            "module": "elstr_user",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_utils.js",
+            "line": 68,
+            "description": "Generate a random uuid. Modified script from:\nhttp://www.broofa.com/Tools/Math.uuid.js",
+            "return": {
+                "description": "string (RFC4122, version 4 ID)"
+            },
+            "class": "",
+            "module": "elstr_user",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_utils.js",
+            "line": 97,
+            "description": "Public mehtod for clearing all chids in the dom tree",
+            "params": [
+                {
+                    "name": "el:",
+                    "description": "dom-node"
+                }
+            ],
+            "class": "",
+            "module": "elstr_user",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_utils.js",
+            "line": 109,
+            "description": "Public mehtod for showing a wating cursor\n\nNeeds a CSS Class .cursorWait - Example: .cursorWait { cursor: wait; }",
+            "class": "",
+            "module": "elstr_user",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_utils.js",
+            "line": 134,
+            "description": "Check if it is a mobile device",
+            "itemtype": "method",
+            "name": "isMobile",
+            "class": "",
+            "module": "elstr_user",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_utils.js",
+            "line": 147,
+            "description": "Log elstr (error) messages",
+            "itemtype": "method",
+            "name": "loader",
+            "params": [
+                {
+                    "name": "msg:",
+                    "description": "message text",
+                    "type": "String"
+                },
+                {
+                    "name": "category:",
+                    "description": "info, warn, error",
+                    "type": "String"
+                },
+                {
+                    "name": "source",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "",
+            "module": "elstr_user",
+            "namespace": "ELSTR"
+        },
+        {
+            "file": "jslib\\elstr\\2.0.dev\\build\\elstr_utils.js",
+            "line": 167,
+            "description": "Get the correct window location href",
+            "itemtype": "method",
+            "name": "getWindowLocationBase",
+            "class": "",
+            "module": "elstr_user",
+            "namespace": "ELSTR"
+        }
+    ],
+    "warnings": [
+        {
+            "message": "unknown tag: copyright",
+            "line": " jslib\\elstr\\2.0.dev\\build\\elstr_auth.js:1"
+        },
+        {
+            "message": "unknown tag: copyright",
+            "line": " jslib\\elstr\\2.0.dev\\build\\elstr_lang.js:1"
+        },
+        {
+            "message": "unknown tag: copyright",
+            "line": " jslib\\elstr\\2.0.dev\\build\\elstr_message.js:1"
+        },
+        {
+            "message": "unknown tag: copyright",
+            "line": " jslib\\elstr\\2.0.dev\\build\\elstr_user.js:2"
+        },
+        {
+            "message": "Missing item type\nShows a modal access denied Panel",
+            "line": " jslib\\elstr\\2.0.dev\\build\\elstr_user.js:163"
+        },
+        {
+            "message": "Missing item type",
+            "line": " jslib\\elstr\\2.0.dev\\build\\elstr_utils.js:1"
+        },
+        {
+            "message": "Missing item type\nClones a literal object",
+            "line": " jslib\\elstr\\2.0.dev\\build\\elstr_utils.js:53"
+        },
+        {
+            "message": "Missing item type\nGenerate a random uuid. Modified script from:\nhttp://www.broofa.com/Tools/Math.uuid.js",
+            "line": " jslib\\elstr\\2.0.dev\\build\\elstr_utils.js:68"
+        },
+        {
+            "message": "Missing item type\nPublic mehtod for clearing all chids in the dom tree",
+            "line": " jslib\\elstr\\2.0.dev\\build\\elstr_utils.js:97"
+        },
+        {
+            "message": "Missing item type\nPublic mehtod for showing a wating cursor\n\nNeeds a CSS Class .cursorWait - Example: .cursorWait { cursor: wait; }",
+            "line": " jslib\\elstr\\2.0.dev\\build\\elstr_utils.js:109"
+        }
+    ]
+}
