@@ -258,7 +258,14 @@ YUI.add('elstr_lang', function (Y) {
             textNodes = Y.all('[textid');
             textNodes.each(function (textNode) {
                 var textid = textNode.getAttribute('textid');
-                textNode.setHTML(this.text(textid));
+                if(textNode.setHTML){
+                    textNode.setHTML(this.text(textid));
+                } else {
+                    // Only for backward compatibility
+                    // Can be removed if all customers are on latest YUI 3.x
+                    textNode.setContent(this.text(textid));
+                }
+                
             }, this);
         },
 
