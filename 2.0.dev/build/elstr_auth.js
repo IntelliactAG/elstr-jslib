@@ -87,7 +87,7 @@ YUI.add('elstr_auth', function (Y) {
          * The auth UI is allways loaded from markup, never rendered at runtime
          * @method renderUI
          */
-        renderUI: function () {            
+        renderUI: function () {
             // Remove any diyplay none settings       
             this.get('contentBox').setStyle("display","");
         },
@@ -105,16 +105,17 @@ YUI.add('elstr_auth', function (Y) {
                 this._handleSubmit();
             },this);
             var enterListener = Y.on('key', function(e) {
+                e.preventDefault();
                 that._handleSubmit();
             }, '#loginDialog', 'down:13', Y);
             
             Y.log(this.get("forceAuthentication"));
             if (this.get("forceAuthentication") === true){
-                contentBox.one(".cancel").remove(true); 
+                contentBox.one(".cancel").remove(true);
             } else {
                 contentBox.one(".cancel").on("click",function(e) {
                     this._handleCancel();
-                },this);                 
+                },this);
             }
             Y.on("resize", this._handleWindowResize, window, this);
         },
