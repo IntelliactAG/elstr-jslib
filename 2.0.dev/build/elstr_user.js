@@ -48,13 +48,13 @@ YUI.add('elstr_user', function (Y) {
                 this._set("isAuth",ELSTR.applicationData.user.isAuth);
                 this._set("isAdmin",ELSTR.applicationData.user.isAdmin);
                 this._set("resourcesAllowed",ELSTR.applicationData.user.resourcesAllowed);
-                this._set("enterpriseApplicationData",ELSTR.applicationData.user.enterpriseApplicationData);		
+                this._set("enterpriseApplicationData",ELSTR.applicationData.user.enterpriseApplicationData);
                 ELSTR.applicationData.user = "empty after reading it to the user widget";
-            } 
+            }
               
             // TODO: implement correct auth handling
-            Y.on('elstr_auth:successfulLogout', this._onSuccessfulLogout);  
-            Y.on('elstr_auth:successfulAuth', this._onSuccessfulAuth); 
+            Y.on('elstr_auth:successfulLogout', this._onSuccessfulLogout);
+            Y.on('elstr_auth:successfulAuth', this._onSuccessfulAuth);
             if (this.get("forceAuthentication") === true && this.get("isAuth") === false) {
                 this._login();
             }
@@ -76,7 +76,7 @@ YUI.add('elstr_user', function (Y) {
          * The auth UI is allways loaded from markup, never rendered at runtime
          * @method renderUI
          */
-        renderUI: function () {            
+        renderUI: function () {
         // Always loaded from markup
         // E.g. srcNode:"#loginHandler"
         },
@@ -90,12 +90,15 @@ YUI.add('elstr_user', function (Y) {
         bindUI: function () {
             var contentBox = this.get('contentBox');
             contentBox.one(".login").on("click", function(e) {
+                e.preventDefault();
                 this._login();
             },this);
             contentBox.one(".logout").on("click", function(e) {
+                e.preventDefault();
                 this._logout();
             },this);
             contentBox.one(".admin").on("click", function(e) {
+                e.preventDefault();
                 Y.use('elstr_admin', function (Y) {
                     Y.ELSTR.Admin.openAdminConsole();
                 });
