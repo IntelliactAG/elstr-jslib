@@ -9,13 +9,13 @@
  * @copyright Intelliact AG, 2011
  */
 
-YUI.add('elstr_auth', function (Y) {
+YUI.add('elstr_auth', function(Y) {
 
     /**
      * Authentication widget and handling for Elstr applications
      *
      * MARKUP example, required for Authentication:
-     * 
+     *
      *     <div id="loginDialog" style="display: none;">
      *       <div class="yui3-widget-hd">
      *         Anmelden
@@ -37,13 +37,13 @@ YUI.add('elstr_auth', function (Y) {
      *         <div class="cancel button">Abbrechen</div>
      *       </div>
      *     </div>
-     * 
+     *
      * @class Auth
      * @extends YUI.Panel
      * @namespace ELSTR
      * @param config {Object} Configuration object
      */
-    
+
     Y.namespace('ELSTR').Auth = Y.Base.create('elstr_auth', Y.Panel, [], {
 
         /**
@@ -66,8 +66,8 @@ YUI.add('elstr_auth', function (Y) {
          * @type {Event.Custom}
          */
 
-        initializer: function () {
-        // 
+        initializer: function() {
+            // 
         },
 
 
@@ -76,7 +76,7 @@ YUI.add('elstr_auth', function (Y) {
          *
          * @method destructor
          */
-        destructor: function () {
+        destructor: function() {
             // Remove all click listeners
             this.get('contentBox').purge(true);
         },
@@ -87,9 +87,9 @@ YUI.add('elstr_auth', function (Y) {
          * The auth UI is allways loaded from markup, never rendered at runtime
          * @method renderUI
          */
-        renderUI: function () {
+        renderUI: function() {
             // Remove any diyplay none settings       
-            this.get('contentBox').setStyle("display","");
+            this.get('contentBox').setStyle("display", "");
         },
 
         /**
@@ -98,44 +98,46 @@ YUI.add('elstr_auth', function (Y) {
          * Hooks up events for the widget
          * @method bindUI
          */
-        bindUI: function () {
+        bindUI: function() {
             var that = this;
             var contentBox = this.get('contentBox');
             contentBox.one(".login").on("click", function(e) {
                 this._handleSubmit();
-            },this);
+            }, this);
             var enterListener = Y.on('key', function(e) {
                 e.preventDefault();
                 that._handleSubmit();
             }, '#loginDialog', 'down:13', Y);
-            
+
             Y.log(this.get("forceAuthentication"));
-            if (this.get("forceAuthentication") === true){
-                contentBox.one(".cancel").remove(true);
+            if (this.get("forceAuthentication") === true) {
+                if (contentBox.one(".cancel")) {
+                    contentBox.one(".cancel").remove(true);
+                }
             } else {
-                contentBox.one(".cancel").on("click",function(e) {
+                contentBox.one(".cancel").on("click", function(e) {
                     this._handleCancel();
-                },this);
+                }, this);
             }
             Y.on("resize", this._handleWindowResize, window, this);
         },
 
-        syncUI: function () {
-            
+        syncUI: function() {
+
         },
-    
+
         //
         // PUBLIC FUNCTIONS
         //
 
         /**
          * Open the login dialog for an enterprise application
-         * 
+         *
          * @method login
          * @param {String} enterpriseApplication Name of the enterprise application
          */
-        login : function(enterpriseApplication){
-            if(Y.Lang.isUndefined(enterpriseApplication) || enterpriseApplication === ''){
+        login: function(enterpriseApplication) {
+            if (Y.Lang.isUndefined(enterpriseApplication) || enterpriseApplication === '') {
                 this._enterpriseApplication = '';
             } else {
                 // TODO enterpriseApplication auth events
@@ -154,21 +156,21 @@ YUI.add('elstr_auth', function (Y) {
          *
          * @method logout
          */
-        logout : function(){
+        logout: function() {
             this._logoutRequest();
         },
-    
+
         //
         // PRRIVATE VARIABLES
         //
 
-        _enterpriseApplication : null,
+        _enterpriseApplication: null,
 
         //
         // PRRIVATE FUNCTIONS
         //
 
-        _handleSubmit : function() {
+        _handleSubmit: function() {
             var contentBox = this.get('contentBox');
             var username = contentBox.one(".username input").get("value");
             var password = contentBox.one(".password input").get("value");
@@ -179,112 +181,111 @@ YUI.add('elstr_auth', function (Y) {
 
             this._authRequest(username, password, enterpriseApplication);
         },
-        _handleCancel : function() {
+        _handleCancel: function() {
             this._clearPasswordValue();
             // Clear all child nodes of the message container element
             this.get('contentBox').one(".loginDialogMessageContainer").empty(true);
             this.hide();
         },
-        _clearPasswordValue : function(){
-            this.get('contentBox').one(".password input").set("value","");
+        _clearPasswordValue: function() {
+            this.get('contentBox').one(".password input").set("value", "");
         },
-        
-        _authRequest : function(username, password, enterpriseApplication) {
-            var that = this,
-            eApp = enterpriseApplication,
-            oRequestPost = {
-                "jsonrpc" : "2.0",
-                "method" : "auth",
-                "params" : {
-                    username : username,
-                    password : password,
-                    enterpriseApplication : enterpriseApplication
-                },
-                "id" : Y.ELSTR.Utils.uuid()
-            },
-            request = Y.io("services/ELSTR_AuthServer", {
-                method:"POST",
-                data:Y.JSON.stringify(oRequestPost),
-                on: {
-                    success:function(id, o){
-                        var parsedResponse;
-                        Y.ELSTR.Utils.cursorWait.hide();
-                        try {
-                            parsedResponse = Y.JSON.parse(o.responseText);
-                        }
-                        catch (e) {
-                            Y.ELSTR.Utils.log(e,"error");
-                            Y.ELSTR.Utils.log("Response: " + o.responseText,"info");
-                            return;
-                        }
-                        var responseAction = parsedResponse.result.action;
-                        var responseMessages = parsedResponse.result.message;
-                 
-                        if (responseAction == "success") {
-                            that.hide();
-                            that.fire('successfulAuth', parsedResponse.result);
-                        
-                        
-                        //TODO: What is this for? This is a security leak!
-                        //that.onAfterAuthEvent.fire(username, password);
 
-                        //TODO: enterpriseApplication auth events                     
-                        // try {
-                        //     var oRequestPost = YAHOO.lang.JSON.parse(oRequest);
-                        //     if (oRequestPost.params.enterpriseApplication != ''){
-                        //         var enterpriseApplication = oRequestPost.params.enterpriseApplication;
-                        //                          
-                        //         that.enterpriseApplicationAuthEvent[enterpriseApplication].fire();
-                        //     }
-                        // }
-                        // catch (e) {
-                        // }
-            
-                        } else {
-                            if (that.get("forceAuthentication") === true) {
-                                that.login(eApp);
-                            }
-                            Y.APP.lang.messageInContainer("#loginDialog .loginDialogMessageContainer",responseMessages[0],"info");
-                        }
-                    },
-                    failure:function(id, o){
-                        Y.ELSTR.Utils.cursorWait.hide();
-                        Y.ELSTR.Error.requestFailure(null, o);
-                    }
-                }
-            });
-            Y.ELSTR.Utils.cursorWait.show();
-        },
-        _logoutRequest : function() {
+        _authRequest: function(username, password, enterpriseApplication) {
             var that = this,
-            oRequestPost = {
-                "jsonrpc" : "2.0",
-                "method" : "logout",
-                "params" : {},
-                "id" : Y.ELSTR.Utils.uuid()
-            },
-            request = Y.io("services/ELSTR_AuthServer", {
-                method:"POST",
-                data:Y.JSON.stringify(oRequestPost),
-                on: {
-                    success:function(id, o){
-                        Y.ELSTR.Utils.cursorWait.hide();
-                        that.fire('successfulLogout');
+                eApp = enterpriseApplication,
+                oRequestPost = {
+                    "jsonrpc": "2.0",
+                    "method": "auth",
+                    "params": {
+                        username: username,
+                        password: password,
+                        enterpriseApplication: enterpriseApplication
                     },
-                    failure:function(id, o){
-                        Y.ELSTR.Utils.cursorWait.hide();
-                        Y.ELSTR.Error.requestFailure(null, o);
+                    "id": Y.ELSTR.Utils.uuid()
+                },
+                request = Y.io("services/ELSTR_AuthServer", {
+                    method: "POST",
+                    data: Y.JSON.stringify(oRequestPost),
+                    on: {
+                        success: function(id, o) {
+                            var parsedResponse;
+                            Y.ELSTR.Utils.cursorWait.hide();
+                            try {
+                                parsedResponse = Y.JSON.parse(o.responseText);
+                            } catch (e) {
+                                Y.ELSTR.Utils.log(e, "error");
+                                Y.ELSTR.Utils.log("Response: " + o.responseText, "info");
+                                return;
+                            }
+                            var responseAction = parsedResponse.result.action;
+                            var responseMessages = parsedResponse.result.message;
+
+                            if (responseAction == "success") {
+                                that.hide();
+                                that.fire('successfulAuth', parsedResponse.result);
+
+
+                                //TODO: What is this for? This is a security leak!
+                                //that.onAfterAuthEvent.fire(username, password);
+
+                                //TODO: enterpriseApplication auth events                     
+                                // try {
+                                //     var oRequestPost = YAHOO.lang.JSON.parse(oRequest);
+                                //     if (oRequestPost.params.enterpriseApplication != ''){
+                                //         var enterpriseApplication = oRequestPost.params.enterpriseApplication;
+                                //                          
+                                //         that.enterpriseApplicationAuthEvent[enterpriseApplication].fire();
+                                //     }
+                                // }
+                                // catch (e) {
+                                // }
+
+                            } else {
+                                if (that.get("forceAuthentication") === true) {
+                                    that.login(eApp);
+                                }
+                                Y.APP.lang.messageInContainer("#loginDialog .loginDialogMessageContainer", responseMessages[0], "info");
+                            }
+                        },
+                        failure: function(id, o) {
+                            Y.ELSTR.Utils.cursorWait.hide();
+                            Y.ELSTR.Error.requestFailure(null, o);
+                        }
                     }
-                }
-            });
+                });
             Y.ELSTR.Utils.cursorWait.show();
         },
-        
-        _handleWindowResize : function(){
-            this.set("centered",true);
+        _logoutRequest: function() {
+            var that = this,
+                oRequestPost = {
+                    "jsonrpc": "2.0",
+                    "method": "logout",
+                    "params": {},
+                    "id": Y.ELSTR.Utils.uuid()
+                },
+                request = Y.io("services/ELSTR_AuthServer", {
+                    method: "POST",
+                    data: Y.JSON.stringify(oRequestPost),
+                    on: {
+                        success: function(id, o) {
+                            Y.ELSTR.Utils.cursorWait.hide();
+                            that.fire('successfulLogout');
+                        },
+                        failure: function(id, o) {
+                            Y.ELSTR.Utils.cursorWait.hide();
+                            Y.ELSTR.Error.requestFailure(null, o);
+                        }
+                    }
+                });
+            Y.ELSTR.Utils.cursorWait.show();
+        },
+
+        _handleWindowResize: function() {
+            this.set("centered", true);
         }
-       
-        
+
+
     }, {
 
         /**
@@ -313,24 +314,6 @@ YUI.add('elstr_auth', function (Y) {
     });
 
 }, '2.0', {
-    requires: ['base','node','panel','io','json','event','elstr_user','elstr_authcss'],
+    requires: ['base', 'node', 'panel', 'io', 'json', 'event', 'elstr_user', 'elstr_authcss'],
     skinnable: false
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
