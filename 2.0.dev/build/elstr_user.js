@@ -239,9 +239,14 @@ YUI.add('elstr_user', function(Y) {
                         }
                     }
                 });
+                if (that.get("forceAuthentication") === true) {
+                    that._auth.set('hideOn', []);
+                }
                 that._auth.render();
                 that.fire("_authCreated");
             });
+
+
         },
         _login: function() {
             if (Y.Lang.isNull(this._auth) === true) {

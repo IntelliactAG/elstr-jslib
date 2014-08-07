@@ -100,6 +100,8 @@ YUI.add('elstr_auth', function(Y) {
          */
         bindUI: function() {
             var that = this;
+            var forceAuthentication = this.get("forceAuthentication");
+
             var contentBox = this.get('contentBox');
             contentBox.one(".login").on("click", function(e) {
                 this._handleSubmit();
@@ -109,8 +111,8 @@ YUI.add('elstr_auth', function(Y) {
                 that._handleSubmit();
             }, '#loginDialog', 'down:13', Y);
 
-            Y.log(this.get("forceAuthentication"));
-            if (this.get("forceAuthentication") === true) {
+            Y.log("forceAuthentication: " + forceAuthentication);
+            if (forceAuthentication === true) {
                 if (contentBox.one(".cancel")) {
                     contentBox.one(".cancel").remove(true);
                 }
