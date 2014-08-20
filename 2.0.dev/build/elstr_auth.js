@@ -104,6 +104,7 @@ YUI.add('elstr_auth', function(Y) {
 
             var contentBox = this.get('contentBox');
             contentBox.one(".login").on("click", function(e) {
+                e.preventDefault();
                 this._handleSubmit();
             }, this);
             var enterListener = Y.on('key', function(e) {
