@@ -107,6 +107,26 @@ YUI.add('elstr_utils', function(Y) {
             }
         },
         /**
+         * Public mehtod for tracking an event with piwik
+         * 
+         * @param category, string
+         * @param action, string
+         * @param name, optional string
+         * @param value, optional number
+         */
+        pTrackEvent : function(category, action, name, value) {
+            var eventArray = ['trackEvent',category,action];
+            if(_paq){
+                if(name !== undefined){
+                    eventArray.push(name);
+                }
+                if(value !== undefined){
+                    eventArray.push(value);
+                }
+                _paq.push(eventArray);
+            }
+        },        
+        /**
 		 * Public mehtod for showing a wating cursor
 		 * 
 		 * Needs a CSS Class .cursorWait - Example: .cursorWait { cursor: wait; }
