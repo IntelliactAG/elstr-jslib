@@ -1,0 +1,1 @@
+Elstr frontend components used for React and Flux applications
