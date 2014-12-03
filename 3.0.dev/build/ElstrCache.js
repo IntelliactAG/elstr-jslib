@@ -2,99 +2,108 @@
  * Created by sahun on 02.12.2014.
  */
 
-function ElstrCache(){};
+function ElstrCache(){
 
-ElstrCache.data = [];
-ElstrCache.timeToExpire = [];
+    // constructor
+    this._data = [];
+    this._timeToExpire = [];
 
-/**
- * Returns true if the cache contains a key and false if not.
- * @param key
- * @returns {boolean}
- */
-ElstrCache.contains = function(key){
-    var contained =  key in ElstrCache.data;
+}
 
-    // Check if we have it in the cache.
-    if (contained){
 
-        // We have the data in the array
-        // Then we have to check the timestamp.
+ElstrCache.prototype = {
 
-        var timeToExpire = ElstrCache.timeToExpire[key];
+    /**
+     * Returns true if the cache contains a key and false if not.
+     * @param key
+     * @returns {boolean}
+     */
+    contains : function(key){
+        var contained =  key in this._data;
+
+        // Check if we have it in the cache.
+        if (contained){
+
+            // We have the data in the array
+            // Then we have to check the timestamp.
+
+            var timeToExpire = this._timeToExpire[key];
+            if (timeToExpire){
+
+                var d = new Date();
+                var time = d.getTime();
+
+                // The data was there, but outdated.
+                if (timeToExpire < time){
+
+                    ElstrCache.cleanEntry(key);
+                    contained = false;
+
+                }
+            }
+        }
+
+        return contained;
+
+    },
+
+    /**
+     * Gets a value from the cache if it exists.
+     * Return null if not.
+     * @param key
+     * @returns {*}
+     */
+    get : function(key){
+        if (ElstrCache.contains(key)){
+            return this._data[key];
+        }else{
+            return null;
+        }
+    },
+
+    /**
+     * Sets a value in the cache.
+     * @param key
+     * @param value
+     * @param timeToExpire milisecons while the value is active.
+     */
+    set : function(key, value, timeToExpire){
+        this._data[key] = value;
+
         if (timeToExpire){
 
             var d = new Date();
-            var time = d.getTime();
+            var time = d.getTime() + timeToExpire;
+            this._timeToExpire[key] = time;
 
-            // The data was there, but outdated.
-            if (timeToExpire < time){
+        }else{
 
-                ElstrCache.cleanEntry(key);
-                contained = false;
+            delete this._timeToExpire[key];
 
-            }
         }
-    }
+    },
 
-    return contained;
+    /**
+     * Cleans an specific entry in the cache.
+     */
+    cleanEntry : function(key){
 
-}
+        delete this._data[key];
+        delete this._timeToExpire[key];
 
-/**
- * Gets a value from the cache if it exists.
- * Return null if not.
- * @param key
- * @returns {*}
- */
-ElstrCache.get = function(key){
-    if (ElstrCache.contains(key)){
-        return ElstrCache.data[key];
-    }else{
-        return null;
-    }
-}
+    },
 
-/**
- * Sets a value in the cache.
- * @param key
- * @param value
- * @param timeToExpire milisecons while the value is active.
- */
-ElstrCache.set = function(key, value, timeToExpire){
-    ElstrCache.data[key] = value;
+    /**
+     * Cleans the full cache
+     */
+    cleanCache : function(){
 
-    if (timeToExpire){
-
-        var d = new Date();
-        var time = d.getTime() + timeToExpire;
-        ElstrCache.timeToExpire[key] = time;
-
-    }else{
-
-        delete ElstrCache.timeToExpire[key];
+        this._data = [];
+        this._timeToExpire = [];
 
     }
-}
 
-/**
- * Cleans an specific entry in the cache.
- */
-ElstrCache.cleanEntry = function(key){
+};
 
-    delete ElstrCache.data[key];
-    delete ElstrCache.timeToExpire[key];
-
-}
-
-/**
- * Cleans the full cache
- */
-ElstrCache.cleanCache = function(){
-
-    ElstrCache.data = [];
-    ElstrCache.timeToExpire = [];
-
-}
 
 module.exports = ElstrCache;

@@ -2,16 +2,24 @@
  * Created by sahun on 02.12.2014.
  */
 
-function ElstrRouter(){};
+ var ElstrLog = require("../lib/ElstrLog");
+
+function ElstrRouter(){
+
+};
 
 
-ElstrRouter.changeUrl = function( newUrl ){
+ElstrRouter.prototype = {
 
-}
-ElstrRouter.setOnChangeUrl = function( onChangeFunc ){
+	changeUrl = function( newUrl ){
 
-}
-ElstrRouter.back = function(){
+	},
+	setOnChangeUrl = function( onChangeFunc ){
+
+	},
+	back = function(){
+
+	}
 
 }
 

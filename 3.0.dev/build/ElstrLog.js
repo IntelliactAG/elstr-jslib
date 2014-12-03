@@ -2,9 +2,11 @@
  * Created by sahun on 02.12.2014.
  */
 
-function ElstrLog() {
+function ElstrLog(enabled) {
+
     // constructor
-    this._enabled = true;
+    this._enabled = enabled;
+
 }
 
 ElstrLog.prototype = {
@@ -43,7 +45,31 @@ ElstrLog.prototype = {
     // Writes the the number of times that count() has been invoked at the same line and with the same label.
     count : function(label) {
         console.count(label);
+    },
+
+
+    trace: function(){
+
+        if (this._enabled) {
+            
+            // arguments properties
+            console.log(arguments);
+            console.log(arguments.length);
+            console.log(arguments.callee);
+            console.log(arguments[1]);
+
+            // Function properties
+            console.log(callTaker.length);
+            console.log(callTaker.caller);
+            console.log(arguments.callee.caller);
+            console.log(arguments.callee.caller.caller);
+            console.log(callTaker.name);
+            console.log(callTaker.constructor);
+        }
     }
+
+
+
 
 };
 

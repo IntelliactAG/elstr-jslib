@@ -2,22 +2,29 @@
  * Created by sahun on 02.12.2014.
  */
 
-function ElstrI18N(){};
-
-ElstrI18N.currentLang = "de";
-
-ElstrI18N.getLangs = function(){
-
-    return [];
+function ElstrI18N(currentLang){
+	this._currentLang = currentLang;
 }
 
-ElstrI18N.setLang = function( lang ){
-    ElstrI18N.currentLang = lang;
-}
+ElstrI18N.prototype = {
 
-ElstrI18N.translate = function( text ){
-    
-    return "";
-}
+	getAvailableLangs : function(){
+
+		return [];
+	}
+
+	getCurrentLang : function(){
+		return this._currentLang;
+	}
+
+	setCurrentLang : function( lang ){
+		this._currentLang = lang;
+	}
+
+	translate : function( text ){
+		return "";
+	}
+
+};
 
 module.exports = ElstrI18N;

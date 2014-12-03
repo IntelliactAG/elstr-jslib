@@ -2,8 +2,11 @@
  * Created by egli on 02.12.2014.
  */
 
+var ElstrLog = require("../lib/ElstrLog");
+
 function ElstrUuid() {
-    // constructor
+    
+    _generatedUids:[] // Only for the createValidated Method.
 }
 
 ElstrUuid.prototype = {
@@ -37,6 +40,27 @@ ElstrUuid.prototype = {
             }
         }
         return uuid.join('');
+    },
+
+
+    /**
+     * Generate a random uuid. 
+     * Checks that it was never used before.
+     * 
+     * @return string (RFC4122, version 4 ID)
+     */
+    createValidated: function(){
+        var newUid = this.create();
+
+        while (this._generatedUids.indexOf(newUid)!=-1) {
+
+            newUid = this.create();
+            ElstrLog.error('ElstrUuid.createValidated: collision found with ' + newUid);
+
+        }
+
+        guids.push(guid);
+
     }
 
 };
