@@ -4,12 +4,12 @@
 
 var ElstrLog = require("../lib/ElstrLog");
 
-function ElstrUuid() {
+function ElstrId() {
     
-    _generatedUids:[] // Only for the createValidated Method.
+    _generatedUids:[] // Only for the createDocumentUnique Method.
 }
 
-ElstrUuid.prototype = {
+ElstrId.prototype = {
 
     /**
      * Generate a random uuid. Modified script from:
@@ -49,13 +49,13 @@ ElstrUuid.prototype = {
      * 
      * @return string (RFC4122, version 4 ID)
      */
-    createValidated: function(){
+    createDocumentUnique: function(){
         var newUid = this.create();
 
         while (this._generatedUids.indexOf(newUid)!=-1) {
 
             newUid = this.create();
-            ElstrLog.error('ElstrUuid.createValidated: collision found with ' + newUid);
+            ElstrLog.error('ElstrId.createDocumentUnique: collision found with ' + newUid);
 
         }
 
@@ -66,4 +66,4 @@ ElstrUuid.prototype = {
 };
 
 
-module.exports = ElstrUuid;
+module.exports = ElstrId;

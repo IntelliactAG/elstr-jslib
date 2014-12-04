@@ -4,22 +4,28 @@
 
 var jQuery = require("jquery");
 var ElstrLog = require("../lib/ElstrLog");
+var ElstrId = require("../lib/ElstrId");
 
-function ElstrIo(){
-    this._currentRequest = [];
+function ElstrRpc(requestURLs){
+
+    this._currentRequests = [];
+
+    this.requestURLs = '/elstrCustomerResearch/public/services/';
+    if (requestURLs) this.requestURLs = requestURLs;
+    
 }
 
-ElstrIo.prototype = {
+ElstrRpc.prototype = {
 
     /** Aborts the specific request defined by
      * className & methodName
     **/
     abort : function(className, methodName){
 
-        if (this._currentRequest[className] &&
-            this._currentRequest[className][methodName]){
+        if (this._currentRequests[className] &&
+            this._currentRequests[className][methodName]){
 
-            this._currentRequest[className][methodName].abort();
+            this._currentRequests[className][methodName].abort();
             ElstrLog.log("Request Aborted ",className, methodName);
         }
 
@@ -30,9 +36,9 @@ ElstrIo.prototype = {
      */
     abortAll : function(){
 
-        for (var i = 0; i < this._currentRequest.length; i++){
-            for (var j = 0; j < this._currentRequest[i].length; j++){
-                this._currentRequest[i][j].abort();
+        for (var i = 0; i < this._currentRequests.length; i++){
+            for (var j = 0; j < this._currentRequests[i].length; j++){
+                this._currentRequests[i][j].abort();
             }
         }
 
@@ -47,16 +53,16 @@ ElstrIo.prototype = {
             "jsonrpc": "2.0",
             "method": methodName,
             "params": params,
-            "id": "993D5698-A3DE-411D-9E49-E008838DC00D"
+            "id": ElstrId.create()
         };
 
-        var url = '/elstrCustomerResearch/public/services/'+className;
+        var url = this.requestURLs+className;
 
 
-        if (!this._currentRequest[className])
-            this._currentRequest[className] = [];
+        if (!this._currentRequests[className])
+            this._currentRequests[className] = [];
 
-        this._currentRequest[className][methodName] =
+        this._currentRequests[className][methodName] =
             jQuery.post(url, JSON.stringify(oRequestPost), function(data) {
 
                 var error = "Unknown error";
@@ -76,6 +82,7 @@ ElstrIo.prototype = {
                 ElstrLog.error("Request Failed ",className, methodName);
             }).always(function() {
                 ElstrLog.error("Request Finished ",className, methodName);
+                delete this._currentRequests[className][methodName];
             });
 
 
@@ -85,4 +92,4 @@ ElstrIo.prototype = {
 
 
 
-module.exports = ElstrIo;
+module.exports = ElstrRpc;
