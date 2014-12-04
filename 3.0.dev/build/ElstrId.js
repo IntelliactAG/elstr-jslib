@@ -2,11 +2,23 @@
  * Created by egli on 02.12.2014.
  */
 
-var ElstrLog = require("../lib/ElstrLog");
+var ElstrLog = require("./ElstrLog");
+
+
+/**********************/
+/* Private            */
+/**********************/
+
+var _generatedIds = {}; // Only for the createDocumentUnique Method.
+
+
+/**********************/
+/* Class              */
+/**********************/
+
 
 function ElstrId() {
-    
-    _generatedUids:[] // Only for the createDocumentUnique Method.
+
 }
 
 ElstrId.prototype = {
@@ -42,7 +54,6 @@ ElstrId.prototype = {
         return uuid.join('');
     },
 
-
     /**
      * Generate a random uuid. 
      * Checks that it was never used before.
@@ -52,14 +63,16 @@ ElstrId.prototype = {
     createDocumentUnique: function(){
         var newUid = this.create();
 
-        while (this._generatedUids.indexOf(newUid)!=-1) {
+        while (newUid in _generatedIds) {
 
             newUid = this.create();
             ElstrLog.error('ElstrId.createDocumentUnique: collision found with ' + newUid);
 
         }
 
-        guids.push(guid);
+        _generatedIds[newUid] = true;
+
+        return newUid;
 
     }
 

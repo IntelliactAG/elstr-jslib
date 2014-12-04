@@ -34,7 +34,7 @@ function ElstrCache(mode, arrayLimit){
 
     
     this._arrayLimit =  0;
-    if (arrayLimit)
+    if (arrayLimit){
         if (arrayLimit>0){
             this._arrayLimit = arrayLimit;
         }else{
@@ -142,8 +142,8 @@ ElstrCache.prototype = {
         }else if (this._mode === ARRAY_MODE){
 
             var entry = {
-                _value: value;
-                _timeToExpire: null;
+                _value: value,
+                _timeToExpire: null
             }
 
             if (timeToExpire){
@@ -212,7 +212,7 @@ ElstrCache.prototype = {
 
         }
 
-    }
+    },
 
     cleanExpireds : function(){
 
