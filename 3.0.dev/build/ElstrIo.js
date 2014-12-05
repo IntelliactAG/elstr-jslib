@@ -11,7 +11,7 @@ ElstrId = new ElstrId();
 var jQuery;
 var _currentRequests = [];
 
-function ElstrRpc(requestURLs, jQueryLib){
+function ElstrIo(requestURLs, jQueryLib){
 
     jQuery = jQueryLib;
 
@@ -20,7 +20,7 @@ function ElstrRpc(requestURLs, jQueryLib){
     
 }
 
-ElstrRpc.prototype = {
+ElstrIo.prototype = {
 
     /** Aborts the specific request defined by
      * className & methodName
@@ -52,7 +52,7 @@ ElstrRpc.prototype = {
     /**
      * Call an Elstr
      */
-    rpc : function(className, methodName, params, onSuccess, onError){
+    jsonRpc : function(className, methodName, params, onSuccess, onError){
 
         var oRequestPost = {
             "jsonrpc": "2.0",
@@ -97,4 +97,4 @@ ElstrRpc.prototype = {
 
 
 
-module.exports = ElstrRpc;
+module.exports = ElstrIo;
