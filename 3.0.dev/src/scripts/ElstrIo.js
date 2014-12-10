@@ -12,7 +12,8 @@ var request = require('./libs/superagent/superagent.js');
 
 var ElstrLog = require("./ElstrLog");
 var elstrLog = new ElstrLog({
-    enabled: true
+    enabled: true,
+    serverLevel: 7
 });
 
 var ElstrId = require("./ElstrId");
@@ -80,12 +81,9 @@ ElstrIo.prototype = {
                 }
 
                 if (error) {
+                    // TODO: Do not call onError if req is aborted because of abortStaleRequests is true
                     callback.onError(req, error);
                     elstrLog.error(error);
-                } else if (res.status > 200) {
-                    callback.onError(req, error);
-                } else if (!res.ok) {
-                    callback.onError(req, error);
                 } else {
                     callback.onSuccess(req, res);
                     elstrLog.info(res);
@@ -100,7 +98,6 @@ ElstrIo.prototype = {
         });
         return req;
     }
-
 
 };
 

@@ -2,13 +2,9 @@
  * Created by sahun on 02.12.2014.
  */
 
-/*
-var ElstrIo = require("./ElstrIo");
-console.log(ElstrIo);
-var elstrIo = new ElstrIo({
-  abortStaleRequests: false
-});
-*/
+
+
+var request = require('./libs/superagent/superagent.js');
 
 /**
  * This is the class for IO used in Elstr projects
@@ -27,21 +23,31 @@ function ElstrLog(options) {
     }
 }
 
+
+_logToServer = function(level, arguments) {
+    var oRequestPost = {
+        "jsonrpc": "2.0",
+        "method": "write",
+        "params": {
+            level: level,
+            arguments: arguments
+        },
+        "id": "0"
+    };
+    request.post('services/ELSTR_LogServer')
+        .send(oRequestPost)
+        .type('json')
+        .end(function(error, res) {});
+    };
+
 ElstrLog.prototype = {
 
     /* Displays a message in the console. You pass one or more objects to this method, each of which are evaluated and concatenated into a space-delimited string. The first parameter you pass to log() may contain format specifiers, a string token composed of the percent sign (%) followed by a letter that indicates the formatting to be applied. */
     log: function() {
         if (console && this.options.enabled) {
             console.log.apply(console, arguments);
-            if (this.options.serverLevel && this.options.serverLevel < 6) {
-                var params = {
-                    level: "log",
-                    arguments: arguments
-                };
-                var req = elstrIo.requestJsonRpc("ELSTR_LogServer", "write", params, {
-                    onSuccess: function(req, res) {},
-                    onError: function(req, error) {}
-                });
+            if (this.options.serverLevel && this.options.serverLevel >= 5) {
+                _logToServer("log",arguments);
             }
         }
     },
@@ -52,21 +58,33 @@ ElstrLog.prototype = {
     info: function() {
         if (console && this.options.enabled) {
             console.info.apply(console, arguments);
+            if (this.options.serverLevel && this.options.serverLevel >= 6) {
+                _logToServer("info",arguments);
+            }            
         }
     },
     debug: function() {
         if (console && this.options.enabled) {
             console.debug.apply(console, arguments);
+            if (this.options.serverLevel && this.options.serverLevel >= 7) {
+                _logToServer("debug",arguments);
+            }               
         }
     },
     warn: function() {
         if (console && this.options.enabled) {
             console.error.apply(console, arguments);
+            if (this.options.serverLevel && this.options.serverLevel >= 4) {
+                _logToServer("warn",arguments);
+            }               
         }
     },
     error: function() {
         if (console && this.options.enabled) {
             console.error.apply(console, arguments);
+            if (this.options.serverLevel && this.options.serverLevel >= 3) {
+                _logToServer("error",arguments);
+            }               
         }
     },
 
@@ -84,6 +102,8 @@ ElstrLog.prototype = {
 
         }
     }
+
+
 
 };
 
