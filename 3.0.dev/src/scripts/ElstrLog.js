@@ -1,8 +1,8 @@
 /**
- * Created by sahun on 02.12.2014.
+ * Copyright 2014, Intelliact AG
+ * Copyrights licensed under the New BSD License
+ * Created by sahun@intelliact on 02.12.2014.
  */
-
-
 
 var request = require('./libs/superagent/superagent.js');
 
@@ -24,13 +24,13 @@ function ElstrLog(options) {
 }
 
 
-_logToServer = function(level, arguments) {
+_logToServer = function(level, args) {
     var oRequestPost = {
         "jsonrpc": "2.0",
         "method": "write",
         "params": {
             level: level,
-            arguments: arguments
+            arguments: args
         },
         "id": "0"
     };

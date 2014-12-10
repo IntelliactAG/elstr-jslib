@@ -13,7 +13,7 @@ var request = require('./libs/superagent/superagent.js');
 var ElstrLog = require("./ElstrLog");
 var elstrLog = new ElstrLog({
     enabled: true,
-    serverLevel: 7
+    serverLevel: 3
 });
 
 var ElstrId = require("./ElstrId");
@@ -69,7 +69,7 @@ ElstrIo.prototype = {
             .type('json')
             .end(function(error, res) {
 
-                var indexOfCurrentRequest;
+                var indexOfCurrentRequest = -1;
                 for (var i = 0, len = _currentJsonRpcRequests.length; i < len; i++) {
                     if (_currentJsonRpcRequests[i].requestId === requestId) {
                         indexOfCurrentRequest = i;
