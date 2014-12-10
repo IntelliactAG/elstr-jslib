@@ -5,7 +5,10 @@
 var ARRAY_MODE = 1;
 var LOCAL_STORAGE_MODE = 2;
 
-var ElstrLog = require("../build/ElstrLog");
+var ElstrLog = require("./ElstrLog");
+var elstrLog = new ElstrLog({
+    enabled: true
+});
 
 function ElstrCache(mode, arrayLimit){
 

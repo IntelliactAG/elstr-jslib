@@ -4,19 +4,18 @@
 
 var ElstrLog = require("./ElstrLog");
 
-
-/**********************/
-/* Private            */
-/**********************/
+/**
+/* Private
+ */
 
 var _generatedIds = {}; // Only for the createDocumentUnique Method.
 
 
-/**********************/
-/* Class              */
-/**********************/
-
-
+/**
+ * This is the class for generating ids
+ *
+ * @class ElstrId
+ */
 function ElstrId() {
 
 }
@@ -56,7 +55,7 @@ ElstrId.prototype = {
 
     /**
      * Generate a random uuid. 
-     * Checks that it was never used before.
+     * Checks that it was never used before in the same document
      * 
      * @return string (RFC4122, version 4 ID)
      */

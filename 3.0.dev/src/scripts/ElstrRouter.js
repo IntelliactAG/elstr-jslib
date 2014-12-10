@@ -2,12 +2,14 @@
  * Created by sahun on 02.12.2014.
  */
 
-var ElstrLog = require("../lib/ElstrLog");
-ElstrLog = new ElstrLog(true);
+var ElstrLog = require("./ElstrLog");
+var elstrLog = new ElstrLog({
+    enabled: true
+});
 
 function ElstrRouter(){
 
-};
+}
 
 ElstrRouter.prototype = {
 
@@ -26,6 +28,6 @@ ElstrRouter.prototype = {
 
 	}
 
-}
+};
 
 module.exports = ElstrRouter;

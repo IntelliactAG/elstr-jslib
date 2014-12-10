@@ -11,19 +11,25 @@
 var request = require('./libs/superagent/superagent.js');
 
 var ElstrLog = require("./ElstrLog");
-var elstrLog = new ElstrLog(true);
+var elstrLog = new ElstrLog({
+    enabled: true
+});
 
 var ElstrId = require("./ElstrId");
 var elstrId = new ElstrId();
+
+/**
+/* Private
+ */
 
 var _currentJsonRpcRequests = [];
 
 /**
  * This is the class for IO used in Elstr projects
- * 
- * option attributes:
- *     abortStaleRequests: aborts stale requests
- * 
+ *
+ * options attributes:
+ *     abortStaleRequests: aborts stale requests (only works with requestJsonRpc)
+ *
  * @class ElstrIo
  * @param {Object} [options]  The options object
  */
@@ -32,15 +38,14 @@ function ElstrIo(options) {
     if (options) {
         this.options = options;
     }
-
-    //this.requestURLs = '/elstrCustomerResearch/public/services/';
-    //if (requestURLs) this.requestURLs = requestURLs;
 }
 
 ElstrIo.prototype = {
 
+    // Use request for any custom requests
     request: request,
 
+    // Use requestJsonRpc for any JSON-RPC requests to the Elstr server
     requestJsonRpc: function(className, methodName, params, callback) {
         var options = this.options;
         var requestId = elstrId.create();
@@ -76,12 +81,14 @@ ElstrIo.prototype = {
 
                 if (error) {
                     callback.onError(req, error);
+                    elstrLog.error(error);
                 } else if (res.status > 200) {
                     callback.onError(req, error);
                 } else if (!res.ok) {
                     callback.onError(req, error);
                 } else {
                     callback.onSuccess(req, res);
+                    elstrLog.info(res);
                 }
             });
 
