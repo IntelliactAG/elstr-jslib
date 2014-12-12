@@ -4,7 +4,6 @@
  * Created by egli@intelliact on 11.12.2014.
  */
 
-
 var mcFly = require('../libs/mcFly.js');
 
 var EventEmitter = require('events').EventEmitter;
@@ -12,6 +11,14 @@ var ElstLangConstants = require('../constants/ElstrLangConstants');
 
 var Polyglot = require('../libs/polyglot/build/polyglot.js');
 var _polyglot = new Polyglot();
+
+var ElstrConfigStore = require("../stores/ElstrConfigStore");
+
+var ElstrLog = require("../ElstrLog");
+var elstrLog = new ElstrLog({
+    enabled: ElstrConfigStore.option("ElstrLog","enabled"),
+    serverLevel: ElstrConfigStore.option("ElstrLog","serverLevel")
+});
 
 var _translations = {};
 var _currentLanguage = null;
@@ -28,10 +35,13 @@ var ElstrLangStore = mcFly.createStore({
         _currentLanguage = window.ELSTR.applicationData.language.current;
         _loadedModules = [window.ELSTR.applicationData.language.modules];
 
+        // Remove global ELSTR values after configuration
+        window.ELSTR.applicationData.language = null;
+
         _polyglot = new Polyglot();
         _polyglot.extend(_translations);
 
-        console.log("ElstrLangStore initialized");
+        elstrLog.log("ElstrLangStore initialized");
     },
     getLoadedModules: function() {
         return _loadedModules;
@@ -45,7 +55,6 @@ var ElstrLangStore = mcFly.createStore({
 
 }, function(payload) {
     var action = payload.action;
-    console.log(payload);
     switch (payload.actionType) {
         case ElstLangConstants.ELSTR_LANG_DID_LOAD:
             _translations = payload.translations;
@@ -53,7 +62,7 @@ var ElstrLangStore = mcFly.createStore({
             _polyglot.replace(_translations);
             break;
     }
-    console.log('ElstrLangStore emitChange');
+    elstrLog.log('ElstrLangStore emitChange');
     ElstrLangStore.emitChange();
     return true;
 });

@@ -10,7 +10,7 @@ var request = require('./libs/superagent/superagent.js');
  * This is the class for IO used in Elstr projects
  *
  * options attributes:
- *     enabled: if the log is enabled
+ *     enabled: if the log is enabled in the browser
  *     serverLevel; error/ERR = 3, warn/WARN = 4, log/NOTICE = 5, info/INFO = 6, debug/DEBUG = 7
  *
  * @class ElstrIo
@@ -38,7 +38,7 @@ _logToServer = function(level, args) {
         .send(oRequestPost)
         .type('json')
         .end(function(error, res) {});
-    };
+};
 
 ElstrLog.prototype = {
 
@@ -46,9 +46,9 @@ ElstrLog.prototype = {
     log: function() {
         if (console && this.options.enabled) {
             console.log.apply(console, arguments);
-            if (this.options.serverLevel && this.options.serverLevel >= 5) {
-                _logToServer("log",arguments);
-            }
+        }
+        if (this.options.serverLevel && this.options.serverLevel >= 5) {
+            _logToServer("log", arguments);
         }
     },
 
@@ -58,33 +58,33 @@ ElstrLog.prototype = {
     info: function() {
         if (console && this.options.enabled) {
             console.info.apply(console, arguments);
-            if (this.options.serverLevel && this.options.serverLevel >= 6) {
-                _logToServer("info",arguments);
-            }            
+        }
+        if (this.options.serverLevel && this.options.serverLevel >= 6) {
+            _logToServer("info", arguments);
         }
     },
     debug: function() {
         if (console && this.options.enabled) {
             console.debug.apply(console, arguments);
-            if (this.options.serverLevel && this.options.serverLevel >= 7) {
-                _logToServer("debug",arguments);
-            }               
+        }
+        if (this.options.serverLevel && this.options.serverLevel >= 7) {
+            _logToServer("debug", arguments);
         }
     },
     warn: function() {
         if (console && this.options.enabled) {
             console.error.apply(console, arguments);
-            if (this.options.serverLevel && this.options.serverLevel >= 4) {
-                _logToServer("warn",arguments);
-            }               
+        }
+        if (this.options.serverLevel && this.options.serverLevel >= 4) {
+            _logToServer("warn", arguments);
         }
     },
     error: function() {
         if (console && this.options.enabled) {
             console.error.apply(console, arguments);
-            if (this.options.serverLevel && this.options.serverLevel >= 3) {
-                _logToServer("error",arguments);
-            }               
+        }
+        if (this.options.serverLevel && this.options.serverLevel >= 3) {
+            _logToServer("error", arguments);
         }
     },
 

@@ -10,10 +10,12 @@
 // Docs: http://visionmedia.github.io/superagent/
 var request = require('./libs/superagent/superagent.js');
 
+var ElstrConfigStore = require("./stores/ElstrConfigStore");
+
 var ElstrLog = require("./ElstrLog");
 var elstrLog = new ElstrLog({
-    enabled: true,
-    serverLevel: 0
+    enabled: ElstrConfigStore.option("ElstrLog","enabled"),
+    serverLevel: ElstrConfigStore.option("ElstrLog","serverLevel")
 });
 
 var ElstrId = require("./ElstrId");
