@@ -13,7 +13,7 @@ var request = require('./libs/superagent/superagent.js');
 var ElstrLog = require("./ElstrLog");
 var elstrLog = new ElstrLog({
     enabled: true,
-    serverLevel: 3
+    serverLevel: 0
 });
 
 var ElstrId = require("./ElstrId");
