@@ -14,6 +14,7 @@ var ElstrLangConstants = require('../constants/ElstrLangConstants');
  */
 var ElstrLangActions = mcFly.createActions({
     willLoad: function() {
+
         return {
             actionType: ElstrLangConstants.ELSTR_LANG_WILL_LOAD
         };

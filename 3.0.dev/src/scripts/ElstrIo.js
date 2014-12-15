@@ -41,10 +41,19 @@ function ElstrIo(options) {
 
 ElstrIo.prototype = {
 
-    // Use request for any custom requests
+    /**
+     * Use request for any custom requests
+     */
     request: request,
 
-    // Use requestJsonRpc for any JSON-RPC requests to the Elstr server
+    /**
+     * Use requestJsonRpc for any JSON-RPC requests to the Elstr server
+     * @param className
+     * @param methodName
+     * @param params
+     * @param callback
+     * @returns {Request}
+     */
     requestJsonRpc: function(className, methodName, params, callback) {
         var options = this.options;
         var requestId = ElstrId.create();

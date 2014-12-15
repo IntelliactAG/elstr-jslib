@@ -13,6 +13,15 @@ var _options = {
 };
 
 // Privat methods
+
+
+
+/**
+ * Saves a log in the server.
+ * @param level Log level.
+ * @param args
+ * @private
+ */
 var _logToServer = function(level, args) {
     var oRequestPost = {
         "jsonrpc": "2.0",
@@ -50,7 +59,12 @@ var ElstrLog = {
             _options.serverLevel = options.serverLevel;
         }
     },
-    /* Displays a message in the console. You pass one or more objects to this method, each of which are evaluated and concatenated into a space-delimited string. The first parameter you pass to log() may contain format specifiers, a string token composed of the percent sign (%) followed by a letter that indicates the formatting to be applied. */
+
+    /**
+     * Displays a message in the console.
+     * You pass one or more objects to this method, each of which are evaluated and concatenated into a space-delimited string.
+     * The first parameter you pass to log() may contain format specifiers, a string token composed of the percent sign (%) followed by a letter that indicates the formatting to be applied.
+     */    
     log: function() {
         if (console && _options.enabled) {
             console.log.apply(console, arguments);
@@ -59,9 +73,12 @@ var ElstrLog = {
             _logToServer("log", arguments);
         }
     },
-    /* This method is identical to console.log().
+
+    /**
+     * This method is identical to console.log().
+     * Info level log.
      * Chrome add an "info" icon to it.
-     * */
+     */
     info: function() {
         if (console && _options.enabled) {
             console.info.apply(console, arguments);
@@ -70,6 +87,11 @@ var ElstrLog = {
             _logToServer("info", arguments);
         }
     },
+
+    /**
+     * This method is identical to console.log().
+     * Debug level log.
+     */
     debug: function() {
         if (console && _options.enabled) {
             console.debug.apply(console, arguments);
@@ -78,6 +100,11 @@ var ElstrLog = {
             _logToServer("debug", arguments);
         }
     },
+
+    /**
+     * This method is identical to console.log().
+     * Warning level log.
+     */
     warn: function() {
         if (console && _options.enabled) {
             console.error.apply(console, arguments);
@@ -86,6 +113,12 @@ var ElstrLog = {
             _logToServer("warn", arguments);
         }
     },
+
+    /**
+     * This method is identical to console.log().
+     * Error level log.
+     * Chrome add an "error" icon to it & trace.
+     */
     error: function() {
         if (console && _options.enabled) {
             console.error.apply(console, arguments);
@@ -95,19 +128,28 @@ var ElstrLog = {
         }
     },
 
-    // Writes the the number of times that count() has been invoked at the same line and with the same label.
+    /**
+     * Writes the the number of times that count() has been invoked at the same line and with the same label.
+     * @param label
+     */
     count: function(label) {
         if (console && _options.enabled) {
             console.count.apply(console, label);
         }
     },
 
+    /**
+     * Shows the current method name & arguments in the console.
+     * The information in logged with "Info" level.
+     */
     trace: function() {
-        if (_options.enabled) {
-            // arguments properties
-            this.info("ELSTR Trace: ", arguments.callee.caller.name, arguments.callee.caller.arguments);
+        var parentFunctionName = arguments.callee.caller.name;
+        var parentFunctionArguments = arguments.callee.caller.arguments;
 
-        }
+        this.info("ELSTR Trace: ",
+            parentFunctionName,
+            parentFunctionArguments);
+
     }
 
 };

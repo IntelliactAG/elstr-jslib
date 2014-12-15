@@ -31,7 +31,7 @@ var ElstrUserIoActions = {
      * @param {String} enterpriseApplication
      */
     login: function(username, password, enterpriseApplication) {
-        ElstrLangActions.willLoad();
+        ElstrUserActions.willLoad();
 
         var params = {
             username: username,
@@ -64,7 +64,7 @@ var ElstrUserIoActions = {
      * @method logout
      */
     logout: function() {
-        ElstrLangActions.willLogout();
+        ElstrUserActions.willLogout();
 
         var params = {};
 

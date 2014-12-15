@@ -108,7 +108,7 @@ var ElstrUserStore = mcFly.createStore({
             }
         }
         return null;
-    },
+    }
 
 }, function(payload) {
     var action = payload.action;

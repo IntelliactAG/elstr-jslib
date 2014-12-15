@@ -28,7 +28,7 @@ var ElstrLangIoActions = {
      * @method change
      * @param {String} [lang] lang string of the new language to be loaded (e.g. "de" or "en")
      */
-    change: function(lang) {
+    load: function(lang) {
         ElstrLangActions.willLoad();
 
         var params = {

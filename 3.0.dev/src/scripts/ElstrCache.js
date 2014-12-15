@@ -177,6 +177,7 @@ ElstrCache.prototype = {
 
     /**
      * Cleans an specific entry in the cache.
+     * @param key
      */
     cleanEntry : function(key){
 
@@ -217,6 +218,9 @@ ElstrCache.prototype = {
 
     },
 
+    /**
+     * Clean all the expired cache entries.
+     */
     cleanExpireds : function(){
 
         if (this._mode === LOCAL_STORAGE_MODE){
