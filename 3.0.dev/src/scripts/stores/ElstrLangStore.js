@@ -16,10 +16,6 @@ var _polyglot = new Polyglot();
 var ElstrConfigStore = require("../stores/ElstrConfigStore");
 
 var ElstrLog = require("../ElstrLog");
-var elstrLog = new ElstrLog({
-    enabled: ElstrConfigStore.option("ElstrLog","enabled"),
-    serverLevel: ElstrConfigStore.option("ElstrLog","serverLevel")
-});
 
 var _translations = {};
 var _currentLanguage = null;
@@ -31,7 +27,7 @@ var _loadedModules = [];
  * @class ElstrLangStore
  */
 var ElstrLangStore = mcFly.createStore({
-    initialize: function() {
+    init: function() {
         _translations = window.ELSTR.applicationData.language.translations;
         _currentLanguage = window.ELSTR.applicationData.language.current;
         _loadedModules = [window.ELSTR.applicationData.language.modules];
@@ -42,7 +38,7 @@ var ElstrLangStore = mcFly.createStore({
         _polyglot = new Polyglot();
         _polyglot.extend(_translations);
 
-        elstrLog.log("ElstrLangStore initialized");
+        ElstrLog.log("ElstrLangStore initialized");
     },
     getLoadedModules: function() {
         return _loadedModules;
@@ -63,7 +59,7 @@ var ElstrLangStore = mcFly.createStore({
             _polyglot.replace(_translations);
             break;
     }
-    elstrLog.log('ElstrLangStore emitChange');
+    ElstrLog.log('ElstrLangStore emitChange');
     ElstrLangStore.emitChange();
     return true;
 });

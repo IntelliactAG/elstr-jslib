@@ -7,10 +7,6 @@
 var ElstrConfigStore = require("../stores/ElstrConfigStore");
 
 var ElstrLog = require("../ElstrLog");
-var elstrLog = new ElstrLog({
-    enabled: ElstrConfigStore.option("ElstrLog", "enabled"),
-    serverLevel: ElstrConfigStore.option("ElstrLog", "serverLevel")
-});
 
 var ElstrIo = require('../ElstrIo');
 var elstrIo = new ElstrIo({
@@ -51,13 +47,13 @@ var ElstrUserIoActions = {
                 if (responseAction == "success") {
                     ElstrUserActions.didLogin(result.enterpriseApplicationData, result.isAdmin, result.isAuth, result.resourcesAllowed, result.username);
                 } else {
-                    elstrLog.log(responseMessage);
+                    ElstrLog.log(responseMessage);
                     // TODO: How to handle this?
                 }
 
             },
             onError: function(req, error) {
-                elstrLog.error(error);
+                ElstrLog.error(error);
             }
         });
     },
@@ -80,13 +76,13 @@ var ElstrUserIoActions = {
                 if (responseAction == "success") {
                     ElstrUserActions.didLogout(result.username);
                 } else {
-                    elstrLog.log(responseMessage);
+                    ElstrLog.log(responseMessage);
                     // TODO: How to handle this?
                 }
 
             },
             onError: function(req, error) {
-                elstrLog.error(error);
+                ElstrLog.error(error);
             }
         });
 

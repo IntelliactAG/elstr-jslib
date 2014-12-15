@@ -15,7 +15,7 @@ var _config = null;
  * @class ElstrLangStore
  */
 var ElstrConfigStore = mcFly.createStore({
-    initialize: function() {
+    init: function() {
         _config = window.ELSTR.applicationData.config;
 
         // Remove global ELSTR values after configuration
@@ -29,11 +29,7 @@ var ElstrConfigStore = mcFly.createStore({
 
         var configSubObject = _config;
         for (var i = 0, len = arguments.length; i < len; i++) {
-            if(configSubObject[arguments[i]]){
-                configSubObject = configSubObject[arguments[i]]
-            } else {
-                return undefined;
-            }
+            configSubObject = configSubObject[arguments[i]];
         }
         return configSubObject;
     }

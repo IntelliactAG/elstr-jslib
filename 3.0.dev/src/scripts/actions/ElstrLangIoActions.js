@@ -7,10 +7,6 @@
 var ElstrConfigStore = require("../stores/ElstrConfigStore");
 
 var ElstrLog = require("../ElstrLog");
-var elstrLog = new ElstrLog({
-    enabled: ElstrConfigStore.option("ElstrLog","enabled"),
-    serverLevel: ElstrConfigStore.option("ElstrLog","serverLevel")
-});
 
 var ElstrIo = require('../ElstrIo');
 var elstrIo = new ElstrIo({
@@ -45,7 +41,7 @@ var ElstrLangIoActions = {
                 ElstrLangActions.didLoad(lang, res.body.result);
             },
             onError: function(req, error) {
-                elstrLog.error(error);
+                ElstrLog.error(error);
             }
         });
 

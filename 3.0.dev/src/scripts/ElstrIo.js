@@ -13,13 +13,9 @@ var request = require('./libs/superagent/superagent.js');
 var ElstrConfigStore = require("./stores/ElstrConfigStore");
 
 var ElstrLog = require("./ElstrLog");
-var elstrLog = new ElstrLog({
-    enabled: ElstrConfigStore.option("ElstrLog","enabled"),
-    serverLevel: ElstrConfigStore.option("ElstrLog","serverLevel")
-});
 
 var ElstrId = require("./ElstrId");
-var elstrId = new ElstrId();
+//var elstrId = new ElstrId();
 
 /**
 /* Private
@@ -51,7 +47,7 @@ ElstrIo.prototype = {
     // Use requestJsonRpc for any JSON-RPC requests to the Elstr server
     requestJsonRpc: function(className, methodName, params, callback) {
         var options = this.options;
-        var requestId = elstrId.create();
+        var requestId = ElstrId.create();
         var oRequestPost = {
             "jsonrpc": "2.0",
             "method": methodName,
@@ -85,10 +81,10 @@ ElstrIo.prototype = {
                 if (error) {
                     // TODO: Do not call onError if req is aborted because of abortStaleRequests is true
                     callback.onError(req, error);
-                    elstrLog.error(error);
+                    ElstrLog.error(error);
                 } else {
                     callback.onSuccess(req, res);
-                    elstrLog.info(res);
+                    ElstrLog.info(res);
                 }
             });
 

@@ -12,10 +12,6 @@ var ElstrUserConstants = require('../constants/ElstrUserConstants');
 var ElstrConfigStore = require("../stores/ElstrConfigStore");
 
 var ElstrLog = require("../ElstrLog");
-var elstrLog = new ElstrLog({
-    enabled: ElstrConfigStore.option("ElstrLog", "enabled"),
-    serverLevel: ElstrConfigStore.option("ElstrLog", "serverLevel")
-});
 
 var _username = "anonymous";
 var _isAuth = false;
@@ -29,7 +25,7 @@ var _enterpriseApplicationData = {};
  * @class ElstrUserStore
  */
 var ElstrUserStore = mcFly.createStore({
-    initialize: function() {
+    init: function() {
         _username = window.ELSTR.applicationData.user.username;
         _isAuth = window.ELSTR.applicationData.user.isAuth;
         _isAdmin = window.ELSTR.applicationData.user.isAdmin;
@@ -39,7 +35,7 @@ var ElstrUserStore = mcFly.createStore({
         // Remove global ELSTR values after configuration
         window.ELSTR.applicationData.user = null;
 
-        elstrLog.log("ElstrUserStore initialized");
+        ElstrLog.log("ElstrUserStore initialized");
     },
     /**
      * Returns the username if authenticaed, anonymous if not
@@ -132,7 +128,7 @@ var ElstrUserStore = mcFly.createStore({
             _enterpriseApplicationData = {};
             break;
     }
-    elstrLog.log('ElstrUserStore emitChange');
+    ElstrLog.log('ElstrUserStore emitChange');
     ElstrUserStore.emitChange();
     return true;
 });

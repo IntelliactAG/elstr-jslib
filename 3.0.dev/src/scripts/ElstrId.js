@@ -16,12 +16,7 @@ var _generatedIds = {}; // Only for the createDocumentUnique Method.
  *
  * @class ElstrId
  */
-function ElstrId() {
-
-}
-
-ElstrId.prototype = {
-
+var ElstrId =  {
     /**
      * Generate a random uuid. Modified script from:
      * http://www.broofa.com/Tools/Math.uuid.js
@@ -74,8 +69,6 @@ ElstrId.prototype = {
         return newUid;
 
     }
-
 };
-
 
 module.exports = ElstrId;
