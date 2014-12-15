@@ -9,6 +9,7 @@ var mcFly = require('../libs/mcFly.js');
 var EventEmitter = require('events').EventEmitter;
 var ElstLangConstants = require('../constants/ElstrLangConstants');
 
+// http://airbnb.github.io/polyglot.js/
 var Polyglot = require('../libs/polyglot/build/polyglot.js');
 var _polyglot = new Polyglot();
 
