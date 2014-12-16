@@ -28,7 +28,7 @@ var ElstrLangActions = mcFly.createActions({
      * @method change
      * @param {String} [lang] lang string of the new language to be loaded (e.g. "de" or "en")
      */
-    load(lang) {
+    load: function(lang) {
 
         ElstrLog.trace("ElstrLangActions.load");
 
@@ -54,7 +54,7 @@ var ElstrLangActions = mcFly.createActions({
      *
      * @returns {{actionType: *}}
      */
-    willLoad() {
+    willLoad: function() {
 
         ElstrLog.trace("ElstrLangActions.willLoad");
 
@@ -69,7 +69,7 @@ var ElstrLangActions = mcFly.createActions({
      * @param translations
      * @returns {{actionType: *, lang: *, translations: *}}
      */
-    didLoad(lang, translations) {
+    didLoad: function(lang, translations) {
 
         ElstrLog.trace("ElstrLangActions.didLoad");
 

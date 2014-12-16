@@ -28,7 +28,7 @@ var ElstrUserActions = mcFly.createActions({
      * @param {String} password
      * @param {String} enterpriseApplication
      */
-    login(username, password, enterpriseApplication) {
+    login: function(username, password, enterpriseApplication) {
 
         ElstrLog.trace("ElstrUserActions.login");
 
@@ -63,7 +63,7 @@ var ElstrUserActions = mcFly.createActions({
      *
      * @returns {{actionType: *}}
      */
-    willLogin() {
+    willLogin: function() {
         ElstrLog.trace("ElstrUserActions.willLogin");
 
         return {
@@ -80,7 +80,7 @@ var ElstrUserActions = mcFly.createActions({
      * @param username
      * @returns {{actionType: *, enterpriseApplicationData: *, isAdmin: *, isAuth: *, resourcesAllowed: *, username: *}}
      */
-    didLogin(enterpriseApplicationData, isAdmin, isAuth, resourcesAllowed, username) {
+    didLogin: function(enterpriseApplicationData, isAdmin, isAuth, resourcesAllowed, username) {
         ElstrLog.trace("ElstrUserActions.didLogin");
 
         return {
@@ -99,36 +99,10 @@ var ElstrUserActions = mcFly.createActions({
     /*********************************/
 
     /**
-     *
-     * @returns {{actionType: *}}
-     */
-    willLogout() {
-        ElstrLog.trace("ElstrUserActions.willLogout");
-
-        return {
-            actionType: ElstrUserConstants.ELSTR_USER_WILL_LOGOUT
-        };
-    },
-
-    /**
-     *
-     * @param username
-     * @returns {{actionType: *, username: *}}
-     */
-    didLogout(username) {
-        ElstrLog.trace("ElstrUserActions.didLogout");
-
-        return {
-            actionType: ElstrUserConstants.ELSTR_USER_DID_LOGOUT,
-            username: username
-        };
-    },
-
-    /**
      * Logout
      * @method logout
      */
-    logout() {
+    logout: function() {
 
         ElstrLog.trace("ElstrUserActions.logout");
 
@@ -154,6 +128,32 @@ var ElstrUserActions = mcFly.createActions({
             }
         });
 
+    },
+
+    /**
+     *
+     * @returns {{actionType: *}}
+     */
+    willLogout: function() {
+        ElstrLog.trace("ElstrUserActions.willLogout");
+
+        return {
+            actionType: ElstrUserConstants.ELSTR_USER_WILL_LOGOUT
+        };
+    },
+
+    /**
+     *
+     * @param username
+     * @returns {{actionType: *, username: *}}
+     */
+    didLogout: function(username) {
+        ElstrLog.trace("ElstrUserActions.didLogout");
+
+        return {
+            actionType: ElstrUserConstants.ELSTR_USER_DID_LOGOUT,
+            username: username
+        };
     }
 
 
