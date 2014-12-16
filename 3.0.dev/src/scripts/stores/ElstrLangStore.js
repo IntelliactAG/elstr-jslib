@@ -38,7 +38,7 @@ var ElstrLangStore = mcFly.createStore({
         _polyglot = new Polyglot();
         _polyglot.extend(_translations);
 
-        ElstrLog.log("ElstrLangStore initialized");
+        ElstrLog.info("ElstrLangStore initialized");
     },
     getLoadedModules: function() {
         return _loadedModules;
@@ -59,8 +59,12 @@ var ElstrLangStore = mcFly.createStore({
             _polyglot.replace(_translations);
             break;
     }
-    ElstrLog.log('ElstrLangStore emitChange');
+
+
+    ElstrLog.trace('ElstrLangStore.emitChange');
     ElstrLangStore.emitChange();
+
+
     return true;
 });
 

@@ -9,7 +9,8 @@ var request = require('./libs/superagent/superagent.js');
 // Privat data
 var _options = {
     enabled: true,
-    serverLevel: 0
+    serverLevel: 0,
+    traceEnabled: true
 };
 
 // Privat methods
@@ -42,7 +43,8 @@ var _logToServer = function(level, args) {
  * This is the class for IO used in Elstr projects
  *
  * options attributes:
- *     enabled: if the log is enabled in the browser
+ *     enabled: if the log is enabled in the browser (active by default)
+ *     traceEnabled: when the log is enabled, we can turn the method tracing on or off. (active by default)
  *     serverLevel; error/ERR = 3, warn/WARN = 4, log/NOTICE = 5, info/INFO = 6, debug/DEBUG = 7
  *
  * @class ElstrIo
@@ -50,11 +52,19 @@ var _logToServer = function(level, args) {
 var ElstrLog = {
 
     init: function(options) {
+
         if (options.enabled === true) {
             _options.enabled = true;
         } else if (options.enabled === false || options.enabled === "") {
             _options.enabled = false;            
         }
+
+        if (options.traceEnabled === true) {
+            _options.traceEnabled = true;
+        } else if (options.traceEnabled === false || options.traceEnabled === "") {
+            _options.traceEnabled = false;
+        }
+
         if (options.serverLevel) {
             _options.serverLevel = options.serverLevel;
         }
@@ -139,16 +149,39 @@ var ElstrLog = {
     },
 
     /**
+
+     */
+
+    /**
      * Shows the current method name & arguments in the console.
      * The information in logged with "Info" level.
+     * @param overrideFunctionName [optional]
      */
-    trace: function() {
-        var parentFunctionName = arguments.callee.caller.name;
-        var parentFunctionArguments = arguments.callee.caller.arguments;
+    trace: function( overrideFunctionName ) {
 
-        this.info("ELSTR Trace: ",
-            parentFunctionName,
-            parentFunctionArguments);
+        if (_options.traceEnabled){
+
+            var parentFunctionName;
+            var parentFunctionArguments = arguments.callee.caller.arguments;
+
+
+            if (overrideFunctionName){
+                parentFunctionName = overrideFunctionName;
+
+            }else{
+
+                parentFunctionName = arguments.callee.caller.name;
+                if (parentFunctionName == "") {
+                    parentFunctionName = " Anonymous func ";
+                }
+
+            }
+
+            this.info("ELSTR Trace: ",
+                parentFunctionName,
+                parentFunctionArguments);
+
+        }
 
     }
 

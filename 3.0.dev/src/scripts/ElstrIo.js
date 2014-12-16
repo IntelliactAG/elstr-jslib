@@ -103,6 +103,7 @@ ElstrIo.prototype = {
             methodName: methodName,
             req: req
         });
+
         return req;
     }
 

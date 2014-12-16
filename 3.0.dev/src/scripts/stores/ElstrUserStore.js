@@ -35,8 +35,9 @@ var ElstrUserStore = mcFly.createStore({
         // Remove global ELSTR values after configuration
         window.ELSTR.applicationData.user = null;
 
-        ElstrLog.log("ElstrUserStore initialized");
+        ElstrLog.info("ElstrUserStore initialized");
     },
+
     /**
      * Returns the username if authenticaed, anonymous if not
      *
@@ -46,6 +47,7 @@ var ElstrUserStore = mcFly.createStore({
     getUsername: function() {
         return _username;
     },
+
     /**
      * Returns if the user is authenticated
      *
@@ -55,6 +57,7 @@ var ElstrUserStore = mcFly.createStore({
     isAuth: function() {
         return _isAuth;
     },
+
     /**
      * Returns if the user is admin
      *
@@ -64,6 +67,7 @@ var ElstrUserStore = mcFly.createStore({
     isAdmin: function() {
         return _isAdmin;
     },
+
     /**
      * Returns if the user has allowed access to a resource
      *
@@ -92,6 +96,7 @@ var ElstrUserStore = mcFly.createStore({
         }
         return isAllowed;
     },
+
     /**
      * Interface for reading enterprise application data
      *
@@ -113,6 +118,7 @@ var ElstrUserStore = mcFly.createStore({
 }, function(payload) {
     var action = payload.action;
     switch (payload.actionType) {
+
         case ElstUserConstants.ELSTR_USER_DID_LOGIN:
             _username = payload.username;
             _isAuth = payload.isAuth;
@@ -120,6 +126,7 @@ var ElstrUserStore = mcFly.createStore({
             _resourcesAllowed = payload.resourcesAllowed;
             _enterpriseApplicationData = payload.enterpriseApplicationData;
             break;
+
         case ElstUserConstants.ELSTR_LANG_DID_LOGOUT:
             _username = payload.username;
             _isAuth = false;
@@ -128,8 +135,10 @@ var ElstrUserStore = mcFly.createStore({
             _enterpriseApplicationData = {};
             break;
     }
-    ElstrLog.log('ElstrUserStore emitChange');
+
+    ElstrLog.trace('ElstrUserStore.emitChange');
     ElstrUserStore.emitChange();
+
     return true;
 });
 
