@@ -125,7 +125,7 @@ YUI.add('elstr_utils', function(Y) {
                 }
                 _paq.push(eventArray);
             }
-        },        
+        },
         /**
 		 * Public mehtod for showing a wating cursor
 		 * 
