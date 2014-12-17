@@ -111,6 +111,7 @@ var ElstrUserActions = mcFly.createActions({
         var params = {};
 
         var req = elstrIo.requestJsonRpc("ELSTR_LanguageServer", "logout", params, {
+
             onSuccess: function(req, res) {
                 var result = res.body.result;
                 var responseAction = result.action;
@@ -123,6 +124,7 @@ var ElstrUserActions = mcFly.createActions({
                 }
 
             },
+
             onError: function(req, error) {
                 ElstrLog.error(error);
             }

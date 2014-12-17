@@ -2,6 +2,10 @@
  * Copyright 2014, Intelliact AG
  * Copyrights licensed under the New BSD License
  * Created by sahun@intelliact on 02.12.2014.
+ *
+ * TODO: allow console log proper line numbers.
+ * https://gist.github.com/bgrins/5108712
+ *
  */
 
 var request = require('./libs/superagent/superagent.js');
@@ -68,6 +72,20 @@ var ElstrLog = {
         if (options.serverLevel) {
             _options.serverLevel = options.serverLevel;
         }
+
+        if (options.justAConsoleAlias &&
+            _options.enabled &&
+            Function.prototype.bind) {
+
+            ElstrLog.log = Function.prototype.bind.call(console.log, console);
+            ElstrLog.info = Function.prototype.bind.call(console.info, console);
+            ElstrLog.debug = Function.prototype.bind.call(console.debug, console);
+            ElstrLog.warn = Function.prototype.bind.call(console.warn, console);
+            ElstrLog.error = Function.prototype.bind.call(console.error, console);
+            ElstrLog.count = Function.prototype.bind.call(console.count, console);
+
+        }
+
     },
 
     /**
@@ -90,6 +108,7 @@ var ElstrLog = {
      * Chrome add an "info" icon to it.
      */
     info: function() {
+
         if (console && _options.enabled) {
             console.info.apply(console, arguments);
         }
@@ -117,7 +136,7 @@ var ElstrLog = {
      */
     warn: function() {
         if (console && _options.enabled) {
-            console.error.apply(console, arguments);
+            console.warn.apply(console, arguments);
         }
         if (_options.serverLevel && _options.serverLevel >= 4) {
             _logToServer("warn", arguments);
