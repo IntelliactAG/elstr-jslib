@@ -7,8 +7,6 @@ var ElstrUrlHashConstants = require('../constants/ElstrUrlHashConstants');
 
 var ElstrLog = require("../ElstrLog");
 
-var UrlHashStore = require('../stores/UrlHashStore');
-
 var hasher = require('../libs/hasher');
 
 function _serialize(obj) {
@@ -23,6 +21,7 @@ function _serialize(obj) {
 
 function _updateHashObject( newObject ){
 
+    var UrlHashStore = require('../stores/UrlHashStore');
     var hashObject =  UrlHashStore.get();
 
     for(var i in newObject){
