@@ -11,7 +11,6 @@ var _config = null;
 
 /**
  * This is the class for storing Elstr lang
- 
  * @class ElstrLangStore
  */
 var ElstrConfigStore = mcFly.createStore({

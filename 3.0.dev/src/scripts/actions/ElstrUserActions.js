@@ -11,7 +11,7 @@ var ElstrLog = require("../ElstrLog");
 
 /**
  * This is the class for actions in Elstr lang
- 
+
  * @class ElstrUserActions
  */
 var ElstrUserActions = mcFly.createActions({

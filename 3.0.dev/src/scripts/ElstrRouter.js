@@ -13,20 +13,20 @@ function ElstrRouter(){
 
 ElstrRouter.prototype = {
 
-	changeUrl : function( newUrl ){
-		ElstrLog.trace();
+    changeUrl : function( newUrl ){
+        ElstrLog.trace();
 
-	},
+    },
 
-	setOnChangeUrl : function( onChangeFunc ){
-		ElstrLog.trace();
+    setOnChangeUrl : function( onChangeFunc ){
+        ElstrLog.trace();
 
-	},
+    },
 
-	back : function(){
-		ElstrLog.trace();
+    back : function(){
+        ElstrLog.trace();
 
-	}
+    }
 
 };
 

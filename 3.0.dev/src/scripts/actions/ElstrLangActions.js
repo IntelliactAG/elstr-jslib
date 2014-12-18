@@ -17,7 +17,7 @@ var elstrIo = new ElstrIo({
 
 /**
  * This is the class for actions in Elstr lang
- 
+
  * @class ElstrLangActions
  */
 var ElstrLangActions = mcFly.createActions({

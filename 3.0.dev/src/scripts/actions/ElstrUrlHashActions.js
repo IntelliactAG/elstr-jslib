@@ -33,8 +33,8 @@ function _serialize(obj) {
  */
 function _updateHashObject( newObject ){
 
-    var UrlHashStore = require('../stores/UrlHashStore');
-    var hashObject =  UrlHashStore.get();
+    var ElstrUrlHashStore = require('../stores/ElstrUrlHashStore');
+    var hashObject =  ElstrUrlHashStore.get();
 
     for(var i in newObject){
         hashObject[i] = newObject[i];
@@ -69,14 +69,14 @@ function _setHashObject( newObject , updateHistory, throwEvent){
     if (!throwEvent) hasher.changed.active = true;
 }
 
-var UrlHashActions = mcFly.createActions({
+var ElstrUrlHashActions = mcFly.createActions({
 
     /**
      * Updates the URL hash WITH event AND history record based in the given object
      * @param object
      */
     add: function( object ){
-        ElstrLog.trace("UrlHashActions.add");
+        ElstrLog.trace("ElstrUrlHashActions.add");
         _updateHashObject(object);
     },
 
@@ -85,7 +85,7 @@ var UrlHashActions = mcFly.createActions({
      * @param object
      */
     set: function( object ){
-        ElstrLog.trace("UrlHashActions.set");
+        ElstrLog.trace("ElstrUrlHashActions.set");
         var updateHistory = true;
         var throwEvent = true;
         _setHashObject(object, updateHistory, throwEvent);
@@ -96,7 +96,7 @@ var UrlHashActions = mcFly.createActions({
      * @param object
      */
     replace: function( object ){
-        ElstrLog.trace("UrlHashActions.changeMask");
+        ElstrLog.trace("ElstrUrlHashActions.changeMask");
         var updateHistory = false;
         var throwEvent = false;
         _setHashObject(object, updateHistory, throwEvent);
@@ -110,7 +110,7 @@ var UrlHashActions = mcFly.createActions({
      * oldHash: the old hash that has been replaced
      */
     hashChange: function(newHash, oldHash) {
-        ElstrLog.trace("UrlHashActions.hashChange");
+        ElstrLog.trace("ElstrUrlHashActions.hashChange");
 
         return {
             actionType: ElstrUrlHashConstants.URL_HASH_CHANGE,
@@ -120,4 +120,4 @@ var UrlHashActions = mcFly.createActions({
     }
 });
 
-module.exports = UrlHashActions;
+module.exports = ElstrUrlHashActions;

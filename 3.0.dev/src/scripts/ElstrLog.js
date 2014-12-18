@@ -60,7 +60,7 @@ var ElstrLog = {
         if (options.enabled === true) {
             _options.enabled = true;
         } else if (options.enabled === false || options.enabled === "") {
-            _options.enabled = false;            
+            _options.enabled = false;
         }
 
         if (options.traceEnabled === true) {
@@ -92,7 +92,7 @@ var ElstrLog = {
      * Displays a message in the console.
      * You pass one or more objects to this method, each of which are evaluated and concatenated into a space-delimited string.
      * The first parameter you pass to log() may contain format specifiers, a string token composed of the percent sign (%) followed by a letter that indicates the formatting to be applied.
-     */    
+     */
     log: function() {
         if (console && _options.enabled) {
             console.log.apply(console, arguments);

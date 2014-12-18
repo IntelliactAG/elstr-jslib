@@ -5,7 +5,7 @@
 var ElstrLog = require("./ElstrLog");
 
 /**
-/* Private
+ * Private
  */
 
 var _generatedIds = {}; // Only for the createDocumentUnique Method.
@@ -49,9 +49,9 @@ var ElstrId =  {
     },
 
     /**
-     * Generate a random uuid. 
+     * Generate a random uuid.
      * Checks that it was never used before in the same document
-     * 
+     *
      * @return string (RFC4122, version 4 ID)
      */
     createDocumentUnique: function(){

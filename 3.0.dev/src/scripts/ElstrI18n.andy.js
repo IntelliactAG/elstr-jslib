@@ -3,27 +3,27 @@
  */
 
 function ElstrI18N(currentLang){
-	this._currentLang = currentLang;
+    this._currentLang = currentLang;
 }
 
 ElstrI18N.prototype = {
 
-	getAvailableLangs : function(){
+    getAvailableLangs : function(){
 
-		return [];
-	},
+        return [];
+    },
 
-	getCurrentLang : function(){
-		return this._currentLang;
-	},
+    getCurrentLang : function(){
+        return this._currentLang;
+    },
 
-	setCurrentLang : function( lang ){
-		this._currentLang = lang;
-	},
+    setCurrentLang : function( lang ){
+        this._currentLang = lang;
+    },
 
-	translate : function( text ){
-		return "";
-	}
+    translate : function( text ){
+        return "";
+    }
 
 };
 

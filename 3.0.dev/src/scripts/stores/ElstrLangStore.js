@@ -23,7 +23,6 @@ var _loadedModules = [];
 
 /**
  * This is the class for storing Elstr lang
- 
  * @class ElstrLangStore
  */
 var ElstrLangStore = mcFly.createStore({

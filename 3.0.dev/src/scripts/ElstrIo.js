@@ -18,7 +18,7 @@ var ElstrId = require("./ElstrId");
 //var elstrId = new ElstrId();
 
 /**
-/* Private
+ * Private
  */
 
 var _currentJsonRpcRequests = [];

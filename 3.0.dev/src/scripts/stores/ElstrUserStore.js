@@ -21,7 +21,7 @@ var _enterpriseApplicationData = {};
 
 /**
  * This is the class for storing Elstr lang
- 
+
  * @class ElstrUserStore
  */
 var ElstrUserStore = mcFly.createStore({
