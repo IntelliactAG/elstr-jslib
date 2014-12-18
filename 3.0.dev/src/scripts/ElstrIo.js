@@ -89,11 +89,28 @@ ElstrIo.prototype = {
 
                 if (error) {
                     // TODO: Do not call onError if req is aborted because of abortStaleRequests is true
-                    callback.onError(req, error);
+
                     ElstrLog.error(error);
+
+                    if (callback.onError) {
+                        callback.onError(req, error);
+                    }else{
+                        ElstrLog.info("No callback.onSuccess method provided");
+                    }
+
+
+
                 } else {
-                    callback.onSuccess(req, res);
+
                     ElstrLog.info(res);
+
+                    if (callback.onSuccess){
+                        callback.onSuccess(req, res);
+                    }else{
+                        ElstrLog.info("No callback.onSuccess method provided");
+                    }
+
+
                 }
             });
 

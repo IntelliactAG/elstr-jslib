@@ -5,51 +5,45 @@
 var ARRAY_MODE = 1;
 var LOCAL_STORAGE_MODE = 2;
 
+_data = [];
+_mode = ARRAY_MODE;
+_arrayLimit =  0;
+
 var ElstrLog = require("./ElstrLog");
-var elstrLog = new ElstrLog({
-    enabled: true
-});
-
-function ElstrCache(mode, arrayLimit){
-
-    // constructor
-    this._data = [];
-    this._mode = ARRAY_MODE;
 
 
-    if  (mode){
-        if (mode == "ARRAY"){
-            
-            this._mode = ARRAY_MODE;
+var ElstrCache = {
 
-        }else if (mode == "LOCAL_STORAGE"){
-            
-            this._mode = LOCAL_STORAGE_MODE;
-            require("../kizzy/ElstrLog");     
-            this._localStorage = kizzy('Elstr');
+    //
+    init : function (mode, arrayLimit) {
+        if  (mode){
+            if (mode == "ARRAY"){
 
-        }else{
+                _mode = ARRAY_MODE;
+                _localStorage = _localStorage || [];
 
-            ElstrLog.error("Wrong 'mode' provided use: ARRAY | LOCAL_STORAGE");
+            }else if (mode == "LOCAL_STORAGE"){
 
-        }
-    }
+                _mode = LOCAL_STORAGE_MODE;
+                _localStorage = kizzy('Elstr');
 
-    
-    this._arrayLimit =  0;
-    if (arrayLimit){
-        if (arrayLimit>0){
-            this._arrayLimit = arrayLimit;
-        }else{
-            ElstrLog.error("Wrong 'arrayLimit' provided should be >0 ");   
+            }else{
+
+                ElstrLog.error("Wrong 'mode' provided use: ARRAY | LOCAL_STORAGE");
+
+            }
         }
 
-    }
+        if (arrayLimit){
+            if (arrayLimit>0){
+                _arrayLimit = arrayLimit;
+            }else{
+                ElstrLog.error("Wrong 'arrayLimit' provided should be >0 ");
+            }
 
-}
+        }
 
-
-ElstrCache.prototype = {
+    },
 
     /**
      * Returns true if the cache contains a key and false if not.
@@ -59,14 +53,14 @@ ElstrCache.prototype = {
      */
     contains : function(key){
 
-        if (this._mode === LOCAL_STORAGE_MODE){
+        if (_mode === LOCAL_STORAGE_MODE){
 
             // Has no contain method
-            return (this._localStorage.get(key) !== null); 
+            return (_localStorage.get(key) !== null);
 
-        }else if (this._mode === ARRAY_MODE){
+        }else if (_mode === ARRAY_MODE){
 
-            var contained =  key in this._data;
+            var contained =  key in _data;
 
             // Check if we have it in the cache.
             if (contained){
@@ -74,7 +68,7 @@ ElstrCache.prototype = {
                 // We have the data in the array
                 // Then we have to check the timestamp.
 
-                var timeToExpire = this._data[key]._timeToExpire;
+                var timeToExpire = _data[key]._timeToExpire;
 
                 if (timeToExpire){
 
@@ -95,7 +89,7 @@ ElstrCache.prototype = {
 
         }else{
 
-            ElstrLog.error("Wrong mode.");   
+            ElstrLog.error("Wrong mode.");
             return;
 
         }
@@ -111,21 +105,21 @@ ElstrCache.prototype = {
      */
     get : function(key){
 
-        if (this._mode === LOCAL_STORAGE_MODE){
+        if (_mode === LOCAL_STORAGE_MODE){
 
-            return this._localStorage.get(key); 
+            return _localStorage.get(key);
 
-        }else if (this._mode === ARRAY_MODE){
+        }else if (_mode === ARRAY_MODE){
 
             if (ElstrCache.contains(key)){
-                return this._data[key]._value;
+                return _data[key]._value;
             }else{
                 return null;
             }
 
         }else{
 
-            ElstrLog.error("Wrong mode.");   
+            ElstrLog.error("Wrong mode.");
 
         }
     },
@@ -138,11 +132,11 @@ ElstrCache.prototype = {
      */
     set : function(key, value, timeToExpire){
 
-        if (this._mode === LOCAL_STORAGE_MODE){
+        if (_mode === LOCAL_STORAGE_MODE){
 
-            this._localStorage.set(key, value, timeToExpire); 
+            _localStorage.set(key, value, timeToExpire);
 
-        }else if (this._mode === ARRAY_MODE){
+        }else if (_mode === ARRAY_MODE){
 
             var entry = {
                 _value: value,
@@ -157,21 +151,21 @@ ElstrCache.prototype = {
 
             }
 
-            this._data[key] = entry._value;
+            _data[key] = entry._value;
 
-            if (this._arrayLimit>0){
-                if (this._data.length > this._arrayLimit){
-                    delete this._data[0];
-                }                
+            if (_arrayLimit>0){
+                if (_data.length > _arrayLimit){
+                    delete _data[0];
+                }
             }
 
         }else{
 
-            ElstrLog.error("Wrong mode.");   
+            ElstrLog.error("Wrong mode.");
 
         }
 
-        
+
 
     },
 
@@ -181,17 +175,17 @@ ElstrCache.prototype = {
      */
     cleanEntry : function(key){
 
-        if (this._mode === LOCAL_STORAGE_MODE){
+        if (_mode === LOCAL_STORAGE_MODE){
 
-            this._localStorage.remove(key); 
+            _localStorage.remove(key);
 
-        }else if (this._mode === ARRAY_MODE){
+        }else if (_mode === ARRAY_MODE){
 
-            delete this._data[key];
+            delete _data[key];
 
         }else{
 
-            ElstrLog.error("Wrong mode.");   
+            ElstrLog.error("Wrong mode.");
 
         }
 
@@ -202,17 +196,17 @@ ElstrCache.prototype = {
      */
     cleanCache : function(){
 
-        if (this._mode === LOCAL_STORAGE_MODE){
-            
-            this._localStorage.clear();
+        if (_mode === LOCAL_STORAGE_MODE){
 
-        }else if (this._mode === ARRAY_MODE){
+            _localStorage.clear();
 
-            this._data = [];
+        }else if (_mode === ARRAY_MODE){
+
+            _data = [];
 
         }else{
 
-            ElstrLog.error("Wrong mode.");   
+            ElstrLog.error("Wrong mode.");
 
         }
 
@@ -223,13 +217,13 @@ ElstrCache.prototype = {
      */
     cleanExpireds : function(){
 
-        if (this._mode === LOCAL_STORAGE_MODE){
-            
-            this._localStorage.clearExpireds();
+        if (_mode === LOCAL_STORAGE_MODE){
 
-        }else if (this._mode === ARRAY_MODE){
+            _localStorage.clearExpireds();
 
-            for (var k in this._data) {
+        }else if (_mode === ARRAY_MODE){
+
+            for (var k in _data) {
 
                 this.contains(k);
 
@@ -237,13 +231,14 @@ ElstrCache.prototype = {
 
         }else{
 
-            this._data = [];
+            _data = [];
 
         }
 
     }
+}
 
-};
+
 
 
 module.exports = ElstrCache;
