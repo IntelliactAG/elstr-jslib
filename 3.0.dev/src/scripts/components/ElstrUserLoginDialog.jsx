@@ -58,6 +58,10 @@ var ElstrUserLoginDialog = React.createClass({
         }
     },
 
+    componentDidMount: function() {
+        this.refs.username.getDOMNode().focus();
+    },
+
     render: function() {
 
         var cancelButton;

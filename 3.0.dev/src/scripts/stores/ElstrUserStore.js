@@ -156,8 +156,7 @@ var ElstrUserStore = mcFly.createStore({
     }
 
 }, function(payload) {
-    var action = payload.action;
-    console.log(payload);
+
     switch (payload.actionType) {
         case ElstrUserConstants.ELSTR_USER_WILL_LOGIN:
             _message = null;

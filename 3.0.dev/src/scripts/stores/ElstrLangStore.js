@@ -50,7 +50,7 @@ var ElstrLangStore = mcFly.createStore({
     }
 
 }, function(payload) {
-    var action = payload.action;
+
     switch (payload.actionType) {
         case ElstLangConstants.ELSTR_LANG_DID_LOAD:
             _translations = payload.translations;
@@ -59,7 +59,6 @@ var ElstrLangStore = mcFly.createStore({
             ElstrLog.log("ELSTR_LANG_DID_LOAD");
             break;
     }
-
 
     ElstrLog.trace('ElstrLangStore.emitChange');
     ElstrLangStore.emitChange();
