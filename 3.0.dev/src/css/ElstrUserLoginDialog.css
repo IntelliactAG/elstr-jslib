@@ -1,0 +1,18 @@
+/* 
+ * Never show a close cross in the modal header 
+ */
+.elstrUserLoginDialog .modal-header .close {
+	display: none !important;
+}
+
+/* 
+ * Usually right align the title and the text
+ */
+ .elstrUserLoginDialog {
+	text-align: left;
+}
+
+ .elstrUserLoginDialog .modal.in {
+	background-color: #ffffff;
+	opacity: 0.9;
+}

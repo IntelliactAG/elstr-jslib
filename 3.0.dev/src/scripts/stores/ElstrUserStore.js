@@ -19,13 +19,23 @@ var _isAdmin = false;
 var _resourcesAllowed = [];
 var _enterpriseApplicationData = {};
 
+var _message = null;
+var _loading = false;
+
+var _forceAuthentication = true;
+
 /**
  * This is the class for storing Elstr lang
-
+ 
  * @class ElstrUserStore
  */
 var ElstrUserStore = mcFly.createStore({
-    init: function() {
+    init: function(options) {
+
+        if (options && (options.forceAuthentication === false || options.forceAuthentication === "")) {
+            _forceAuthentication = false;
+        }
+
         _username = window.ELSTR.applicationData.user.username;
         _isAuth = window.ELSTR.applicationData.user.isAuth;
         _isAdmin = window.ELSTR.applicationData.user.isAdmin;
@@ -66,6 +76,36 @@ var ElstrUserStore = mcFly.createStore({
      */
     isAdmin: function() {
         return _isAdmin;
+    },
+
+    /**
+     * Returns the last message
+     *
+     * @method getLastMessage
+     * @return {String} mesage
+     */
+    getMessage: function() {
+        return _message;
+    },
+
+    /**
+     * Returns if it is loading
+     *
+     * @method isLoading
+     * @return {Boolean} If it is loading from the server
+     */
+    isLoading: function() {
+        return _loading;
+    },
+
+    /**
+     * Returns if the user is forced to login
+     *
+     * @method forceAuthentication
+     * @return {Boolean} If the user is admin
+     */
+    forceAuthentication: function() {
+        return _forceAuthentication;
     },
 
     /**
@@ -117,26 +157,42 @@ var ElstrUserStore = mcFly.createStore({
 
 }, function(payload) {
     var action = payload.action;
+    console.log(payload);
     switch (payload.actionType) {
-
-        case ElstUserConstants.ELSTR_USER_DID_LOGIN:
-            _username = payload.username;
-            _isAuth = payload.isAuth;
-            _isAdmin = payload.isAdmin;
-            _resourcesAllowed = payload.resourcesAllowed;
-            _enterpriseApplicationData = payload.enterpriseApplicationData;
+        case ElstrUserConstants.ELSTR_USER_WILL_LOGIN:
+            _message = null;
+            _loading = true;
+            console.log("ELSTR_USER_WILL_LOGIN");
             break;
-
-        case ElstUserConstants.ELSTR_LANG_DID_LOGOUT:
-            _username = payload.username;
-            _isAuth = false;
-            _isAdmin = false;
-            _resourcesAllowed = [];
-            _enterpriseApplicationData = {};
+        case ElstrUserConstants.ELSTR_USER_DID_LOGIN:
+            if (payload.username !== null) _username = payload.username;
+            if (payload.isAuth !== null) _isAuth = payload.isAuth;
+            if (payload.isAdmin !== null) _isAdmin = payload.isAdmin;
+            if (payload.resourcesAllowed !== null) _resourcesAllowed = payload.resourcesAllowed;
+            if (payload.enterpriseApplicationData !== null) _enterpriseApplicationData = payload.enterpriseApplicationData;
+            _message = payload.message; // Change the message anyway
+            _loading = false;
+            console.log("ELSTR_USER_DID_LOGIN");
+            break;
+        case ElstrUserConstants.ELSTR_USER_WILL_LOGOUT:
+            _message = null;
+            _loading = true;
+            console.log("ELSTR_USER_WILL_LOGOUT");
+            break;
+        case ElstrUserConstants.ELSTR_USER_DID_LOGOUT:
+            if (payload.username !== null) _username = payload.username;
+            if (payload.isAuth !== null) _isAuth = payload.isAuth;
+            if (payload.isAdmin !== null) _isAdmin = payload.isAdmin;
+            if (payload.resourcesAllowed !== null) _resourcesAllowed = payload.resourcesAllowed;
+            if (payload.enterpriseApplicationData !== null) _enterpriseApplicationData = payload.enterpriseApplicationData;
+            _message = payload.message; // Change the message anyway
+            _loading = false;            
+            console.log("ELSTR_USER_DID_LOGOUT");
             break;
     }
 
     ElstrLog.trace('ElstrUserStore.emitChange');
+
     ElstrUserStore.emitChange();
 
     return true;

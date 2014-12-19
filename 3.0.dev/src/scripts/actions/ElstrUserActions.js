@@ -9,9 +9,14 @@ var ElstrUserConstants = require('../constants/ElstrUserConstants');
 
 var ElstrLog = require("../ElstrLog");
 
+var ElstrIo = require('../ElstrIo');
+var elstrIo = new ElstrIo({
+    abortStaleRequests: true
+});
+
 /**
  * This is the class for actions in Elstr lang
-
+ 
  * @class ElstrUserActions
  */
 var ElstrUserActions = mcFly.createActions({
@@ -30,9 +35,8 @@ var ElstrUserActions = mcFly.createActions({
      */
     login: function(username, password, enterpriseApplication) {
 
-        ElstrLog.trace("ElstrUserActions.login");
-
-        ElstrUserActions.willLoad();
+        // Never log any passwords! ElstrLog.trace("ElstrUserActions.login");
+        ElstrUserActions.willLogin();
 
         var params = {
             username: username,
@@ -40,18 +44,24 @@ var ElstrUserActions = mcFly.createActions({
             enterpriseApplication: enterpriseApplication
         };
 
-        var req = elstrIo.requestJsonRpc("ELSTR_LanguageServer", "auth", params, {
+        var req = elstrIo.requestJsonRpc("ELSTR_AuthServer", "auth", params, {
             onSuccess: function(req, res) {
                 var result = res.body.result;
                 var responseAction = result.action;
-                var responseMessage = result.message;
+                var responseMessage = null;
                 if (responseAction == "success") {
-                    ElstrUserActions.didLogin(result.enterpriseApplicationData, result.isAdmin, result.isAuth, result.resourcesAllowed, result.username);
+                    ElstrUserActions.didLogin(result.enterpriseApplicationData, result.isAdmin, result.isAuth, result.resourcesAllowed, result.username, null);
                 } else {
-                    ElstrLog.log(responseMessage);
-                    // TODO: How to handle this?
+                    if (result.message) {
+                        ElstrLog.log(result.message);
+                        if (typeof result.message === 'string') {
+                            responseMessage = result.message;
+                        } else {
+                            responseMessage = result.message[0];
+                        }
+                    }
+                    ElstrUserActions.didLogin(null, null, null, null, null, responseMessage);
                 }
-
             },
             onError: function(req, error) {
                 ElstrLog.error(error);
@@ -80,16 +90,16 @@ var ElstrUserActions = mcFly.createActions({
      * @param username
      * @returns {{actionType: *, enterpriseApplicationData: *, isAdmin: *, isAuth: *, resourcesAllowed: *, username: *}}
      */
-    didLogin: function(enterpriseApplicationData, isAdmin, isAuth, resourcesAllowed, username) {
+    didLogin: function(enterpriseApplicationData, isAdmin, isAuth, resourcesAllowed, username, message) {
         ElstrLog.trace("ElstrUserActions.didLogin");
-
         return {
             actionType: ElstrUserConstants.ELSTR_USER_DID_LOGIN,
             enterpriseApplicationData: enterpriseApplicationData,
             isAdmin: isAdmin,
             isAuth: isAuth,
             resourcesAllowed: resourcesAllowed,
-            username: username
+            username: username,
+            message: message
         };
     },
 
@@ -110,17 +120,25 @@ var ElstrUserActions = mcFly.createActions({
 
         var params = {};
 
-        var req = elstrIo.requestJsonRpc("ELSTR_LanguageServer", "logout", params, {
+        var req = elstrIo.requestJsonRpc("ELSTR_AuthServer", "logout", params, {
 
             onSuccess: function(req, res) {
                 var result = res.body.result;
+
                 var responseAction = result.action;
-                var responseMessage = result.message;
+                var responseMessage = null;
                 if (responseAction == "success") {
-                    ElstrUserActions.didLogout(result.username);
+                    ElstrUserActions.didLogout({}, false, false, [], result.username, null);
                 } else {
-                    ElstrLog.log(responseMessage);
-                    // TODO: How to handle this?
+                    if (result.message) {
+                        ElstrLog.log(result.message);
+                        if (typeof result.message === 'string') {
+                            responseMessage = result.message;
+                        } else {
+                            responseMessage = result.message[0];
+                        }
+                    }
+                    ElstrUserActions.didLogin(null, null, null, null, null, responseMessage);
                 }
 
             },
@@ -149,12 +167,17 @@ var ElstrUserActions = mcFly.createActions({
      * @param username
      * @returns {{actionType: *, username: *}}
      */
-    didLogout: function(username) {
+    didLogout: function(enterpriseApplicationData, isAdmin, isAuth, resourcesAllowed, username, message) {
         ElstrLog.trace("ElstrUserActions.didLogout");
 
         return {
             actionType: ElstrUserConstants.ELSTR_USER_DID_LOGOUT,
-            username: username
+            enterpriseApplicationData: enterpriseApplicationData,
+            isAdmin: isAdmin,
+            isAuth: isAuth,
+            resourcesAllowed: resourcesAllowed,
+            username: username,
+            message: message
         };
     }
 
