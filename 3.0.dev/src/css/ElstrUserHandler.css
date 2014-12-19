@@ -1,0 +1,11 @@
+/* 
+ * Show all in a row
+ */
+.elstrUserHandler li {
+	display: inline-block;
+	margin: 0 0.5em 0 0;
+}
+
+.elstrUserHandler li:last-child {
+    margin: 0;
+}
