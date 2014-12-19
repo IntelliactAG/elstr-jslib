@@ -18,12 +18,6 @@ var ElstrId = require("./ElstrId");
 //var elstrId = new ElstrId();
 
 /**
- * Private
- */
-
-var _currentJsonRpcRequests = [];
-
-/**
  * This is the class for IO used in Elstr projects
  *
  * options attributes:
@@ -37,6 +31,7 @@ function ElstrIo(options) {
     if (options) {
         this.options = options;
     }
+    this.currentJsonRpcRequests = [];
 }
 
 ElstrIo.prototype = {
@@ -56,6 +51,9 @@ ElstrIo.prototype = {
      */
     requestJsonRpc: function(className, methodName, params, callback) {
         var options = this.options;
+        var currentJsonRpcRequests = this.currentJsonRpcRequests;
+
+
         var requestId = ElstrId.create();
         var oRequestPost = {
             "jsonrpc": "2.0",
@@ -65,10 +63,10 @@ ElstrIo.prototype = {
         };
 
         if (options.abortStaleRequests) {
-            for (var i = 0, len = _currentJsonRpcRequests.length; i < len; i++) {
-                _currentJsonRpcRequests[i].req.abort();
+            for (var i = 0, len = currentJsonRpcRequests.length; i < len; i++) {
+                currentJsonRpcRequests[i].req.abort();
             }
-            _currentJsonRpcRequests = [];
+            currentJsonRpcRequests = [];
         }
 
         var req = request.post('services/' + className)
@@ -77,19 +75,18 @@ ElstrIo.prototype = {
             .end(function(error, res) {
 
                 var indexOfCurrentRequest = -1;
-                for (var i = 0, len = _currentJsonRpcRequests.length; i < len; i++) {
-                    if (_currentJsonRpcRequests[i].requestId === requestId) {
+                for (var i = 0, len = currentJsonRpcRequests.length; i < len; i++) {
+                    if (currentJsonRpcRequests[i].requestId === requestId) {
                         indexOfCurrentRequest = i;
                         break;
                     }
                 }
                 if (indexOfCurrentRequest > -1) {
-                    _currentJsonRpcRequests.splice(indexOfCurrentRequest, 1);
+                    currentJsonRpcRequests.splice(indexOfCurrentRequest, 1);
                 }
 
                 if (error) {
                     // TODO: Do not call onError if req is aborted because of abortStaleRequests is true
-
                     ElstrLog.error(error);
 
                     if (callback.onError) {
@@ -97,31 +94,22 @@ ElstrIo.prototype = {
                     }else{
                         ElstrLog.info("No callback.onSuccess method provided");
                     }
-
                 } else {
-
                     ElstrLog.info(res);
-
                     if (callback.onSuccess){
-
                         if (res.body) {
-
                             var data = res.body.result;
                             callback.onSuccess(req, res, data);
-
                         }else{
                             ElstrLog.error("res.body not defined ");
                         }
-
                     }else{
                         ElstrLog.info("No callback.onSuccess method provided");
                     }
-
-
                 }
             });
 
-        _currentJsonRpcRequests.push({
+        currentJsonRpcRequests.push({
             id: requestId,
             className: className,
             methodName: methodName,

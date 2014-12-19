@@ -8,6 +8,7 @@ var mcFly = require('../libs/mcFly.js');
 var EventEmitter = require('events').EventEmitter;
 
 var _config = null;
+var _applicationEnv = null;
 
 /**
  * This is the class for storing Elstr lang
@@ -16,6 +17,7 @@ var _config = null;
 var ElstrConfigStore = mcFly.createStore({
     init: function() {
         _config = window.ELSTR.applicationData.config;
+        _applicationEnv = window.ELSTR.applicationEnv;
 
         // Remove global ELSTR values after configuration
         window.ELSTR.applicationData.config = null;
@@ -31,6 +33,9 @@ var ElstrConfigStore = mcFly.createStore({
             configSubObject = configSubObject[arguments[i]];
         }
         return configSubObject;
+    },
+    getApplicationEnv: function() {
+        return _applicationEnv;
     }
 
 }, function(payload) {
