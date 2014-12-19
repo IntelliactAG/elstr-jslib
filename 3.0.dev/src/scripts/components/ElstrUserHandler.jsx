@@ -65,7 +65,7 @@ var ElstrUserHandler = React.createClass({
         ElstrLog.error("admin interface is not implemented");
     },
     render: function() {
-        var liUsername = <li className="username"><span>egli@intelliact-net.local</span></li>;
+        var liUsername = <li className="username"><span>{this.state.username}</span></li>;
         var liLogin = <li><a href="#" title="Anmelden" className="login" onClick={this.showLoginDialog}>{ElstrLangStore.text("ANMELDEN")}</a></li>;
         var liLogout = <li><a href="#" title="Abmelden" className="logout" onClick={this.logout}>{ElstrLangStore.text("ABMELDEN")}</a></li>;
         var liAdmin = <li><a href="#" title="Admin" className="admin" onClick={this.admin}>Admin</a></li>;

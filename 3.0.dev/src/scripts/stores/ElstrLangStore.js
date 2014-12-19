@@ -56,6 +56,7 @@ var ElstrLangStore = mcFly.createStore({
             _translations = payload.translations;
             _currentLanguage = payload.lang;
             _polyglot.replace(_translations);
+            ElstrLog.log("ELSTR_LANG_DID_LOAD");
             break;
     }
 

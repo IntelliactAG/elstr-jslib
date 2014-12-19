@@ -162,7 +162,7 @@ var ElstrUserStore = mcFly.createStore({
         case ElstrUserConstants.ELSTR_USER_WILL_LOGIN:
             _message = null;
             _loading = true;
-            console.log("ELSTR_USER_WILL_LOGIN");
+            ElstrLog.log("ELSTR_USER_WILL_LOGIN");
             break;
         case ElstrUserConstants.ELSTR_USER_DID_LOGIN:
             if (payload.username !== null) _username = payload.username;
@@ -172,12 +172,12 @@ var ElstrUserStore = mcFly.createStore({
             if (payload.enterpriseApplicationData !== null) _enterpriseApplicationData = payload.enterpriseApplicationData;
             _message = payload.message; // Change the message anyway
             _loading = false;
-            console.log("ELSTR_USER_DID_LOGIN");
+            ElstrLog.log("ELSTR_USER_DID_LOGIN");
             break;
         case ElstrUserConstants.ELSTR_USER_WILL_LOGOUT:
             _message = null;
             _loading = true;
-            console.log("ELSTR_USER_WILL_LOGOUT");
+            ElstrLog.log("ELSTR_USER_WILL_LOGOUT");
             break;
         case ElstrUserConstants.ELSTR_USER_DID_LOGOUT:
             if (payload.username !== null) _username = payload.username;
@@ -187,7 +187,7 @@ var ElstrUserStore = mcFly.createStore({
             if (payload.enterpriseApplicationData !== null) _enterpriseApplicationData = payload.enterpriseApplicationData;
             _message = payload.message; // Change the message anyway
             _loading = false;            
-            console.log("ELSTR_USER_DID_LOGOUT");
+            ElstrLog.log("ELSTR_USER_DID_LOGOUT");
             break;
     }
 
