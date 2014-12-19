@@ -91,7 +91,7 @@ var ElstrUserLoginDialog = React.createClass({
                             </div>
                             <div className="form-group">
                                 <label for="elstrUserLoginDialogInputPassword">{ElstrLangStore.text("Password")}</label>
-                                <input ref="password" type="password" className="form-control" id="elstrUserLoginDialogInputPassword" required />
+                                <input ref="password" type="password" className="form-control" id="elstrUserLoginDialogInputPassword" placeholder={ElstrLangStore.text("Password")} required />
                             </div>
                             {message}
                         </div>
