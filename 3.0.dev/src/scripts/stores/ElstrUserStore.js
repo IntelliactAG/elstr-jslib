@@ -164,7 +164,8 @@ var ElstrUserStore = mcFly.createStore({
             _loading = true;
             ElstrLog.log("ELSTR_USER_WILL_LOGIN");
             break;
-        case ElstrUserConstants.ELSTR_USER_DID_LOGIN:
+        case ElstrUserConstants.ELSTR_USER_DID_LOGIN_SUCCESS:
+        case ElstrUserConstants.ELSTR_USER_DID_LOGIN_FAILED:
             if (payload.username !== null) _username = payload.username;
             if (payload.isAuth !== null) _isAuth = payload.isAuth;
             if (payload.isAdmin !== null) _isAdmin = payload.isAdmin;
@@ -172,7 +173,7 @@ var ElstrUserStore = mcFly.createStore({
             if (payload.enterpriseApplicationData !== null) _enterpriseApplicationData = payload.enterpriseApplicationData;
             _message = payload.message; // Change the message anyway
             _loading = false;
-            ElstrLog.log("ELSTR_USER_DID_LOGIN");
+            ElstrLog.log("ELSTR_USER_DID_LOGIN_SUCCESS || ELSTR_USER_DID_LOGIN_FAILED");
             break;
         case ElstrUserConstants.ELSTR_USER_WILL_LOGOUT:
             _message = null;

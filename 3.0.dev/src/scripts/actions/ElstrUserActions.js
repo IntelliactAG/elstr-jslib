@@ -21,10 +21,6 @@ var elstrIo = new ElstrIo({
  */
 var ElstrUserActions = mcFly.createActions({
 
-    /***********************************/
-    /** LOGIN LOGIN LOGIN LOGIN LOGIN **/
-    /***********************************/
-
     /**
      * Login as a user
      *
@@ -49,8 +45,8 @@ var ElstrUserActions = mcFly.createActions({
                 var result = res.body.result;
                 var responseAction = result.action;
                 var responseMessage = null;
-                if (responseAction == "success") {
-                    ElstrUserActions.didLogin(result.enterpriseApplicationData, result.isAdmin, result.isAuth, result.resourcesAllowed, result.username, null);
+                if (responseAction === "success") {
+                    ElstrUserActions.didLogin(responseAction, result.enterpriseApplicationData, result.isAdmin, result.isAuth, result.resourcesAllowed, result.username, null);
                 } else {
                     if (result.message) {
                         ElstrLog.log(result.message);
@@ -60,7 +56,7 @@ var ElstrUserActions = mcFly.createActions({
                             responseMessage = result.message[0];
                         }
                     }
-                    ElstrUserActions.didLogin(null, null, null, null, null, responseMessage);
+                    ElstrUserActions.didLogin(responseAction, null, null, null, null, null, responseMessage);
                 }
             },
             onError: function(req, error) {
@@ -90,10 +86,16 @@ var ElstrUserActions = mcFly.createActions({
      * @param username
      * @returns {{actionType: *, enterpriseApplicationData: *, isAdmin: *, isAuth: *, resourcesAllowed: *, username: *}}
      */
-    didLogin: function(enterpriseApplicationData, isAdmin, isAuth, resourcesAllowed, username, message) {
+    didLogin: function(responseAction, enterpriseApplicationData, isAdmin, isAuth, resourcesAllowed, username, message) {
         ElstrLog.trace("ElstrUserActions.didLogin");
+        var actionType;
+        if(responseAction === "success"){
+            actionType = ElstrUserConstants.ELSTR_USER_DID_LOGIN_SUCCESS;
+        } else {
+            actionType = ElstrUserConstants.ELSTR_USER_DID_LOGIN_FAILED;
+        }
         return {
-            actionType: ElstrUserConstants.ELSTR_USER_DID_LOGIN,
+            actionType: actionType,
             enterpriseApplicationData: enterpriseApplicationData,
             isAdmin: isAdmin,
             isAuth: isAuth,
@@ -102,11 +104,6 @@ var ElstrUserActions = mcFly.createActions({
             message: message
         };
     },
-
-
-    /*********************************/
-    /** LOGOUT LOGOUT LOGOUT LOGOUT **/
-    /*********************************/
 
     /**
      * Logout
@@ -138,7 +135,7 @@ var ElstrUserActions = mcFly.createActions({
                             responseMessage = result.message[0];
                         }
                     }
-                    ElstrUserActions.didLogin(null, null, null, null, null, responseMessage);
+                    ElstrUserActions.didLogout(null, null, null, null, null, responseMessage);
                 }
 
             },
