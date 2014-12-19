@@ -98,14 +98,21 @@ ElstrIo.prototype = {
                         ElstrLog.info("No callback.onSuccess method provided");
                     }
 
-
-
                 } else {
 
                     ElstrLog.info(res);
 
                     if (callback.onSuccess){
-                        callback.onSuccess(req, res);
+
+                        if (res.body) {
+
+                            var data = res.body.result;
+                            callback.onSuccess(req, res, data);
+
+                        }else{
+                            ElstrLog.error("res.body not defined ");
+                        }
+
                     }else{
                         ElstrLog.info("No callback.onSuccess method provided");
                     }
