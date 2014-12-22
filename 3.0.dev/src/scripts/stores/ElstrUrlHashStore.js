@@ -94,11 +94,13 @@ var ElstrUrlHashStore = mcFly.createStore({
             if (payload.oldHash) _oldHash = payload.oldHash;
             else _oldHash = "";
 
+            ElstrUrlHashStore.emitChange();
+
             break;
 
     }
 
-    ElstrUrlHashStore.emitChange();
+
 
     return true;
 });
