@@ -38,8 +38,6 @@ var ElstrUserLoginDialog = React.createClass({
 
     handleSubmit: function(e) {
         e.preventDefault();
-
-        console.log("foo");
         var username = this.refs.username.getDOMNode().value.trim();
         var password = this.refs.password.getDOMNode().value;
 
