@@ -96,15 +96,16 @@ ElstrIo.prototype = {
                     }
                 } else {
                     ElstrLog.info(res);
+                    var data = {};
                     if (callback.onSuccess){
                         if (res.body) {
-                            var data = res.body.result;
-                            callback.onSuccess(req, res, data);
+                            data = res.body.result;
                         }else{
-                            ElstrLog.error("res.body not defined ");
+                            ElstrLog.warn("Object res.body is not defined. No data argument provided to onSuccess method.");
                         }
+                        callback.onSuccess(req, res, data);                        
                     }else{
-                        ElstrLog.info("No callback.onSuccess method provided");
+                        ElstrLog.error("No callback.onSuccess method provided");
                     }
                 }
             });
