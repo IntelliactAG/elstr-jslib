@@ -45,6 +45,12 @@ var ElstrLangStore = mcFly.createStore({
     getCurrentLanguage: function() {
         return _currentLanguage;
     },
+    /**
+     * Alias for the polyglot.t method
+     * @param {String} key
+     * @param {Object} option
+     * @returns {String} in the current language
+     */    
     text: function(key, options) {
         return _polyglot.t(key, options);
     }

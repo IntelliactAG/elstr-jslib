@@ -22,6 +22,11 @@ var ElstrConfigStore = mcFly.createStore({
         // Remove global ELSTR values after configuration
         window.ELSTR.applicationData.config = null;
     },
+    /**
+     * Use an optiom that is defined in the config.ini
+     * @param arguments
+     * @returns {String} configuration value
+     */
     option: function() {
         // If called for the first time
         if (_config === null) {
@@ -34,6 +39,10 @@ var ElstrConfigStore = mcFly.createStore({
         }
         return configSubObject;
     },
+    /**
+     * Get the application env string
+     * @returns {String} application environment (development, test, production)
+     */
     getApplicationEnv: function() {
         return _applicationEnv;
     }
