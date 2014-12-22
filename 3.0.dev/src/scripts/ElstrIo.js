@@ -96,7 +96,7 @@ ElstrIo.prototype = {
                     }
                 } else {
                     ElstrLog.info(res);
-                    var data = {};
+                    var data = null;
                     if (callback.onSuccess){
                         if (res.body) {
                             data = res.body.result;
