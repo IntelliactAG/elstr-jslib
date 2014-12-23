@@ -19,55 +19,96 @@ var ElstrLog = require("../ElstrLog");
 
 var _translations = {};
 var _currentLanguage = null;
+var _defaultLanguage = null;
 var _loadedModules = [];
+
+var _dataOptions = {};
+var _currentDataLanguage = null;
+var _defaultDataLanguage = null;
+
+
+var _setCurrentDataLanguage = function() {
+    _currentDataLanguage = _currentLanguage;
+    if (_dataOptions.mapping && _dataOptions.mapping[_currentLanguage]) {
+        _currentDataLanguage = _dataOptions.mapping[_currentLanguage];
+    }
+};
+
 
 /**
  * This is the class for storing Elstr lang
  * @class ElstrLangStore
  */
 var ElstrLangStore = mcFly.createStore({
-    init: function() {
-        _translations = window.ELSTR.applicationData.language.translations;
-        _currentLanguage = window.ELSTR.applicationData.language.current;
-        _loadedModules = [window.ELSTR.applicationData.language.modules];
+        init: function() {
+            _translations = window.ELSTR.applicationData.language.translations;
+            _currentLanguage = window.ELSTR.applicationData.language.current;
+            _defaultLanguage = window.ELSTR.applicationData.language.default;
+            _loadedModules = [window.ELSTR.applicationData.language.modules];
 
-        // Remove global ELSTR values after configuration
-        window.ELSTR.applicationData.language = null;
+            _dataOptions = window.ELSTR.applicationData.language.dataOptions;
+            if (_dataOptions.default) {
+                _defaultDataLanguage = _dataOptions.default;
+            }
+            _setCurrentDataLanguage();
 
-        _polyglot = new Polyglot();
-        _polyglot.extend(_translations);
+            // Remove global ELSTR values after configuration
+            window.ELSTR.applicationData.language = null;
 
-        ElstrLog.info("ElstrLangStore initialized");
+            _polyglot = new Polyglot();
+            _polyglot.extend(_translations);
+
+            ElstrLog.info("ElstrLangStore initialized");
+        },
+        getLoadedModules: function() {
+            return _loadedModules;
+        },
+        getCurrentLanguage: function() {
+            return _currentLanguage;
+        },
+        getDefaultLanguage: function() {
+            return _defaultLanguage;
+        },
+        /**
+         * Alias for the polyglot.t method
+         * @param {String} key
+         * @param {Object} option
+         * @returns {String} in the current language
+         */
+        text: function(key, options) {
+            return _polyglot.t(key, options);
+        },
+        /**
+         * Alias for the polyglot.t method
+         * @param {Object} values. example values : {"de":"Schraube","en","Bolt"}
+         * @returns {String} in the current data language
+         */
+        data: function(values) {
+            var text = "";
+            if (values[_currentDataLanguage]) {
+                text = values[_currentDataLanguage];
+            } else if (_defaultDataLanguage !== null && values[_defaultDataLanguage]) {
+                text = values[_defaultDataLanguage];
+            } else if (Object.keys(values).length > 0) {
+                text = values[Object.keys(values)[0]];
+            }
+            return text;
+        }
+
     },
-    getLoadedModules: function() {
-        return _loadedModules;
-    },
-    getCurrentLanguage: function() {
-        return _currentLanguage;
-    },
-    /**
-     * Alias for the polyglot.t method
-     * @param {String} key
-     * @param {Object} option
-     * @returns {String} in the current language
-     */    
-    text: function(key, options) {
-        return _polyglot.t(key, options);
-    }
+    function(payload) {
 
-}, function(payload) {
-
-    switch (payload.actionType) {
-        case ElstLangConstants.ELSTR_LANG_DID_LOAD:
-
+        if (payload.actionType === ElstLangConstants.ELSTR_LANG_DID_LOAD) {
             _translations = payload.translations;
             _currentLanguage = payload.lang;
+
+            _setCurrentDataLanguage();
+
             _polyglot.replace(_translations);
             ElstrLangStore.emitChange();
-            break;
-    }
+        }
 
-    return true;
-});
+        return true;
+    });
 
 module.exports = ElstrLangStore;
