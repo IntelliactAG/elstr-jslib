@@ -8,7 +8,7 @@
  *
  */
 
-var request = require('./libs/superagent/superagent.js');
+var request = require('superagent');
 
 // Privat data
 var _options = {

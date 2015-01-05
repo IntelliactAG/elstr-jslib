@@ -8,7 +8,7 @@
 // SuperAgent is a small progressive client-side HTTP request library, and Node.js module with the same API, sporting many high-level HTTP client features.
 // Repo: https://github.com/visionmedia/superagent
 // Docs: http://visionmedia.github.io/superagent/
-var request = require('./libs/superagent/superagent.js');
+var request = require('superagent');
 
 var ElstrConfigStore = require("./stores/ElstrConfigStore");
 
