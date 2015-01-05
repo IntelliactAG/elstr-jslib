@@ -99,7 +99,19 @@ ElstrIo.prototype = {
                     var data = null;
                     if (callback.onSuccess){
                         if (res.body) {
-                            data = res.body.result;
+                            if (res.body.error) {
+
+                                ElstrLog.error(res.body.error);
+
+                                if (callback.onError) {
+                                    callback.onError(req, res.body.error);
+                                }else{
+                                    ElstrLog.info("No callback.onError method provided");
+                                }
+
+                            }else{
+                                data = res.body.result;
+                            }
                         }else{
                             ElstrLog.warn("Object res.body is not defined. No data argument provided to onSuccess method.");
                         }
