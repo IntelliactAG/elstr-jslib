@@ -10,7 +10,7 @@ var EventEmitter = require('events').EventEmitter;
 var ElstLangConstants = require('../constants/ElstrLangConstants');
 
 // http://airbnb.github.io/polyglot.js/
-var Polyglot = require('../libs/polyglot/build/polyglot.js');
+var Polyglot = require('node-polyglot');
 var _polyglot = new Polyglot();
 
 var ElstrConfigStore = require("../stores/ElstrConfigStore");

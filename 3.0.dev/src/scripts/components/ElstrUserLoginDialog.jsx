@@ -5,9 +5,9 @@ var ElstrUserActions = require('../actions/ElstrUserActions');
 var ElstrLog = require('../ElstrLog');
 var ElstrLangStore = require('../stores/ElstrLangStore');
 
-var Modal = require('../libs/react-bootstrap/src/Modal');
-var Button = require('../libs/react-bootstrap/src/Button');
-var Alert = require('../libs/react-bootstrap/src/Alert');
+var Modal = require('react-bootstrap/Modal');
+var Button = require('react-bootstrap/Button');
+var Alert = require('react-bootstrap/Alert');
 
 var ElstrUserLoginDialogCss = require('../../css/ElstrUserLoginDialog.css');
 

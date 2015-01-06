@@ -1,11 +1,13 @@
 {
-  "name": "elstr-jslib",
-  "description": "Elstr frontend libs",
-  "author": "Intelliact",
-  "version": "3.0.4",
-  "license": "MIT",
-  "dependencies": {
-    "mcfly": "0.0.x",
-	"superagent": "0.21.x"
-  }
+	"name": "elstr-jslib",
+	"description": "Elstr frontend libs",
+	"author": "Intelliact",
+	"version": "3.0.9",
+	"license": "MIT",
+	"dependencies": {
+		"mcfly": "0.0.x",
+		"superagent": "0.21.x",
+		"node-polyglot": "0.4.x",
+		"react-bootstrap": "0.13.x"
+	}
 }
