@@ -42,7 +42,7 @@ var ElstrUrlHashStore = mcFly.createStore({
 
         // Application init
 
-        var hasher = require('../libs/hasher');
+        var hasher = require('hasher');
 
         hasher.changed.add(ElstrUrlHashActions.hashChange); //add hash change listener
         hasher.initialized.add(ElstrUrlHashActions.hashChange); //add initialized listener (to grab initial value in case it is already set)

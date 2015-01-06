@@ -5,6 +5,8 @@
 var ARRAY_MODE = 1;
 var LOCAL_STORAGE_MODE = 2;
 
+var kizzy = require('kizzy');
+
 _data = [];
 _mode = ARRAY_MODE;
 _arrayLimit =  0;

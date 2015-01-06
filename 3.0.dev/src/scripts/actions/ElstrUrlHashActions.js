@@ -6,7 +6,7 @@ var mcFly = require('../libs/mcFly.js');
 var ElstrUrlHashConstants = require('../constants/ElstrUrlHashConstants');
 
 var ElstrLog = require("../ElstrLog");
-var hasher = require('../libs/hasher');
+var hasher = require('hasher');
 
 /**
  * Transforms an object into a string with the proper hash format (Ej: foo=1&cow=2&candy=true)
