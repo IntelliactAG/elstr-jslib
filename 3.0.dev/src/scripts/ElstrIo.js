@@ -86,39 +86,51 @@ ElstrIo.prototype = {
                 }
 
                 if (error) {
+
                     // TODO: Do not call onError if req is aborted because of abortStaleRequests is true
                     ElstrLog.error(error);
 
                     if (callback.onError) {
-                        callback.onError(req, error);
+                        callback.onError(req, res, error);
                     }else{
-                        ElstrLog.info("No callback.onSuccess method provided");
+                        ElstrLog.error("No callback.onError method provided");
                     }
+
                 } else {
                     ElstrLog.info(res);
                     var data = null;
-                    if (callback.onSuccess){
-                        if (res.body) {
-                            if (res.body.error) {
 
-                                ElstrLog.error(res.body.error);
+                    if (res.body) {
 
-                                if (callback.onError) {
-                                    callback.onError(req, res.body.error);
-                                }else{
-                                    ElstrLog.info("No callback.onError method provided");
-                                }
+                        if (res.body.error) {
+
+                            ElstrLog.error(res.body.error);
+
+                            if (callback.onError) {
+
+                                callback.onError(req, res, res.body.error);
 
                             }else{
-                                data = res.body.result;
+                                ElstrLog.error("No callback.onError method provided");
                             }
+
                         }else{
-                            ElstrLog.warn("Object res.body is not defined. No data argument provided to onSuccess method.");
+
+                            if (callback.onSuccess){
+
+                                // All went well
+                                data = res.body.result;
+                                callback.onSuccess(req, res, data);
+
+                            }else{
+                                ElstrLog.error("No callback.onSuccess method provided");
+                            }
                         }
-                        callback.onSuccess(req, res, data);                        
+
                     }else{
-                        ElstrLog.error("No callback.onSuccess method provided");
+                        ElstrLog.warn("Object res.body is not defined. No data argument provided to onSuccess method.");
                     }
+
                 }
             });
 
