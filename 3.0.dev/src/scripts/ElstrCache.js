@@ -6,13 +6,16 @@ var ARRAY_MODE = 1;
 var LOCAL_STORAGE_MODE = 2;
 
 var kizzy = require('kizzy');
+var ElstrLog = require("./ElstrLog");
+
+
+/**
+ *  Private variables
+ */
 
 _data = [];
 _mode = ARRAY_MODE;
 _arrayLimit =  0;
-
-var ElstrLog = require("./ElstrLog");
-
 
 var ElstrCache = {
 
@@ -143,7 +146,7 @@ var ElstrCache = {
             var entry = {
                 _value: value,
                 _timeToExpire: null
-            }
+            };
 
             if (timeToExpire){
 
@@ -236,11 +239,8 @@ var ElstrCache = {
             _data = [];
 
         }
-
     }
-}
-
-
+};
 
 
 module.exports = ElstrCache;

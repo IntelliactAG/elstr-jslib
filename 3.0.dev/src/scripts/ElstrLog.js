@@ -161,9 +161,9 @@ var ElstrLog = {
      * Writes the the number of times that count() has been invoked at the same line and with the same label.
      * @param label
      */
-    count: function(label) {
+    count: function() {
         if (console && _options.enabled) {
-            console.count.apply(console, label);
+            console.count.apply(console, arguments);
         }
     },
 
@@ -190,7 +190,7 @@ var ElstrLog = {
             }else{
 
                 parentFunctionName = arguments.callee.caller.name;
-                if (parentFunctionName == "") {
+                if (parentFunctionName === "") {
                     parentFunctionName = " Anonymous func ";
                 }
 

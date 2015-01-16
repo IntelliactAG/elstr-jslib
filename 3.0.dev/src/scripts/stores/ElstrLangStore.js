@@ -6,16 +6,17 @@
 
 var mcFly = require('../libs/mcFly.js');
 
-var EventEmitter = require('events').EventEmitter;
 var ElstLangConstants = require('../constants/ElstrLangConstants');
 
 // http://airbnb.github.io/polyglot.js/
 var Polyglot = require('node-polyglot');
 var _polyglot = new Polyglot();
 
-var ElstrConfigStore = require("../stores/ElstrConfigStore");
-
 var ElstrLog = require("../ElstrLog");
+
+/**
+ *  Private variables
+ */
 
 var _translations = {};
 var _currentLanguage = null;
@@ -85,12 +86,18 @@ var ElstrLangStore = mcFly.createStore({
          */
         data: function(values) {
             var text = "";
-            if (values[_currentDataLanguage]) {
-                text = values[_currentDataLanguage];
-            } else if (_defaultDataLanguage !== null && values[_defaultDataLanguage]) {
-                text = values[_defaultDataLanguage];
-            } else if (Object.keys(values).length > 0) {
-                text = values[Object.keys(values)[0]];
+            if (values){
+                if (values[_currentDataLanguage]){
+                    text = values[_currentDataLanguage];
+                } else if (_defaultDataLanguage !== null && values[_defaultDataLanguage]) {
+                    text = values[_defaultDataLanguage];
+                } else if (Object.keys(values).length > 0) {
+                    text = values[Object.keys(values)[0]];
+                } else {
+                    ElstrLog.error("ElstrLangStore::data Translation is empty ");
+                }
+            } else{
+                ElstrLog.error("ElstrLangStore::data Translation values is falsy ");
             }
             return text;
         }

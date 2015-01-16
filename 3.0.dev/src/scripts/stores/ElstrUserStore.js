@@ -6,12 +6,13 @@
 
 var mcFly = require('../libs/mcFly.js');
 
-var EventEmitter = require('events').EventEmitter;
 var ElstrUserConstants = require('../constants/ElstrUserConstants');
 
-var ElstrConfigStore = require("../stores/ElstrConfigStore");
-
 var ElstrLog = require("../ElstrLog");
+
+/**
+ *  Private variables
+ */
 
 var _username = "anonymous";
 var _isAuth = false;

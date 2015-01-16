@@ -5,7 +5,10 @@
  */
 
 var mcFly = require('../libs/mcFly.js');
-var EventEmitter = require('events').EventEmitter;
+
+/**
+ *  Private variables
+ */
 
 var _config = null;
 var _applicationEnv = null;
@@ -23,7 +26,7 @@ var ElstrConfigStore = mcFly.createStore({
         window.ELSTR.applicationData.config = null;
     },
     /**
-     * Use an optiom that is defined in the config.ini
+     * Use an option that is defined in the config.ini
      * @param arguments
      * @returns {String} configuration value
      */

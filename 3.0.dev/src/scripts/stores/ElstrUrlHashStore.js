@@ -1,10 +1,13 @@
 var mcFly = require('../libs/mcFly.js');
 
-var EventEmitter = require('events').EventEmitter;
 var ElstrUrlHashConstants = require('../constants/ElstrUrlHashConstants');
 var ElstrUrlHashActions = require('../actions/ElstrUrlHashActions');
 
 var ElstrLog = require('../ElstrLog');
+
+/**
+ *  Private variables
+ */
 
 var _newHash = ""; // Information about the current URL Hash
 var _oldHash = ""; // Information about the old URL Hash

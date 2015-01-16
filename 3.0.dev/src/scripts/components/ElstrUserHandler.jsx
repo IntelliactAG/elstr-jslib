@@ -4,7 +4,7 @@ var ElstrUserStore = require('../stores/ElstrUserStore');
 var ElstrUserActions = require('../actions/ElstrUserActions');
 var ElstrLog = require('../ElstrLog');
 var ElstrLangStore = require('../stores/ElstrLangStore');
-var ElstrUserLoginDialog = require('./ElstrUserLoginDialog');
+var ElstrUserLoginDialog = require('./ElstrUserLoginDialog.jsx');
 
 var ElstrUserHandlerCss = require('../../css/ElstrUserHandler.css');
 
@@ -27,7 +27,7 @@ var ElstrUserHandler = React.createClass({
     },
 
     getInitialState: function() {
-        var showLoginDialog = false
+        var showLoginDialog = false;
         if (ElstrUserStore.forceAuthentication() === true && ElstrUserStore.isAuth() === false) {
             showLoginDialog = true;
         }
@@ -39,7 +39,7 @@ var ElstrUserHandler = React.createClass({
         };
     },
     showLoginDialog: function(e) {
-        e.preventDefault()
+        e.preventDefault();
         ElstrLog.trace("ElstrUserHandler.showLoginDialog");
         this.state.showLoginDialog = true;
         this.setState(this.state);
@@ -54,12 +54,12 @@ var ElstrUserHandler = React.createClass({
         this.setState(this.state);
     },
     logout: function(e) {
-        e.preventDefault()
+        e.preventDefault();
         ElstrLog.trace("ElstrUserHandler.logout");
         ElstrUserActions.logout();
     },
     admin: function(e) {
-        e.preventDefault()
+        e.preventDefault();
         ElstrLog.trace("ElstrUserHandler.admin");
         //
         ElstrLog.error("admin interface is not implemented");
