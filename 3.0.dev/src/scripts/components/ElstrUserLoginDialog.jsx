@@ -15,6 +15,15 @@ var ElstrUserLoginDialog = React.createClass({
 
     mixins: [ElstrUserStore.mixin, ElstrLangStore.mixin],
 
+    getDefaultProps: function() {
+        return {
+
+            // By default hide Login dialog does nothing.
+            hideLoginDialog: function(){}
+
+        };
+    },
+
     onChange: function() {
         this.state.isAuth = ElstrUserStore.isAuth();
         this.state.loading = ElstrUserStore.isLoading();
@@ -88,11 +97,11 @@ var ElstrUserLoginDialog = React.createClass({
                     <form>
                         <div className="modal-body">
                             <div className="form-group">
-                                <label for="elstrUserLoginDialogInputUsername">{ElstrLangStore.text("Username")}</label>
-                                <input ref="username" type="username" className="form-control" id="elstrUserLoginDialogInputUsername" placeholder={ElstrLangStore.text("Username")} required />
+                                <label htmlFor="elstrUserLoginDialogInputUsername">{ElstrLangStore.text("Username")}</label>
+                                <input ref="username" type="text" className="form-control" id="elstrUserLoginDialogInputUsername" placeholder={ElstrLangStore.text("Username")} required />
                             </div>
                             <div className="form-group">
-                                <label for="elstrUserLoginDialogInputPassword">{ElstrLangStore.text("Password")}</label>
+                                <label htmlFor="elstrUserLoginDialogInputPassword">{ElstrLangStore.text("Password")}</label>
                                 <input ref="password" type="password" className="form-control" id="elstrUserLoginDialogInputPassword" placeholder={ElstrLangStore.text("Password")} required />
                             </div>
                             {message}
