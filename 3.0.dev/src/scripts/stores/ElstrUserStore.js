@@ -158,53 +158,76 @@ var ElstrUserStore = mcFly.createStore({
 
 }, function(payload) {
 
-    switch (payload.actionType) {
-        case ElstrUserConstants.ELSTR_USER_WILL_LOGIN:
-            _message = null;
-            _loading = true;
+    try{
 
-            ElstrLog.log("ELSTR_USER_WILL_LOGIN");
-            ElstrUserStore.emitChange();
+        switch (payload.actionType) {
+            case ElstrUserConstants.ELSTR_USER_WILL_LOGIN:
+                _message = null;
+                _loading = true;
 
-            break;
-        case ElstrUserConstants.ELSTR_USER_DID_LOGIN_SUCCESS:
-        case ElstrUserConstants.ELSTR_USER_DID_LOGIN_FAILED:
-            if (payload.username !== null) _username = payload.username;
-            if (payload.isAuth !== null) _isAuth = payload.isAuth;
-            if (payload.isAdmin !== null) _isAdmin = payload.isAdmin;
-            if (payload.resourcesAllowed !== null) _resourcesAllowed = payload.resourcesAllowed;
-            if (payload.enterpriseApplicationData !== null) _enterpriseApplicationData = payload.enterpriseApplicationData;
-            _message = payload.message; // Change the message anyway
-            _loading = false;
+                ElstrLog.log("ELSTR_USER_WILL_LOGIN");
+                ElstrUserStore.emitChange();
 
-            ElstrLog.log("ELSTR_USER_DID_LOGIN_SUCCESS || ELSTR_USER_DID_LOGIN_FAILED");
-            ElstrUserStore.emitChange();
+                break;
+            case ElstrUserConstants.ELSTR_USER_DID_LOGIN_SUCCESS:
 
-            break;
-        case ElstrUserConstants.ELSTR_USER_WILL_LOGOUT:
-            _message = null;
-            _loading = true;
+                if (payload.username !== null) _username = payload.username;
+                if (payload.isAuth !== null) _isAuth = payload.isAuth;
+                if (payload.isAdmin !== null) _isAdmin = payload.isAdmin;
+                if (payload.resourcesAllowed !== null) _resourcesAllowed = payload.resourcesAllowed;
+                if (payload.enterpriseApplicationData !== null) _enterpriseApplicationData = payload.enterpriseApplicationData;
+                _message = payload.message; // Change the message anyway
+                _loading = false;
 
-            ElstrLog.log("ELSTR_USER_WILL_LOGOUT");
-            ElstrUserStore.emitChange();
+                ElstrLog.log("ELSTR_USER_DID_LOGIN_SUCCESS");
+                ElstrUserStore.emitChange();
 
-            break;
-        case ElstrUserConstants.ELSTR_USER_DID_LOGOUT:
-            if (payload.username !== null) _username = payload.username;
-            if (payload.isAuth !== null) _isAuth = payload.isAuth;
-            if (payload.isAdmin !== null) _isAdmin = payload.isAdmin;
-            if (payload.resourcesAllowed !== null) _resourcesAllowed = payload.resourcesAllowed;
-            if (payload.enterpriseApplicationData !== null) _enterpriseApplicationData = payload.enterpriseApplicationData;
-            _message = payload.message; // Change the message anyway
-            _loading = false;            
+                break;
 
-            ElstrLog.log("ELSTR_USER_DID_LOGOUT");
-            ElstrUserStore.emitChange();
 
-            break;
+            case ElstrUserConstants.ELSTR_USER_DID_LOGIN_FAILED:
+
+                if (payload.username !== null) _username = payload.username;
+                if (payload.isAuth !== null) _isAuth = payload.isAuth;
+                if (payload.isAdmin !== null) _isAdmin = payload.isAdmin;
+                if (payload.resourcesAllowed !== null) _resourcesAllowed = payload.resourcesAllowed;
+                if (payload.enterpriseApplicationData !== null) _enterpriseApplicationData = payload.enterpriseApplicationData;
+                _message = payload.message; // Change the message anyway
+                _loading = false;
+
+                ElstrLog.log("ELSTR_USER_DID_LOGIN_FAILED");
+                ElstrUserStore.emitChange();
+
+                break;
+            case ElstrUserConstants.ELSTR_USER_WILL_LOGOUT:
+                _message = null;
+                _loading = true;
+
+                ElstrLog.log("ELSTR_USER_WILL_LOGOUT");
+                ElstrUserStore.emitChange();
+
+                break;
+            case ElstrUserConstants.ELSTR_USER_DID_LOGOUT:
+                if (payload.username !== null) _username = payload.username;
+                if (payload.isAuth !== null) _isAuth = payload.isAuth;
+                if (payload.isAdmin !== null) _isAdmin = payload.isAdmin;
+                if (payload.resourcesAllowed !== null) _resourcesAllowed = payload.resourcesAllowed;
+                if (payload.enterpriseApplicationData !== null) _enterpriseApplicationData = payload.enterpriseApplicationData;
+                _message = payload.message; // Change the message anyway
+                _loading = false;
+
+                ElstrLog.log("ELSTR_USER_DID_LOGOUT");
+                ElstrUserStore.emitChange();
+
+                break;
+        }
+
+        return true;
+
+    }catch(e){
+        console.error(e);
+        throw e;
     }
-
-    return true;
 });
 
 module.exports = ElstrUserStore;

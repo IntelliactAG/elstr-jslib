@@ -123,7 +123,6 @@ describe("ElstrUserHandler", function() {
             elstrUserLoginDialog, 'btn-primary');
 
         ReactTestUtils.Simulate.click(button);
-
         // Now we get an error.
         expect(elstrUserLoginDialog.state.isAuth).toBe(false);
         expect(elstrUserLoginDialog.state.loading).toBe(false);

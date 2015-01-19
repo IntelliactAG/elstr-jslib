@@ -6,24 +6,35 @@ var ElstrLog = require('../ElstrLog');
 var ElstrLangStore = require('../stores/ElstrLangStore');
 var ElstrUserLoginDialog = require('./ElstrUserLoginDialog.jsx');
 
-var ElstrUserHandlerCss = require('../../css/ElstrUserHandler.css');
+// Component css
+require('../../css/ElstrUserHandler.css');
 
 var ElstrUserHandler = React.createClass({
 
     mixins: [ElstrUserStore.mixin,ElstrLangStore.mixin],
 
     onChange: function() {
-        if(ElstrUserStore.isAuth() === true){
-            this.state.showLoginDialog = false;
-        } else {
-            if (ElstrUserStore.forceAuthentication() === true){
-                this.state.showLoginDialog = true;
+
+        try {
+
+            if (ElstrUserStore.isAuth() === true) {
+                this.state.showLoginDialog = false;
+            } else {
+                if (ElstrUserStore.forceAuthentication() === true) {
+                    this.state.showLoginDialog = true;
+                }
             }
+            this.state.username = ElstrUserStore.getUsername();
+            this.state.isAuth = ElstrUserStore.isAuth();
+            this.state.isAdmin = ElstrUserStore.isAdmin();
+            this.setState(this.state);
+
+        }catch(e){
+
+            console.error(e);
+            throw e;
+
         }
-        this.state.username = ElstrUserStore.getUsername();
-        this.state.isAuth = ElstrUserStore.isAuth();
-        this.state.isAdmin = ElstrUserStore.isAdmin();
-        this.setState(this.state);
     },
 
     getInitialState: function() {
@@ -65,41 +76,51 @@ var ElstrUserHandler = React.createClass({
         ElstrLog.error("admin interface is not implemented");
     },
     render: function() {
-        var liUsername = <li className="username"><span>{this.state.username}</span></li>;
-        var liLogin = <li><a href="#" title="Anmelden" className="login" onClick={this.showLoginDialog}>{ElstrLangStore.text("ANMELDEN")}</a></li>;
-        var liLogout = <li><a href="#" title="Abmelden" className="logout" onClick={this.logout}>{ElstrLangStore.text("ABMELDEN")}</a></li>;
-        var liAdmin = <li><a href="#" title="Admin" className="admin" onClick={this.admin}>Admin</a></li>;
 
-        if (this.state.isAuth === true) {
-            liLogin =  null;
-        } else {
-            liUsername = null;
-            liLogout = null;
+        try {
+
+            var liUsername = <li className="username"><span>{this.state.username}</span></li>;
+            var liLogin = <li><a href="#" title="Anmelden" className="login" onClick={this.showLoginDialog}>{ElstrLangStore.text("ANMELDEN")}</a></li>;
+            var liLogout = <li><a href="#" title="Abmelden" className="logout" onClick={this.logout}>{ElstrLangStore.text("ABMELDEN")}</a></li>;
+            var liAdmin = <li><a href="#" title="Admin" className="admin" onClick={this.admin}>Admin</a></li>;
+
+            if (this.state.isAuth === true) {
+                liLogin =  null;
+            } else {
+                liUsername = null;
+                liLogout = null;
+            }
+            if (this.state.isAdmin !== true) {
+                liAdmin = null;
+            }
+
+            var loginDialog;
+            if(this.state.showLoginDialog){
+                loginDialog = <ElstrUserLoginDialog hideLoginDialog={this.hideLoginDialog} />;
+            }
+
+            return (
+                <div className="elstrUserHandler">
+
+                    {loginDialog}
+
+                    <ul>
+                        {liUsername}
+                        {liLogin}
+                        {liLogout}
+                        {liAdmin}
+
+
+                    </ul>
+                </div>
+            );
+
+        }catch(e){
+
+            console.error(e);
+            throw e;
+
         }
-        if (this.state.isAdmin !== true) {
-            liAdmin = null;
-        }
-
-        var loginDialog;
-        if(this.state.showLoginDialog){
-            loginDialog = <ElstrUserLoginDialog hideLoginDialog={this.hideLoginDialog} />;
-        }
-
-        return (
-            <div className="elstrUserHandler">
-
-                {loginDialog}
-
-                <ul>
-                    {liUsername}
-                    {liLogin}
-                    {liLogout}
-                    {liAdmin}
-
-
-                </ul>
-            </div>
-        );
     }
 });
 module.exports = ElstrUserHandler;

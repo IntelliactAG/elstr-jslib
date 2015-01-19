@@ -9,11 +9,12 @@ var Modal = require('react-bootstrap/Modal');
 var Button = require('react-bootstrap/Button');
 var Alert = require('react-bootstrap/Alert');
 
-var ElstrUserLoginDialogCss = require('../../css/ElstrUserLoginDialog.css');
+// Component css
+require('../../css/ElstrUserLoginDialog.css');
 
 var ElstrUserLoginDialog = React.createClass({
 
-    mixins: [ElstrUserStore.mixin, ElstrLangStore.mixin],
+    mixins: [ElstrLangStore.mixin],
 
     getDefaultProps: function() {
         return {
@@ -25,15 +26,25 @@ var ElstrUserLoginDialog = React.createClass({
     },
 
     onChange: function() {
-        this.state.isAuth = ElstrUserStore.isAuth();
-        this.state.loading = ElstrUserStore.isLoading();
-        if(ElstrUserStore.getMessage()){
-            this.state.message.text = ElstrUserStore.getMessage();
-            this.state.message.style = "danger";
-        } else {
-            this.state.message = {};
+
+        try {
+
+            this.state.isAuth = ElstrUserStore.isAuth();
+            this.state.loading = ElstrUserStore.isLoading();
+            if(ElstrUserStore.getMessage()){
+                this.state.message.text = ElstrUserStore.getMessage();
+                this.state.message.style = "danger";
+            } else {
+                this.state.message = {};
+            }
+            this.setState(this.state);
+
+        }catch(e){
+
+            console.error(e);
+            throw e;
+
         }
-        this.setState(this.state);
     },
 
     getInitialState: function() {
@@ -71,49 +82,58 @@ var ElstrUserLoginDialog = React.createClass({
 
     render: function() {
 
-        var cancelButton;
-        if (this.state.forceAuthentication === false) {
-            cancelButton = <Button onClick={this.props.hideLoginDialog}> {ElstrLangStore.text("Cancel")}</Button>;
-        }
+        try{
 
-        var message;
-        if(this.state.message.text && this.state.message.style){
-            message = <Alert bsStyle={this.state.message.style}>{ElstrLangStore.text(this.state.message.text)}</Alert>;
-        }
+            var cancelButton;
+            if (this.state.forceAuthentication === false) {
+                cancelButton = <Button onClick={this.props.hideLoginDialog}> {ElstrLangStore.text("Cancel")}</Button>;
+            }
 
-        var submitButton;
-        if(this.state.loading === false){
-            submitButton = <Button bsStyle="primary" type="submit" onClick={this.handleSubmit}>{ElstrLangStore.text("Login")}</Button>;
-        } else {
-            submitButton = <Button bsStyle="info" disabled>{ElstrLangStore.text("Checking credentials ...")}</Button>;
-        }
+            var message;
+            if(this.state.message.text && this.state.message.style){
+                message = <Alert bsStyle={this.state.message.style}>{ElstrLangStore.text(this.state.message.text)}</Alert>;
+            }
 
-        return (
-            <div className="elstrUserLoginDialog">
-                <Modal title={ElstrLangStore.text("Login")}
-                    backdrop={false}
-                    animation={true}
-                    onRequestHide={this.props.hideLoginDialog}>
-                    <form>
-                        <div className="modal-body">
-                            <div className="form-group">
-                                <label htmlFor="elstrUserLoginDialogInputUsername">{ElstrLangStore.text("Username")}</label>
-                                <input ref="username" type="text" className="form-control" id="elstrUserLoginDialogInputUsername" placeholder={ElstrLangStore.text("Username")} required />
+            var submitButton;
+            if(this.state.loading === false){
+                submitButton = <Button bsStyle="primary" type="submit" onClick={this.handleSubmit}>{ElstrLangStore.text("Login")}</Button>;
+            } else {
+                submitButton = <Button bsStyle="info" disabled>{ElstrLangStore.text("Checking credentials ...")}</Button>;
+            }
+
+            return (
+                <div className="elstrUserLoginDialog">
+                    <Modal title={ElstrLangStore.text("Login")}
+                        backdrop={false}
+                        animation={true}
+                        onRequestHide={this.props.hideLoginDialog}>
+                        <form>
+                            <div className="modal-body">
+                                <div className="form-group">
+                                    <label htmlFor="elstrUserLoginDialogInputUsername">{ElstrLangStore.text("Username")}</label>
+                                    <input ref="username" type="text" className="form-control" id="elstrUserLoginDialogInputUsername" placeholder={ElstrLangStore.text("Username")} required />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="elstrUserLoginDialogInputPassword">{ElstrLangStore.text("Password")}</label>
+                                    <input ref="password" type="password" className="form-control" id="elstrUserLoginDialogInputPassword" placeholder={ElstrLangStore.text("Password")} required />
+                                </div>
+                                {message}
                             </div>
-                            <div className="form-group">
-                                <label htmlFor="elstrUserLoginDialogInputPassword">{ElstrLangStore.text("Password")}</label>
-                                <input ref="password" type="password" className="form-control" id="elstrUserLoginDialogInputPassword" placeholder={ElstrLangStore.text("Password")} required />
+                            <div className="modal-footer">
+                                {submitButton}
+                                {cancelButton}
                             </div>
-                            {message}
-                        </div>
-                        <div className="modal-footer">    
-                            {submitButton}
-                            {cancelButton}
-                        </div>
-                    </form>
-                </Modal>
-            </div>  
-        );
+                        </form>
+                    </Modal>
+                </div>
+            );
+
+        }catch(e){
+
+            console.error(e);
+            throw e;
+
+        }
     }
 });
 module.exports = ElstrUserLoginDialog;
