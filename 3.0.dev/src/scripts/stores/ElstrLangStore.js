@@ -79,8 +79,13 @@ var ElstrLangStore = mcFly.createStore({
         text: function(key, options) {
             return _polyglot.t(key, options);
         },
+
         /**
-         * Alias for the polyglot.t method
+         * Looks for a translation option out of a given array.
+         * 1st the entry with the current language.
+         * 2nd (if not) the entry with the default language.
+         * 3rd (if not) the first entry if any
+         *
          * @param {Object} values. example values : {"de":"Schraube","en","Bolt"}
          * @returns {String} in the current data language
          */
@@ -98,6 +103,21 @@ var ElstrLangStore = mcFly.createStore({
                 }
             } else{
                 ElstrLog.error("ElstrLangStore::data Translation values is falsy ");
+            }
+            return text;
+        },
+
+        /**
+         * Looks for a translation option out of a given array
+         * Returns empty if nothing was found.
+         *
+         * @param {Object} values. example values : {"de":"Schraube","en","Bolt"}
+         * @returns {String} in the current data language
+         */
+        dataStrict: function(values) {
+            var text = "";
+            if (values && values[_currentDataLanguage]){
+                text = values[_currentDataLanguage];
             }
             return text;
         }
