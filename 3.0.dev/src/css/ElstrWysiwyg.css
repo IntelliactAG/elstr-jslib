@@ -1,0 +1,10 @@
+/* Main container */
+.wysiwyg{
+}
+.wysiwyg .toolbar{
+}
+.wysiwyg .scribe{
+    border: 1px black solid;
+    min-height: 150px;
+    padding: 10px;
+}
