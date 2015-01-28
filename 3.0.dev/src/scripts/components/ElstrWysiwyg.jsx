@@ -23,6 +23,7 @@ var ScribePluginCodeLinkPromptCommand = require("scribe-plugin-link-prompt-comma
 
 // We load also the css
 require('../../css/ElstrWysiwyg.css');
+require('font-awesome/css/font-awesome.css'); 
 
 var ElstrWysiwyg = React.createClass({
 
@@ -71,79 +72,56 @@ var ElstrWysiwyg = React.createClass({
 
     render: function() {
 
-        var txtBold = ElstrLangStore.text("Bold");
-        var txtItalic = ElstrLangStore.text("Italic");
-        var txtStrikeThrough = ElstrLangStore.text("Strike Through");
-        var txtRemoveFormatting = ElstrLangStore.text("Remove Formatting");
-        var txtLink = ElstrLangStore.text("Link");
-        var txtUnlink = ElstrLangStore.text("Unlink");
-        var txtOrderedList = ElstrLangStore.text("Ordered List");
-        var txtUnorderedList = ElstrLangStore.text("Unordered List");
-        var txtIndent = ElstrLangStore.text("Indent");
-        var txtOutdent = ElstrLangStore.text("Outdent");
-        var txtBlockquote = ElstrLangStore.text("Blockquote");
-        var txtCode = ElstrLangStore.text("Code");
-        var txtUndo = ElstrLangStore.text("Undo");
-        var txtRedo = ElstrLangStore.text("Redo");
+        var txtBold = (<span className="fa fa-bold fa-lg" ></span>),
+            txtItalic = (<span className="fa fa-italic fa-lg" ></span>),
+            txtStrikeThrough = (<span className="fa fa-strikethrough fa-lg" ></span>),
+        
+            txtLink = (<span className="fa fa-chain fa-lg" ></span>),
+            txtUnlink = (<span className="fa fa-chain-broken fa-lg" ></span>),
 
-        if (this.props.icons){
+            txtOrderedList = (<span><span className="fa fa-list-ol fa-lg" ></span></span>),
+            txtUnorderedList = (<span><span className="fa fa-list-ul fa-lg" ></span></span>),
 
-            var lineStyle = {
-                textDecoration: 'line-through'
-            };
+            txtIndent = (<span className="fa fa-indent fa-lg" ></span>),
+            txtOutdent = (<span className="fa fa-outdent fa-lg" ></span>),
 
-            txtBold = (<span className="glyphicon glyphicon-bold" ></span>);
-            txtItalic = (<span className="glyphicon glyphicon-italic" ></span>);
-            txtStrikeThrough = (<span style={lineStyle} className="glyphicon glyphicon-none" >Line</span>);
-            txtRemoveFormatting = (<span className="glyphicon glyphicon-none" >Clean</span>);
+            txtBlockquote = (<span className="fa fa-quote-right fa-lg" ></span>),
+            txtCode = (<span className="fa fa-code fa-lg" ></span>),
 
-            txtLink = (<span className="glyphicon glyphicon-link" >Link</span>);
-            txtUnlink = (<span style={lineStyle} className="glyphicon glyphicon-link" >Unlink</span>);
-
-            txtOrderedList = (<span><span className="glyphicon glyphicon-list" ></span> Ordered</span>);
-            txtUnorderedList = (<span><span className="glyphicon glyphicon-list" ></span> Unordered</span>);
-
-            txtIndent = (<span className="glyphicon glyphicon-indent-left" ></span>);
-            txtOutdent = (<span className="glyphicon glyphicon-indent-right" ></span>);
-
-            txtBlockquote = (<span className="glyphicon glyphicon-none" >Blockquote</span>);
-            txtCode = (<span className="glyphicon glyphicon-pencil" ></span>);
-
-            txtUndo = (<span className="glyphicon glyphicon-step-backward" ></span>);
-            txtRedo = (<span className="glyphicon glyphicon-step-forward" ></span>);
-
-        }
-
+            txtRemoveFormatting = (<span className="fa fa-remove fa-lg" ></span>),
+            txtUndo = (<span className="fa fa-rotate-left fa-lg" ></span>),
+            txtRedo = (<span className="fa fa-rotate-right fa-lg" ></span>);
+        
         return (
             <div className="wysiwyg">
                 <div className="toolbar" ref="toolbar">
 
                     <div className="btn-toolbar" role="toolbar">
                         <div className="btn-group" role="group">
-                            <button type="button" className="btn btn-default" data-command-name="bold">{txtBold}</button>
-                            <button type="button" className="btn btn-default" data-command-name="italic">{txtItalic}</button>
-                            <button type="button" className="btn btn-default" data-command-name="strikeThrough">{txtStrikeThrough}</button>
-                            <button type="button" className="btn btn-default" data-command-name="removeFormat">{txtRemoveFormatting}</button>
+                            <button type="button" className="btn btn-default btn-sm" data-command-name="bold">{txtBold}</button>
+                            <button type="button" className="btn btn-default btn-sm" data-command-name="italic">{txtItalic}</button>
+                            <button type="button" className="btn btn-default btn-sm" data-command-name="strikeThrough">{txtStrikeThrough}</button>                        
                         </div>
                         <div className="btn-group" role="group">
-                            <button type="button" className="btn btn-default" data-command-name="linkPrompt">{txtLink}</button>
-                            <button type="button" className="btn btn-default" data-command-name="unlink">{txtUnlink}</button>
+                            <button type="button" className="btn btn-default btn-sm" data-command-name="linkPrompt">{txtLink}</button>
+                            <button type="button" className="btn btn-default btn-sm" data-command-name="unlink">{txtUnlink}</button>
                         </div>
                         <div className="btn-group" role="group">
-                            <button type="button" className="btn btn-default" data-command-name="insertOrderedList">{txtOrderedList}</button>
-                            <button type="button" className="btn btn-default" data-command-name="insertUnorderedList">{txtUnorderedList}</button>
+                            <button type="button" className="btn btn-default btn-sm" data-command-name="insertOrderedList">{txtOrderedList}</button>
+                            <button type="button" className="btn btn-default btn-sm" data-command-name="insertUnorderedList">{txtUnorderedList}</button>
                         </div>
                         <div className="btn-group" role="group">
-                            <button type="button" className="btn btn-default" data-command-name="indent">{txtIndent}</button>
-                            <button type="button" className="btn btn-default" data-command-name="outdent">{txtOutdent}</button>
+                            <button type="button" className="btn btn-default btn-sm" data-command-name="indent">{txtIndent}</button>
+                            <button type="button" className="btn btn-default btn-sm" data-command-name="outdent">{txtOutdent}</button>
                         </div>
                         <div className="btn-group" role="group">
-                            <button type="button" className="btn btn-default" data-command-name="blockquote">{txtBlockquote}</button>
-                            <button type="button" className="btn btn-default" data-command-name="code">{txtCode}</button>
+                            <button type="button" className="btn btn-default btn-sm" data-command-name="blockquote">{txtBlockquote}</button>
+                            <button type="button" className="btn btn-default btn-sm" data-command-name="code">{txtCode}</button>
                         </div>
                         <div className="btn-group" role="group">
-                            <button type="button" className="btn btn-default" data-command-name="undo">{txtUndo}</button>
-                            <button type="button" className="btn btn-default" data-command-name="redo">{txtRedo}</button>
+                            <button type="button" className="btn btn-default btn-sm" data-command-name="removeFormat">{txtRemoveFormatting}</button>
+                            <button type="button" className="btn btn-default btn-sm" data-command-name="undo">{txtUndo}</button>
+                            <button type="button" className="btn btn-default btn-sm" data-command-name="redo">{txtRedo}</button>
                         </div>
                     </div>
 

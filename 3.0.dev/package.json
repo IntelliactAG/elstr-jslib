@@ -2,7 +2,7 @@
 	"name": "elstr-jslib",
 	"description": "Elstr frontend libs",
 	"author": "Intelliact",
-	"version": "3.0.18",
+	"version": "3.0.19",
 	"license": "MIT",
 	"dependencies": {
 		"mcfly": "0.0.x",
@@ -12,7 +12,7 @@
 		"signals": "1.0.0",
 		"hasher": "1.2.x",
 		"kizzy": "0.0.x",
-
+		"font-awesome": "4.x",
         "scribe-editor": "*",
         "scribe-plugin-toolbar": "*",
         "scribe-plugin-blockquote-command": "*",
