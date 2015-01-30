@@ -29,7 +29,7 @@ var ElstrWysiwyg = React.createClass({
 
     mixins: [ElstrLangStore.mixin],
 
-    onChange: function () {
+    storeDidChange: function () {
         // Nothing to do
     },
 

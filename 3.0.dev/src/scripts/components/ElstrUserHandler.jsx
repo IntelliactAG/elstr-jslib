@@ -13,7 +13,7 @@ var ElstrUserHandler = React.createClass({
 
     mixins: [ElstrUserStore.mixin,ElstrLangStore.mixin],
 
-    onChange: function() {
+    storeDidChange: function() {
 
         try {
 

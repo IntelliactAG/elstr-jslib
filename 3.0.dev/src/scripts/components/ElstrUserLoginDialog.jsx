@@ -25,7 +25,7 @@ var ElstrUserLoginDialog = React.createClass({
         };
     },
 
-    onChange: function() {
+    storeDidChange: function() {
 
         try {
 

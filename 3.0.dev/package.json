@@ -2,7 +2,7 @@
 	"name": "elstr-jslib",
 	"description": "Elstr frontend libs",
 	"author": "Intelliact",
-	"version": "3.0.19",
+	"version": "3.0.20",
 	"license": "MIT",
 	"dependencies": {
 		"mcfly": "0.0.x",
