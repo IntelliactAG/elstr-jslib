@@ -109,8 +109,6 @@ var ElstrUserHandler = React.createClass({
                         {liLogin}
                         {liLogout}
                         {liAdmin}
-
-
                     </ul>
                 </div>
             );

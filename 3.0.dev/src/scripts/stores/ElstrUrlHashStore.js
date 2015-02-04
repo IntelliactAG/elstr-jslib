@@ -31,9 +31,8 @@ function _hashToObject(hash) {
             d = function (s) { return decodeURIComponent(s.replace(a, " ")); },
             q = hash;
 
-        while (e = r.exec(q))
+        while (e === r.exec(q))
             hashParams[d(e[1])] = d(e[2]);
-
     }
 
     return hashParams;
