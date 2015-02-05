@@ -2,13 +2,26 @@
 	"name": "elstr-jslib",
 	"description": "Elstr frontend libs",
 	"author": "Intelliact",
-	"version": "3.0.21",
+	"version": "3.0.23",
 	"license": "MIT",
-	"dependencies": {
+	"peerDependencies": {
 		"mcfly": "0.0.x",
+		"keymirror": "*",
+		"react": "0.12.x",
+		"flux": "2.0.x",
+		"react-bootstrap": "0.13.x"
+	},
+	"devDependencies": {
+		"css-loader": "*",
+		"jsx-loader": "*",
+        "file-loader": "*",
+        "jsxhint-loader": "*",
+        "style-loader": "*",
+        "url-loader": "*"
+	},
+	"dependencies": {
 		"superagent": "0.21.x",
 		"node-polyglot": "0.4.x",
-		"react-bootstrap": "0.13.x",
 		"signals": "1.0.0",
 		"hasher": "1.2.x",
 		"kizzy": "0.0.x",
@@ -23,15 +36,6 @@
         "scribe-plugin-keyboard-shortcuts": "*",
         "scribe-plugin-link-prompt-command": "*",
         "scribe-plugin-sanitizer": "*",
-        "scribe-plugin-smart-lists": "*",
-        "keymirror": "*",
-        "react": "0.12.x",
-        "flux": "2.0.x",	
-        "css-loader": "*",
-		"jsx-loader": "*",
-        "file-loader": "*",
-        "jsxhint-loader": "*",
-        "style-loader": "*",
-        "url-loader": "*"		
+        "scribe-plugin-smart-lists": "*"
 	}
 }

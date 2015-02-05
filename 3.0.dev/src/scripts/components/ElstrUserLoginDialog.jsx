@@ -25,26 +25,22 @@ var ElstrUserLoginDialog = React.createClass({
         };
     },
 
+    onChange: function() {
+        this.storeDidChange();
+    },
+
     storeDidChange: function() {
 
-        try {
-
-            this.state.isAuth = ElstrUserStore.isAuth();
-            this.state.loading = ElstrUserStore.isLoading();
-            if(ElstrUserStore.getMessage()){
-                this.state.message.text = ElstrUserStore.getMessage();
-                this.state.message.style = "danger";
-            } else {
-                this.state.message = {};
-            }
-            this.setState(this.state);
-
-        }catch(e){
-
-            console.error(e);
-            throw e;
-
+        this.state.isAuth = ElstrUserStore.isAuth();
+        this.state.loading = ElstrUserStore.isLoading();
+        if(ElstrUserStore.getMessage()){
+            this.state.message.text = ElstrUserStore.getMessage();
+            this.state.message.style = "danger";
+        } else {
+            this.state.message = {};
         }
+        this.setState(this.state);
+
     },
 
     getInitialState: function() {
