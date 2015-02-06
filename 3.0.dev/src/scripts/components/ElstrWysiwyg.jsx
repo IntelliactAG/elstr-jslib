@@ -29,6 +29,12 @@ var ElstrWysiwyg = React.createClass({
 
     mixins: [ElstrLangStore.mixin],
 
+    getDefaultProps: function() {
+        return {
+            value: ""
+        };
+    },
+
     onChange: function() {
         this.storeDidChange();
     },
@@ -130,7 +136,7 @@ var ElstrWysiwyg = React.createClass({
                     </div>
 
                 </div>
-                <div className="scribe"  contentEditable="true" ref="scribe" />
+                <div className="scribe" contentEditable="true" ref="scribe" >{this.props.value}</div>
             </div>
         );
 
