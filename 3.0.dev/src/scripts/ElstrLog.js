@@ -75,14 +75,17 @@ var ElstrLog = {
 
         if (options.justAConsoleAlias &&
             _options.enabled &&
+            console && console.log &&
             Function.prototype.bind) {
 
             ElstrLog.log = Function.prototype.bind.call(console.log, console);
-            ElstrLog.info = Function.prototype.bind.call(console.info, console);
-            ElstrLog.debug = Function.prototype.bind.call(console.debug, console);
-            ElstrLog.warn = Function.prototype.bind.call(console.warn, console);
-            ElstrLog.error = Function.prototype.bind.call(console.error, console);
-            ElstrLog.count = Function.prototype.bind.call(console.count, console);
+
+            // We will log if the specific console function doesn't exist
+            ElstrLog.info = Function.prototype.bind.call((console.info)?console.info:console.log, console);
+            ElstrLog.debug = Function.prototype.bind.call((console.debug)?console.debug:console.log, console);
+            ElstrLog.warn = Function.prototype.bind.call((console.warn)?console.warn:console.log, console);
+            ElstrLog.error = Function.prototype.bind.call((console.error)?console.error:console.log, console);
+            ElstrLog.count = Function.prototype.bind.call((console.count)?console.count:console.log, console);
 
         }
 

@@ -69,9 +69,15 @@ ElstrIo.prototype = {
             currentJsonRpcRequests = [];
         }
 
+        var maxTimeout = 60000;
+        if (options.maxTimeout) {
+            maxTimeout = options.maxTimeout;
+        }
+
         var req = request.post('services/' + className)
             .send(oRequestPost)
             .type('json')
+            .timeout(maxTimeout)
             .end(function(error, res) {
 
                 var indexOfCurrentRequest = -1;

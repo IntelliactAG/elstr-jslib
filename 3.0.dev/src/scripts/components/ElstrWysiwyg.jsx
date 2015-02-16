@@ -78,6 +78,8 @@ var ElstrWysiwyg = React.createClass({
             });
         }
 
+        scribeElement.innerHTML = this.props.value;
+
     },
 
     render: function() {
@@ -136,7 +138,7 @@ var ElstrWysiwyg = React.createClass({
                     </div>
 
                 </div>
-                <div className="scribe" contentEditable="true" ref="scribe" >{this.props.value}</div>
+                <div className="scribe" contentEditable="true" ref="scribe"></div>
             </div>
         );
 
