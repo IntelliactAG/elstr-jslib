@@ -49,6 +49,7 @@ var ElstrUserHandler = React.createClass({
             showLoginDialog: showLoginDialog
         };
     },
+
     showLoginDialog: function(e) {
         e.preventDefault();
         ElstrLog.trace("ElstrUserHandler.showLoginDialog");
@@ -77,48 +78,53 @@ var ElstrUserHandler = React.createClass({
     },
     render: function() {
 
-        try {
+        var liUsername = <li className="username"><span>{this.state.username}</span></li>;
+        var liLogin = <li><a href="#" title="Anmelden" className="login" onClick={this.showLoginDialog}>{ElstrLangStore.text("ANMELDEN")}</a></li>;
+        var liLogout = <li><a href="#" title="Abmelden" className="logout" onClick={this.logout}>{ElstrLangStore.text("ABMELDEN")}</a></li>;
+        var liAdmin = <li><a href="#" title="Admin" className="admin" onClick={this.admin}>Admin</a></li>;
 
-            var liUsername = <li className="username"><span>{this.state.username}</span></li>;
-            var liLogin = <li><a href="#" title="Anmelden" className="login" onClick={this.showLoginDialog}>{ElstrLangStore.text("ANMELDEN")}</a></li>;
-            var liLogout = <li><a href="#" title="Abmelden" className="logout" onClick={this.logout}>{ElstrLangStore.text("ABMELDEN")}</a></li>;
-            var liAdmin = <li><a href="#" title="Admin" className="admin" onClick={this.admin}>Admin</a></li>;
+        if (this.state.isAuth === true) {
+            liLogin =  null;
+        } else {
+            liUsername = null;
+            liLogout = null;
+        }
+        if (this.state.isAdmin !== true) {
+            liAdmin = null;
+        }
 
-            if (this.state.isAuth === true) {
-                liLogin =  null;
-            } else {
-                liUsername = null;
-                liLogout = null;
-            }
-            if (this.state.isAdmin !== true) {
-                liAdmin = null;
-            }
+        var loginDialog;
+        var errorMessage = {};
 
-            var loginDialog;
-            if(this.state.showLoginDialog){
-                loginDialog = <ElstrUserLoginDialog hideLoginDialog={this.hideLoginDialog} />;
-            }
+        if(ElstrUserStore.getMessage()){
+            errorMessage.text = ElstrUserStore.getMessage();
+            errorMessage.style = "danger";
+        }
 
-            return (
-                <div className="elstrUserHandler">
+        if(this.state.showLoginDialog){
+            loginDialog = (<ElstrUserLoginDialog
+                hideLoginDialog={this.hideLoginDialog}
+                isAuth={ElstrUserStore.isAuth()}
+                loading={ElstrUserStore.isLoading()}
+                message={errorMessage} />);
 
-                    {loginDialog}
-
-                    <ul>
-                        {liUsername}
-                        {liLogin}
-                        {liLogout}
-                        {liAdmin}
-                    </ul>
-                </div>
-            );
-
-        }catch(e){
-
-            console.error(e);
-            throw e;
 
         }
+
+        return (
+            <div className="elstrUserHandler">
+
+                {loginDialog}
+
+                <ul>
+                    {liUsername}
+                    {liLogin}
+                    {liLogout}
+                    {liAdmin}
+                </ul>
+            </div>
+        );
+
     }
 });
 module.exports = ElstrUserHandler;

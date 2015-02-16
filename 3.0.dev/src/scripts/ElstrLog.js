@@ -204,9 +204,7 @@ var ElstrLog = {
                 parentFunctionArguments);
 
         }
-
     }
-
 };
 
 module.exports = ElstrLog;
