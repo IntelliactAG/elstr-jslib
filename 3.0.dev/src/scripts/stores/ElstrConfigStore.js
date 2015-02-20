@@ -18,6 +18,7 @@ var _applicationEnv = null;
  * @class ElstrLangStore
  */
 var ElstrConfigStore = mcFly.createStore({
+
     init: function() {
         _config = window.ELSTR.applicationData.config;
         _applicationEnv = window.ELSTR.applicationEnv;
@@ -25,6 +26,7 @@ var ElstrConfigStore = mcFly.createStore({
         // Remove global ELSTR values after configuration
         window.ELSTR.applicationData.config = null;
     },
+
     /**
      * Use an option that is defined in the config.ini
      * @param arguments

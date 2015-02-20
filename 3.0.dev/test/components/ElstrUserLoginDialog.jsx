@@ -79,7 +79,7 @@ describe("ElstrUserHandler", function() {
         expect(usernameNode.value).toEqual("vaca");
 
     });
-*/
+
     var previousError;
 
     it ("Submit the form with back username", function() {
@@ -113,6 +113,7 @@ describe("ElstrUserHandler", function() {
 
     });
 
+
     it ("Submit the form with full username and no password", function() {
 
         var passwordNode = elstrUserLoginDialog.refs.password.getDOMNode();
@@ -130,7 +131,7 @@ describe("ElstrUserHandler", function() {
         expect(elstrUserLoginDialog.state.message).toEqual({});
 
     });
-
+    */
 
 
 
