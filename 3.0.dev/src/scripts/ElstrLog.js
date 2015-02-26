@@ -199,7 +199,7 @@ var ElstrLog = {
 
             }
 
-            this.info("ELSTR Trace: ",
+            ElstrLog.info("ELSTR Trace: ",
                 parentFunctionName,
                 parentFunctionArguments);
 
