@@ -1,0 +1,66 @@
+/*
+ This is a basic table to show admin information in Elstr apps
+ */
+
+.ElstrAdminTable {
+    background-color: #fff;
+    margin: 10px 0 15px;
+    text-align: left;
+    border-spacing: 0;
+
+    border: #333333 1px solid;
+    border-width: 1px 0 0 1px;
+    font: 12px/18px Arial, Sans-serif;
+    border-collapse: separate;
+
+    table-layout:fixed;
+    word-wrap:break-word;
+
+    page-break-inside:avoid;
+}
+
+.ElstrAdminTable thead tr:last-of-type th{
+    border-bottom: #333333 1px solid;
+}
+
+
+.ElstrAdminTable th:last-of-type{
+    border-right: black 1px solid;
+}
+.ElstrAdminTable th {
+
+}
+.ElstrAdminTable td {
+    border: #333333 1px solid;
+    border-width: 0 1px 1px 0;
+}
+
+/* header */
+.ElstrAdminTable th,
+.ElstrAdminTable thead td {
+    font: 12px/18px Arial, Sans-serif !important;
+    color: #0a0a0a !important;
+    background-color: #d7e1eb !important;
+    padding: 1px;
+    font-weight: bold !important;
+
+}
+
+.ElstrAdminTable tbody td,
+.ElstrAdminTable tfoot th,
+.ElstrAdminTable tfoot td {
+    padding: 0px 4px;
+    vertical-align: top;
+    /*width: auto !important;*/
+}
+
+
+.ElstrAdminTable td {
+    color: #333;
+    line-height: 22px;
+}
+
+.ElstrAdminTable tbody > tr:hover > td {
+    color: #000;
+    background: #DDEAF9;
+}

@@ -1,0 +1,47 @@
+/*
+ This is a basic table to show admin information in Elstr apps
+ */
+
+
+/** Specific table settings */
+
+.ElstrAdminTable .greenCell{
+    background-color: rgb(153, 255, 153);
+}
+.ElstrAdminTable .redCell{
+    background-color: rgb(255, 153, 153);
+}
+
+.ElstrAdminTable .isCore td{
+    background-color: orange;
+}
+.ElstrAdminTable .isCore .greenCell{
+    background-color: rgb(55, 255, 60);
+}
+.ElstrAdminTable .isCore .redCell{
+    background-color: rgb(255, 83, 88);
+}
+
+
+.ElstrAdminTable .cursorPointer{
+    cursor: pointer;
+}
+
+/** When the panel is a modal window */
+
+.ElstrAdminModal{
+    text-align: left;
+}
+
+.ElstrAdminModal .modal-dialog{
+    width: 100%;
+}
+
+@media (min-width: 1280px) {
+    .ElstrAdminModal .modal-dialog{
+        width: 1280px;
+    }
+}
+
+
+
