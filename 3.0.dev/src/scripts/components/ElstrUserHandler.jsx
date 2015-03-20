@@ -73,8 +73,10 @@ var ElstrUserHandler = React.createClass({
     admin: function(e) {
         e.preventDefault();
         ElstrLog.trace("ElstrUserHandler.admin");
-        //
-        ElstrLog.error("admin interface is not implemented");
+
+        // Redirect to the admin app
+        location.assign("admin");
+
     },
     render: function() {
 
