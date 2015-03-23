@@ -1,9 +1,18 @@
 /**
+ * Copyright 2014, Intelliact AG
+ * Copyrights licensed under the New BSD License
+ * Created by sahun@intelliact on 20.03.2015.
+ *
  * Admin button that opens a bootstrap modal window with an admin Panel.
  */
 
 var React = require('react');
 var ElstrLangStore = require('../stores/ElstrLangStore');
+
+
+/**
+ * Bootstrap elements.
+ */
 
 var DropdownButton = require('react-bootstrap/DropdownButton');
 var Button = require('react-bootstrap/Button');
@@ -15,9 +24,15 @@ var Input = require('react-bootstrap/Input');
 var Row = require('react-bootstrap/Row');
 var Col = require('react-bootstrap/Col');
 
+/**
+ * Custom CSS elements
+ */
 require('../../css/ElstrAdminPanel.css');
 
-var AdminPanel = require('./AdminPanel');
+/**
+ * Content of the modal window.
+ */
+var ElstrAdminPanel = require('./ElstrAdminPanel');
 
 function _getState(){
     return {
@@ -35,7 +50,6 @@ var AdminModalPanel = React.createClass({
     },
 
     storeDidChange: function () {
-
         this.setState(this.state);
     },
 
@@ -64,7 +78,7 @@ var AdminModalPanel = React.createClass({
 
                     <div className="modal-body">
 
-                        <AdminPanel />
+                        <ElstrAdminPanel />
 
                     </div>
                 </Modal>

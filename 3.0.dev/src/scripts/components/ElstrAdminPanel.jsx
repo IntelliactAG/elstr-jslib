@@ -1,10 +1,22 @@
 /**
+ * Copyright 2014, Intelliact AG
+ * Copyrights licensed under the New BSD License
+ * Created by sahun@intelliact on 20.03.2015.
+ *
  * Component to manage the ELSTR Roles.
+ * Add / Delete Roles.
+ * See parent - Child dependencies.
+ *
+ * Add / Delete Resources.
+ * Assign / Update / Delete Roles to Resources, see dependencies.
  */
 
 var React = require('react');
 var ElstrLangStore = require('../stores/ElstrLangStore');
 
+/**
+ * Bootstrap elements.
+ */
 var DropdownButton = require('react-bootstrap/DropdownButton');
 var Button = require('react-bootstrap/Button');
 var MenuItem = require('react-bootstrap/MenuItem');
@@ -15,6 +27,9 @@ var Input = require('react-bootstrap/Input');
 var Row = require('react-bootstrap/Row');
 var Col = require('react-bootstrap/Col');
 
+/**
+ * Custom CSS elements
+ */
 require('../../css/ElstrAdminTable.css');
 require('../../css/ElstrAdminPanel.css');
 

@@ -28,12 +28,6 @@ var AdminActions = mcFly.createActions({
         ElstrServerRpcCallsAdmin.getRoleList();
 
         return {
-            actionType: ElstrAdminConstants.ROLE_LIST_GET
-        };
-    },
-
-    willGetRoleList: function() {
-        return {
             actionType: ElstrAdminConstants.ROLE_LIST_WILL_GET
         };
     },
@@ -62,12 +56,6 @@ var AdminActions = mcFly.createActions({
         ElstrServerRpcCallsAdmin.getResourceList();
 
         return {
-            actionType: ElstrAdminConstants.RESOURCE_LIST_GET
-        };
-    },
-
-    willGetResourceList: function() {
-        return {
             actionType: ElstrAdminConstants.RESOURCE_LIST_WILL_GET
         };
     },
@@ -95,12 +83,6 @@ var AdminActions = mcFly.createActions({
         ElstrServerRpcCallsAdmin.updateRole(mode, roleName);
 
         return {
-            actionType: ElstrAdminConstants.ROLE_UPDATE
-        };
-    },
-
-    willUpdateRole: function() {
-        return {
             actionType: ElstrAdminConstants.ROLE_WILL_UPDATE
         };
     },
@@ -126,12 +108,6 @@ var AdminActions = mcFly.createActions({
         ElstrServerRpcCallsAdmin.updateResource(mode, resourceName, type);
 
         return {
-            actionType: ElstrAdminConstants.RESOURCE_UPDATE
-        };
-    },
-
-    willUpdateResource: function() {
-        return {
             actionType: ElstrAdminConstants.RESOURCE_WILL_UPDATE
         };
     },
@@ -154,12 +130,6 @@ var AdminActions = mcFly.createActions({
     updateAcessright: function(accessRight, resourceName, roleName) {
 
         ElstrServerRpcCallsAdmin.updateAcessright(accessRight, resourceName, roleName);
-        return {
-            actionType: ElstrAdminConstants.ACCESS_RIGHT_UPDATE
-        };
-    },
-
-    willUpdateAcessright: function() {
         return {
             actionType: ElstrAdminConstants.ACCESS_RIGHT_WILL_UPDATE
         };

@@ -1,7 +1,7 @@
 var mcFly = require('../libs/mcFly.js');
 
 var ElstrAdminConstants = require('../constants/ElstrAdminConstants');
-var AdminActions = require('../actions/ElstrAdminActions');
+var ElstrAdminActions = require('../actions/ElstrAdminActions');
 
 var ElstrUrlHashConstants = require('../constants/ElstrUrlHashConstants');
 var ElstrUserConstants = require('../constants/ElstrUserConstants');
@@ -91,15 +91,10 @@ var ElstrAdminStore = mcFly.createStore({
 
 
         /** Get the role list  */
-        case ElstrAdminConstants.ROLE_LIST_GET:
+        case ElstrAdminConstants.ROLE_LIST_WILL_GET:
 
             _loading_roles = true;
             ElstrAdminStore.emitChange();
-            break;
-
-        case ElstrAdminConstants.ROLE_LIST_WILL_GET:
-
-            // ElstrAdminStore.emitChange();
             break;
 
         case ElstrAdminConstants.ROLE_LIST_DID_GET:
@@ -112,16 +107,11 @@ var ElstrAdminStore = mcFly.createStore({
             break;
 
         /** Get the resource list  */
-        case ElstrAdminConstants.RESOURCE_LIST_GET:
+        case ElstrAdminConstants.RESOURCE_LIST_WILL_GET:
 
             _loading_resources = true;
 
             ElstrAdminStore.emitChange();
-            break;
-
-        case ElstrAdminConstants.RESOURCE_LIST_WILL_GET:
-
-            // ElstrAdminStore.emitChange();
             break;
 
         case ElstrAdminConstants.RESOURCE_LIST_DID_GET:
@@ -136,16 +126,11 @@ var ElstrAdminStore = mcFly.createStore({
             /* UPDATES IN THE LISTS */
 
         /** Update Role  */
-        case ElstrAdminConstants.ROLE_UPDATE:
+        case ElstrAdminConstants.ROLE_WILL_UPDATE:
 
             _loading_update_roles = true;
 
             ElstrAdminStore.emitChange();
-            break;
-
-        case ElstrAdminConstants.ROLE_WILL_UPDATE:
-
-            // ElstrAdminStore.emitChange();
             break;
 
         case ElstrAdminConstants.ROLE_DID_UPDATE:
@@ -160,16 +145,11 @@ var ElstrAdminStore = mcFly.createStore({
             break;
 
         /** Update Resource  */
-        case ElstrAdminConstants.RESOURCE_UPDATE:
+        case ElstrAdminConstants.RESOURCE_WILL_UPDATE:
 
             _loading_update_resources = true;
 
             ElstrAdminStore.emitChange();
-            break;
-
-        case ElstrAdminConstants.RESOURCE_WILL_UPDATE:
-
-            // ElstrAdminStore.emitChange();
             break;
 
         case ElstrAdminConstants.RESOURCE_DID_UPDATE:
@@ -183,16 +163,11 @@ var ElstrAdminStore = mcFly.createStore({
             break;
 
         /** Update Acess right  */
-        case ElstrAdminConstants.ACCESS_RIGHT_UPDATE:
+        case ElstrAdminConstants.ACCESS_RIGHT_WILL_UPDATE:
 
             _loading_update_resources = true;
 
             ElstrAdminStore.emitChange();
-            break;
-
-        case ElstrAdminConstants.ACCESS_RIGHT_WILL_UPDATE:
-
-            // ElstrAdminStore.emitChange();
             break;
 
         case ElstrAdminConstants.ACCESS_RIGHT_DID_UPDATE:
