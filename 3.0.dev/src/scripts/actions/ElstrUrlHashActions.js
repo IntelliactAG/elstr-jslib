@@ -103,6 +103,19 @@ var ElstrUrlHashActions = mcFly.createActions({
 
     },
 
+
+    /**
+     * Replaces the URL based in the given object
+     * @param object
+     * @param boolean updateHistory (If the browser history is updated)
+     * @param boolean throwEvent (If fires a url change event)
+     */
+    setWithOptions: function( object, updateHistory, throwEvent ){
+        ElstrLog.trace("ElstrUrlHashActions.set");
+        _setHashObject(object, updateHistory, throwEvent);
+    },
+
+
     /**
      * Called when the URL Hash changes.
      * Emits a flux URL_HASH_CHANGE event with parameters:
