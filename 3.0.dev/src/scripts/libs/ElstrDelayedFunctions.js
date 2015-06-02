@@ -116,14 +116,13 @@ window.onbeforeunload = function () {
     }
 
     if (functionsLeft){
+
         // "Are you sure you want to leave, background functions are still working. ";
         return ElstrLangStore.text("BACKGROUND FUNCTIONS RUNNING");
+
     }
 
 
 };
-
-
-window.ElstrDelayedFunctions = ElstrDelayedFunctions;
 
 module.exports = ElstrDelayedFunctions;
