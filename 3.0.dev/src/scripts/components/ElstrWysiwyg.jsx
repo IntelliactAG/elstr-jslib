@@ -31,7 +31,8 @@ var ElstrWysiwyg = React.createClass({
 
     getDefaultProps: function() {
         return {
-            value: ""
+            value: "",
+            modified: false
         };
     },
 
@@ -70,15 +71,23 @@ var ElstrWysiwyg = React.createClass({
         scribe.use(ScribePluginCodeKeyboardShortcuts());
         scribe.use(ScribePluginCodeLinkPromptCommand());
 
+        scribeElement.innerHTML = this.props.value;
+
         var that = this;
         if (this.props.updateData) {
             scribe.on('content-changed', function(){
+
                 var html = scribe.getHTML();
-                that.props.updateData(html);
+
+                if (that.state.modified){
+                    that.props.updateData(html);
+                }else{
+                    that.state.modified = true;
+                }
+
+
             });
         }
-
-        scribeElement.innerHTML = this.props.value;
 
     },
 
