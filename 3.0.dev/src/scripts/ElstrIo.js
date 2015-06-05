@@ -134,7 +134,13 @@ ElstrIo.prototype = {
                         }
 
                     }else{
-                        ElstrLog.warn("Object res.body is not defined. No data argument provided to onSuccess method.");
+                        ElstrLog.error("Object res.body is not defined. No data argument provided to onSuccess method.");
+                        ElstrLog.error(res.text);
+
+                        callback.onError(req, res, {
+                            message: "Unespected JSON error",
+                            resText: res.text
+                        });
                     }
 
                 }
