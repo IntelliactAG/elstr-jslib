@@ -138,7 +138,7 @@ ElstrIo.prototype = {
                         ElstrLog.error(res.text);
 
                         callback.onError(req, res, {
-                            message: "Unespected JSON error",
+                            message: "Unexpected JSON error",
                             resText: res.text
                         });
                     }

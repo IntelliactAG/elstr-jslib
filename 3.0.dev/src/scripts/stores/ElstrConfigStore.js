@@ -5,6 +5,7 @@
  */
 
 var mcFly = require('../libs/mcFly.js');
+var ElstrLog = require("../ElstrLog");
 
 /**
  *  Private variables
@@ -40,8 +41,14 @@ var ElstrConfigStore = mcFly.createStore({
 
         var configSubObject = _config;
         for (var i = 0, len = arguments.length; i < len; i++) {
-            configSubObject = configSubObject[arguments[i]];
+
+            if (typeof configSubObject[arguments[i]] != 'undefined'){
+                configSubObject = configSubObject[arguments[i]];
+            }else{
+                ElstrLog.error("Configuration not found in ",arguments[i], _config);
+            }
         }
+
         return configSubObject;
     },
     /**
