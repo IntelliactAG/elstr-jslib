@@ -103,7 +103,7 @@ ElstrIo.prototype = {
                     }
 
                 } else {
-                    ElstrLog.info(res);
+
                     var data = null;
 
                     if (res.body) {

@@ -76,7 +76,6 @@ var ElstrUrlHashActions = mcFly.createActions({
      * @param object
      */
     add: function( object ){
-        ElstrLog.trace("ElstrUrlHashActions.add");
         _updateHashObject(object);
     },
 
@@ -85,7 +84,6 @@ var ElstrUrlHashActions = mcFly.createActions({
      * @param object
      */
     set: function( object ){
-        ElstrLog.trace("ElstrUrlHashActions.set");
         var updateHistory = true;
         var throwEvent = true;
         _setHashObject(object, updateHistory, throwEvent);
@@ -96,7 +94,6 @@ var ElstrUrlHashActions = mcFly.createActions({
      * @param object
      */
     replace: function( object ){
-        ElstrLog.trace("ElstrUrlHashActions.changeMask");
         var updateHistory = false;
         var throwEvent = false;
         _setHashObject(object, updateHistory, throwEvent);
@@ -111,7 +108,6 @@ var ElstrUrlHashActions = mcFly.createActions({
      * @param boolean throwEvent (If fires a url change event)
      */
     setWithOptions: function( object, updateHistory, throwEvent ){
-        ElstrLog.trace("ElstrUrlHashActions.set");
         _setHashObject(object, updateHistory, throwEvent);
     },
 
@@ -123,8 +119,6 @@ var ElstrUrlHashActions = mcFly.createActions({
      * oldHash: the old hash that has been replaced
      */
     hashChange: function(newHash, oldHash) {
-        ElstrLog.trace("ElstrUrlHashActions.hashChange");
-
         return {
             actionType: ElstrUrlHashConstants.URL_HASH_CHANGE,
             newHash: newHash,

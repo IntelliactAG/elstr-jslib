@@ -89,8 +89,6 @@ var ElstrUrlHashStore = mcFly.createStore({
     /** CHANGE ****************************************************/
         case ElstrUrlHashConstants.URL_HASH_CHANGE:
 
-            ElstrLog.info("ElstrUrlHashStore::event -> ElstrUrlHashConstants.URL_HASH_CHANGE ", payload.newHash, payload.oldHash);
-
             if (payload.newHash) _newHash = payload.newHash;
             else _newHash = "";
 

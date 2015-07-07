@@ -16,11 +16,12 @@ var ElstrLog = require("./ElstrLog");
 _data = [];
 _mode = ARRAY_MODE;
 _arrayLimit =  0;
+_defaultTimeToExpire = 0;
 
 var ElstrCache = {
 
     //
-    init : function (mode, arrayLimit) {
+    init : function (mode, defaultTimeToExpire, arrayLimit) {
         if  (mode){
             if (mode == "ARRAY"){
 
@@ -38,6 +39,11 @@ var ElstrCache = {
 
             }
         }
+
+        if (defaultTimeToExpire && defaultTimeToExpire>0){
+            _defaultTimeToExpire = defaultTimeToExpire;
+        }
+
 
         if (arrayLimit){
             if (arrayLimit>0){
@@ -136,6 +142,10 @@ var ElstrCache = {
      * @param timeToExpire milisecons while the value is active.
      */
     set : function(key, value, timeToExpire){
+
+        if ( typeof timeToExpire === "undefined" ){
+            timeToExpire = _defaultTimeToExpire;
+        }
 
         if (_mode === LOCAL_STORAGE_MODE){
 

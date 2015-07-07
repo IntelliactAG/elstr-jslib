@@ -59,7 +59,6 @@ var ElstrLangStore = mcFly.createStore({
             _polyglot = new Polyglot();
             _polyglot.extend(_translations);
 
-            ElstrLog.info("ElstrLangStore initialized");
         },
         getLoadedModules: function() {
             return _loadedModules;

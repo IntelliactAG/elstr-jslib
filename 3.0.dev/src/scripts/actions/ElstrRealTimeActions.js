@@ -259,6 +259,8 @@ var ElstrRealTimeActions = mcFly.createActions({
 
         _localTimes = newLocalTimes;
 
+        console.log("newLocalTimes",newLocalTimes);
+
         if (firstLoad){
 
             return {

@@ -46,7 +46,6 @@ var ElstrUserStore = mcFly.createStore({
         // Remove global ELSTR values after configuration
         window.ELSTR.applicationData.user = null;
 
-        ElstrLog.info("ElstrUserStore initialized");
     },
 
     /**
@@ -165,7 +164,6 @@ var ElstrUserStore = mcFly.createStore({
                 _message = null;
                 _loading = true;
 
-                ElstrLog.log("ELSTR_USER_WILL_LOGIN");
                 ElstrUserStore.emitChange();
 
                 break;
@@ -179,7 +177,6 @@ var ElstrUserStore = mcFly.createStore({
                 _message = payload.message; // Change the message anyway
                 _loading = false;
 
-                ElstrLog.log("ELSTR_USER_DID_LOGIN_SUCCESS");
                 ElstrUserStore.emitChange();
 
                 break;
@@ -195,7 +192,6 @@ var ElstrUserStore = mcFly.createStore({
                 _message = payload.message; // Change the message anyway
                 _loading = false;
 
-                ElstrLog.log("ELSTR_USER_DID_LOGIN_FAILED");
                 ElstrUserStore.emitChange();
 
                 break;
@@ -203,7 +199,6 @@ var ElstrUserStore = mcFly.createStore({
                 _message = null;
                 _loading = true;
 
-                ElstrLog.log("ELSTR_USER_WILL_LOGOUT");
                 ElstrUserStore.emitChange();
 
                 break;
@@ -216,7 +211,6 @@ var ElstrUserStore = mcFly.createStore({
                 _message = payload.message; // Change the message anyway
                 _loading = false;
 
-                ElstrLog.log("ELSTR_USER_DID_LOGOUT");
                 ElstrUserStore.emitChange();
 
                 break;
