@@ -75,7 +75,8 @@ var ElstrWysiwyg = React.createClass({
 
         var that = this;
         if (this.props.updateData) {
-            scribe.on('content-changed', function(){
+
+            var onChangeFunc = function(){
 
                 var html = scribe.getHTML();
 
@@ -85,8 +86,10 @@ var ElstrWysiwyg = React.createClass({
                     that.state.modified = true;
                 }
 
+            }
 
-            });
+            this.refs.scribe.getDOMNode().addEventListener("keyup", onChangeFunc);
+            scribe.on('content-changed', onChangeFunc);
         }
 
     },
