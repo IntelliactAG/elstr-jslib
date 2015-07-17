@@ -20,8 +20,19 @@ _defaultTimeToExpire = 0;
 
 var ElstrCache = {
 
-    //
-    init : function (mode, defaultTimeToExpire, arrayLimit) {
+    /**
+     * Initialises the cache system.
+     * @param mode ARRAY a plain array || LOCAL_STORAGE using kizzy
+     * @param defaultTimeToExpire
+     * @param version to automatically refresh de cache
+     * @param arrayLimit
+     */
+    init : function (mode, defaultTimeToExpire, version, arrayLimit) {
+
+
+        var finalVersion = "";
+        if (version) finalVersion = version;
+
         if  (mode){
             if (mode == "ARRAY"){
 
@@ -31,7 +42,7 @@ var ElstrCache = {
             }else if (mode == "LOCAL_STORAGE"){
 
                 _mode = LOCAL_STORAGE_MODE;
-                _localStorage = kizzy('Elstr');
+                _localStorage = kizzy('Elstr'+finalVersion);
 
             }else{
 
