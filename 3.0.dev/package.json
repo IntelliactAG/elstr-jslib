@@ -24,17 +24,6 @@
 		"signals": "1.0.0",
 		"hasher": "1.2.x",
 		"kizzy": "0.0.x",
-		"font-awesome": "4.x",
-        "scribe-editor": "*",
-        "scribe-plugin-toolbar": "*",
-        "scribe-plugin-blockquote-command": "*",
-        "scribe-plugin-code-command": "*",
-        "scribe-plugin-curly-quotes": "*",
-        "scribe-plugin-heading-command": "*",
-        "scribe-plugin-intelligent-unlink-command": "*",
-        "scribe-plugin-keyboard-shortcuts": "*",
-        "scribe-plugin-link-prompt-command": "*",
-        "scribe-plugin-sanitizer": "*",
-        "scribe-plugin-smart-lists": "*"
+		"font-awesome": "4.x"
 	}
 }

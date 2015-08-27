@@ -4,6 +4,25 @@
  * This tables take in account the status of the filters.
  */
 
+ /*
+		DEPENDENCIES:
+ 
+        "scribe-editor": "*",
+        "scribe-plugin-toolbar": "*",
+        "scribe-plugin-blockquote-command": "*",
+        "scribe-plugin-code-command": "*",
+        "scribe-plugin-curly-quotes": "*",
+        "scribe-plugin-heading-command": "*",
+        "scribe-plugin-intelligent-unlink-command": "*",
+        "scribe-plugin-keyboard-shortcuts": "*",
+        "scribe-plugin-link-prompt-command": "*",
+        "scribe-plugin-sanitizer": "*",
+        "scribe-plugin-smart-lists": "*"
+ 
+ 
+ */
+ 
+ 
 var React = require('react');
 
 var ElstrLog = require('../ElstrLog');
