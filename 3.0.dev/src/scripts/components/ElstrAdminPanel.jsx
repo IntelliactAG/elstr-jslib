@@ -17,15 +17,15 @@ var ElstrLangStore = require('../stores/ElstrLangStore');
 /**
  * Bootstrap elements.
  */
-var DropdownButton = require('react-bootstrap/DropdownButton');
-var Button = require('react-bootstrap/Button');
-var MenuItem = require('react-bootstrap/MenuItem');
-var Modal = require('react-bootstrap/Modal');
-var ButtonGroup = require('react-bootstrap/ButtonGroup');
-var Input = require('react-bootstrap/Input');
+var DropdownButton = require('react-bootstrap/lib/DropdownButton');
+var Button = require('react-bootstrap/lib/Button');
+var MenuItem = require('react-bootstrap/lib/MenuItem');
+var Modal = require('react-bootstrap/lib/Modal');
+var ButtonGroup = require('react-bootstrap/lib/ButtonGroup');
+var Input = require('react-bootstrap/lib/Input');
 
-var Row = require('react-bootstrap/Row');
-var Col = require('react-bootstrap/Col');
+var Row = require('react-bootstrap/lib/Row');
+var Col = require('react-bootstrap/lib/Col');
 
 /**
  * Custom CSS elements
