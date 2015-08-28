@@ -89,28 +89,38 @@ var ElstrUserLoginDialog = React.createClass({
 
         return (
             <div className="elstrUserLoginDialog">
-                <Modal title={ElstrLangStore.text("Login")}
-                    backdrop={false}
-                    animation={true}
-                    onRequestHide={this.props.hideLoginDialog}>
-                    <form>
-                        <div className="modal-body">
-                            <div className="form-group">
-                                <label htmlFor="elstrUserLoginDialogInputUsername">{ElstrLangStore.text("Username")}</label>
-                                <input ref="username" type="text" className="form-control" id="elstrUserLoginDialogInputUsername" placeholder={ElstrLangStore.text("Username")} required />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="elstrUserLoginDialogInputPassword">{ElstrLangStore.text("Password")}</label>
-                                <input ref="password" type="password" className="form-control" id="elstrUserLoginDialogInputPassword" placeholder={ElstrLangStore.text("Password")} required />
-                            </div>
-                            {message}
-                        </div>
-                        <div className="modal-footer">
+
+                <div className='static-modal'>
+                    <Modal.Dialog
+                        backdrop={false}
+                        animation={true}
+                        onHide={this.props.hideLoginDialog} >
+                        <Modal.Header>
+                            <Modal.Title>{ElstrLangStore.text("Login")}</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <form>
+                                <div className="form-group">
+                                    <label htmlFor="elstrUserLoginDialogInputUsername">{ElstrLangStore.text("Username")}</label>
+                                    <input ref="username" type="text" className="form-control" id="elstrUserLoginDialogInputUsername" placeholder={ElstrLangStore.text("Username")} required />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="elstrUserLoginDialogInputPassword">{ElstrLangStore.text("Password")}</label>
+                                    <input ref="password" type="password" className="form-control" id="elstrUserLoginDialogInputPassword" placeholder={ElstrLangStore.text("Password")} required />
+                                </div>
+                                {message}
+
+                            </form>
+                        </Modal.Body>
+
+                        <Modal.Footer>
                             {submitButton}
                             {cancelButton}
-                        </div>
-                    </form>
-                </Modal>
+                        </Modal.Footer>
+
+                    </Modal.Dialog>
+                </div>
+                
             </div>
         );
 
