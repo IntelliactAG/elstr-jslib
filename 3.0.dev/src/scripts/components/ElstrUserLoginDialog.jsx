@@ -82,24 +82,25 @@ var ElstrUserLoginDialog = React.createClass({
 
         var submitButton;
         if(this.props.loading === false){
-            submitButton = <Button bsStyle="primary" type="submit" onClick={this.handleSubmit}>{ElstrLangStore.text("Login")}</Button>;
+            submitButton = <Button bsStyle="primary" type="submit" >{ElstrLangStore.text("Login")}</Button>;
         } else {
             submitButton = <Button bsStyle="info" disabled>{ElstrLangStore.text("Checking credentials ...")}</Button>;
         }
-
+// onClick={this.handleSubmit}
         return (
             <div className="elstrUserLoginDialog">
 
                 <div className='static-modal'>
-                    <Modal.Dialog
-                        backdrop={false}
-                        animation={true}
-                        onHide={this.props.hideLoginDialog} >
-                        <Modal.Header>
-                            <Modal.Title>{ElstrLangStore.text("Login")}</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <form>
+                    <form onSubmit={this.handleSubmit} >
+                        <Modal.Dialog
+                            backdrop={false}
+                            animation={true}
+                            onHide={this.props.hideLoginDialog} >
+                            <Modal.Header>
+                                <Modal.Title>{ElstrLangStore.text("Login")}</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+
                                 <div className="form-group">
                                     <label htmlFor="elstrUserLoginDialogInputUsername">{ElstrLangStore.text("Username")}</label>
                                     <input ref="username" type="text" className="form-control" id="elstrUserLoginDialogInputUsername" placeholder={ElstrLangStore.text("Username")} required />
@@ -110,17 +111,18 @@ var ElstrUserLoginDialog = React.createClass({
                                 </div>
                                 {message}
 
-                            </form>
-                        </Modal.Body>
 
-                        <Modal.Footer>
-                            {submitButton}
-                            {cancelButton}
-                        </Modal.Footer>
+                            </Modal.Body>
 
-                    </Modal.Dialog>
+                            <Modal.Footer>
+                                {submitButton}
+                                {cancelButton}
+                            </Modal.Footer>
+
+                        </Modal.Dialog>
+                    </form>
                 </div>
-                
+
             </div>
         );
 
