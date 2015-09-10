@@ -29,22 +29,22 @@ var myPcId = ElstrId.create();
 
 /*
 
-{
-    timestamp: "201505201500",
-        identifier: [{
-    object: "change",
-    objectId: "c8advjap9w8egn"
-},{
-    object: "item",
-    objectId: "c8advjap4gfdfsg"
-},{
-    object: "task",
-    objectId: "2890cvjpaodhuf"
-}],
-    event: "completed", //optional
-    data: {state: "completed", name: "do anything"} //optional
-}
-*/
+ {
+ timestamp: "201505201500",
+ identifier: [{
+ object: "change",
+ objectId: "c8advjap9w8egn"
+ },{
+ object: "item",
+ objectId: "c8advjap4gfdfsg"
+ },{
+ object: "task",
+ objectId: "2890cvjpaodhuf"
+ }],
+ event: "completed", //optional
+ data: {state: "completed", name: "do anything"} //optional
+ }
+ */
 
 function _compareIdentifiers(identifierA, identifierB) {
 
@@ -176,7 +176,12 @@ var ElstrRealTimeActions = mcFly.createActions({
 
     init : function(localDbName, externalUrl) {
 
-        db = new PouchDB(localDbName); // 'clientName'
+        db = new PouchDB(localDbName, {
+            auth: {
+                username: ElstrConfigStore.option("ElstrRealTime","username"),
+                password: ElstrConfigStore.option("ElstrRealTime","password")
+            }
+        }); // 'clientName'
         remoteCouch = externalUrl; // 'http://127.0.0.1:5984/realtime'
 
         var filterDb = function(doc){
@@ -259,7 +264,7 @@ var ElstrRealTimeActions = mcFly.createActions({
 
         _localTimes = newLocalTimes;
 
-        console.log("newLocalTimes",newLocalTimes);
+        // console.log("newLocalTimes",newLocalTimes);
 
         if (firstLoad){
 
