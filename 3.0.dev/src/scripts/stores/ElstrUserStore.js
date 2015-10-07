@@ -58,6 +58,22 @@ var ElstrUserStore = mcFly.createStore({
         return _username;
     },
 
+
+    /**
+     * Returns the short username if authenticaed, anonymous if not
+     *
+     * @method getShortUsername
+     * @return {String} shortUserName
+     */
+    getShortUsername: function() {
+        var shortUserName = _username;
+        var atPosition = _username.lastIndexOf("@");
+        if (atPosition>=0){
+            shortUserName = _username.substring(0, atPosition);
+        }
+        return shortUserName;
+    },
+
     /**
      * Returns if the user is authenticated
      *
