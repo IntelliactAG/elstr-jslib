@@ -75,10 +75,10 @@ var ElstrWysiwyg = React.createClass({
             debug: false
         };
 
-        var scribeElement = this.refs.scribe.getDOMNode();
+        var scribeElement = this.refs.scribe;
         var scribe = new Scribe(scribeElement, scribeOptions);
 
-        var toolbarElement = this.refs.toolbar.getDOMNode();
+        var toolbarElement = this.refs.toolbar;
         scribe.use(ScribePluginToolbar(toolbarElement));
 
         /* Optional plugins */
@@ -107,7 +107,7 @@ var ElstrWysiwyg = React.createClass({
 
             }
 
-            this.refs.scribe.getDOMNode().addEventListener("keyup", onChangeFunc);
+            this.refs.scribe.addEventListener("keyup", onChangeFunc);
             scribe.on('content-changed', onChangeFunc);
         }
 

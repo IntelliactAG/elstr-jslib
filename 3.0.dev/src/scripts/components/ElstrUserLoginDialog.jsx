@@ -49,8 +49,8 @@ var ElstrUserLoginDialog = React.createClass({
 
     handleSubmit: function(e) {
         e.preventDefault();
-        var username = this.refs.username.getDOMNode().value.trim();
-        var password = this.refs.password.getDOMNode().value;
+        var username = this.refs.username.value.trim();
+        var password = this.refs.password.value;
 
         if(username === ""){
             ElstrUserActions.didLogin("fail", null, null, null, null, null, "A username is required");
@@ -62,7 +62,7 @@ var ElstrUserLoginDialog = React.createClass({
     },
 
     componentDidMount: function() {
-        this.refs.username.getDOMNode().focus();
+        this.refs.username.focus();
     },
 
     render: function() {
