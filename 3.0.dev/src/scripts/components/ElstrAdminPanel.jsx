@@ -95,58 +95,58 @@ var ResourceCell = React.createClass({
     },
     render : function(){
 
-         var cell;
+        var cell;
 
-         if (this.state.visible && !this.props.isCore){
-             // onClick={this.setVisibleFalse}
+        if (this.state.visible && !this.props.isCore){
+            // onClick={this.setVisibleFalse}
 
-             var selectStyle = {
-                 margin: "0px",
-                 padding: "0px"
-             };
+            var selectStyle = {
+                margin: "0px",
+                padding: "0px"
+            };
 
-             if (this.props.hasParent){
-                 cell = (
-                     <td>
-                         <select ref="select" style={selectStyle} defaultValue={this.props.value} onChange={this.onSelect} >
-                             <option value="allow" >Allow</option>
-                             <option value="deny" >Deny</option>
-                             <option value="inherit" >Inherit ({this.props.valueOriginal})</option>
-                         </select><button onClick={this.setVisibleFalse}>x</button>
-                     </td>);
-             }else{
-                 cell = (
-                     <td>
-                         <select ref="select" style={selectStyle} defaultValue={this.props.value} onChange={this.onSelect} >
-                             <option value="allow" >Allow</option>
-                             <option value="deny" >Deny</option>
-                         </select><button onClick={this.setVisibleFalse}>x</button>
-                     </td>);
-             }
+            if (this.props.hasParent){
+                cell = (
+                    <td>
+                        <select ref="select" style={selectStyle} defaultValue={this.props.value} onChange={this.onSelect} >
+                            <option value="allow" >Allow</option>
+                            <option value="deny" >Deny</option>
+                            <option value="inherit" >Inherit ({this.props.valueOriginal})</option>
+                        </select><button onClick={this.setVisibleFalse}>x</button>
+                    </td>);
+            }else{
+                cell = (
+                    <td>
+                        <select ref="select" style={selectStyle} defaultValue={this.props.value} onChange={this.onSelect} >
+                            <option value="allow" >Allow</option>
+                            <option value="deny" >Deny</option>
+                        </select><button onClick={this.setVisibleFalse}>x</button>
+                    </td>);
+            }
 
-         }else{
+        }else{
 
-             if (this.props.value == this.props.valueOriginal){
+            if (this.props.value == this.props.valueOriginal){
 
-                 cell = (<td onClick={this.setVisibleTrue} className="greenCell cursorPointer" > {ElstrLangStore.text("allow")} </td>);
-                 if (this.props.value != "allow") cell = (<td onClick={this.setVisibleTrue} className="redCell cursorPointer" > {ElstrLangStore.text("deny")} </td>);
+                cell = (<td onClick={this.setVisibleTrue} className="greenCell cursorPointer" > {ElstrLangStore.text("allow")} </td>);
+                if (this.props.value != "allow") cell = (<td onClick={this.setVisibleTrue} className="redCell cursorPointer" > {ElstrLangStore.text("deny")} </td>);
 
-             }else{
+            }else{
 
-                 var valueOriginal = this.props.valueOriginal;
+                var valueOriginal = this.props.valueOriginal;
 
-                 if (valueOriginal === null) valueOriginal = "-";
-                 else if (valueOriginal !== null) valueOriginal = "("+valueOriginal+")";
+                if (valueOriginal === null) valueOriginal = "-";
+                else if (valueOriginal !== null) valueOriginal = "("+valueOriginal+")";
 
-                 if (this.props.value == "allow"){
-                     cell = (<td onClick={this.setVisibleTrue} className="greenCell cursorPointer" > {ElstrLangStore.text("allow")} {valueOriginal}</td>);
-                 }else{
-                     cell = (<td onClick={this.setVisibleTrue} className="redCell cursorPointer" > {ElstrLangStore.text("deny")} {valueOriginal}</td>);
-                 }
+                if (this.props.value == "allow"){
+                    cell = (<td onClick={this.setVisibleTrue} className="greenCell cursorPointer" > {ElstrLangStore.text("allow")} {valueOriginal}</td>);
+                }else{
+                    cell = (<td onClick={this.setVisibleTrue} className="redCell cursorPointer" > {ElstrLangStore.text("deny")} {valueOriginal}</td>);
+                }
 
-             }
+            }
 
-         }
+        }
 
         return cell;
 
@@ -280,7 +280,7 @@ var AdminPanel = React.createClass({
         this.setState(this.state);
     },
 
-    getRow: function (type, name, resourceData, roles,isCore){
+    getRow: function (key, type, name, resourceData, roles,isCore){
 
         var extraCels = [];
 
@@ -291,7 +291,7 @@ var AdminPanel = React.createClass({
 
             var hasParent = roles[i].parent;
 
-            extraCels.push(<ResourceCell type={type} name={name} roleName={roleName} value={value} valueOriginal={valueOriginal} isCore={isCore} hasParent={hasParent}  />);
+            extraCels.push(<ResourceCell key={key+"_"+i} type={type} name={name} roleName={roleName} value={value} valueOriginal={valueOriginal} isCore={isCore} hasParent={hasParent}  />);
 
         }
 
@@ -299,7 +299,7 @@ var AdminPanel = React.createClass({
         if (isCore) classN = "isCore";
 
         return (
-            <tr className={classN} >
+            <tr key={key} className={classN} >
                 <td className="cursorPointer" onClick={this.changeApplicationFixed.bind(this, type)} >
                     {type}
                 </td>
@@ -311,10 +311,10 @@ var AdminPanel = React.createClass({
 
     },
 
-    getRowRole: function (roleName, parent){
+    getRowRole: function (key, roleName, parent){
 
         return (
-            <tr>
+            <tr key={key} >
                 <td className="cursorPointer" onClick={this.changeRolleTextFixed.bind(this, roleName)} >
                     {roleName}
                 </td>
@@ -324,10 +324,10 @@ var AdminPanel = React.createClass({
             </tr>);
     },
 
-    getHeaderRole: function (roleName){
+    getHeaderRole: function (key, roleName){
 
         return (
-            <th>
+            <th key={key} >
                 {roleName}
             </th>
         );
@@ -357,8 +357,8 @@ var AdminPanel = React.createClass({
                     parent: roleParentName
                 });
 
-                roles_rows.push(this.getRowRole(roleName, roleParentName));
-                roles_headers.push(this.getHeaderRole(roleName));
+                roles_rows.push(this.getRowRole(j, roleName, roleParentName));
+                roles_headers.push(this.getHeaderRole(j, roleName));
 
             }
         }
@@ -372,7 +372,7 @@ var AdminPanel = React.createClass({
                 var name = resourceData.name;
                 var isCore = (resourceData.isCore == "1");
 
-                resources_rows.push(this.getRow(type, name, resourceData, roleNames, isCore));
+                resources_rows.push(this.getRow(i, type, name, resourceData, roleNames, isCore));
             }
         }
 
@@ -434,15 +434,15 @@ var AdminPanel = React.createClass({
                             <ButtonGroup>
                                 <Input ref="roleText" id='elstrAdminConsoleRoleHandlerInput' type='text'
 
-                                    value={this.state.rolleText}
-                                    onChange={this.changeRolleText}
+                                       value={this.state.rolleText}
+                                       onChange={this.changeRolleText}
 
-                                    buttonBefore={
-                                        <DropdownButton title={this.state.rolle} >
+                                       buttonBefore={
+                                        <DropdownButton id="buttonBefore" title={this.state.rolle} >
                                             <MenuItem onSelect={this.changeRolle.bind(this,"add")}  eventKey="1">{ElstrLangStore.text("Add")}</MenuItem>
                                             <MenuItem onSelect={this.changeRolle.bind(this,"delete")}  eventKey="2">{ElstrLangStore.text("Delete")}</MenuItem>
                                         </DropdownButton>}
-                                    buttonAfter={
+                                       buttonAfter={
                                         <Button id='elstrAdminConsoleRoleHandlerButton' onClick={this.changeRolleApply}>{ElstrLangStore.text("Go!")}</Button>}
                                 />
 
@@ -456,17 +456,17 @@ var AdminPanel = React.createClass({
 
                             <table className="ElstrAdminTable">
                                 <thead>
-                                    <tr>
-                                        <th>
-                                                {ElstrLangStore.text("Name")}
-                                        </th>
-                                        <th>
-                                                {ElstrLangStore.text("Inherits from")}
-                                        </th>
-                                    </tr>
+                                <tr>
+                                    <th>
+                                        {ElstrLangStore.text("Name")}
+                                    </th>
+                                    <th>
+                                        {ElstrLangStore.text("Inherits from")}
+                                    </th>
+                                </tr>
                                 </thead>
                                 <tbody>
-                                        {roles_rows}
+                                {roles_rows}
                                 </tbody>
                             </table>
                         </div>
@@ -485,16 +485,16 @@ var AdminPanel = React.createClass({
 
                                 <Input ref="resourceText" id='elstrAdminConsoleResourceHandlerMode' type='text'
 
-                                    value={this.state.resourceText}
-                                    onChange={this.changeResourceText}
+                                       value={this.state.resourceText}
+                                       onChange={this.changeResourceText}
 
-                                    buttonBefore={
-                                        <DropdownButton title={this.state.resource} >
+                                       buttonBefore={
+                                        <DropdownButton id="buttonBefore" title={this.state.resource} >
                                             <MenuItem eventKey="a" onSelect={this.changeResource.bind(this,"add")} >{ElstrLangStore.text("Add")}</MenuItem>
                                             <MenuItem eventKey="d" onSelect={this.changeResource.bind(this,"delete")} >{ElstrLangStore.text("Delete")}</MenuItem>
                                         </DropdownButton>}
-                                    buttonAfter={
-                                        <DropdownButton title={this.state.application} >
+                                       buttonAfter={
+                                        <DropdownButton id="buttonAfter" title={this.state.application} >
                                             <MenuItem eventKey="a" onSelect={this.changeApplication.bind(this,"Application")} >{ElstrLangStore.text("Application")}</MenuItem>
                                             <MenuItem eventKey="s" onSelect={this.changeApplication.bind(this,"Service")} >{ElstrLangStore.text("Service")}</MenuItem>
                                             <MenuItem eventKey="w" onSelect={this.changeApplication.bind(this,"WidgetServer")} >{ElstrLangStore.text("WidgetServer")}</MenuItem>
@@ -511,24 +511,24 @@ var AdminPanel = React.createClass({
                     <div>
                         <Col xs={12}>
 
-                                {loadingResources}
-                                {errorResources}
-                                {loadingUpdateResources}
+                            {loadingResources}
+                            {errorResources}
+                            {loadingUpdateResources}
 
                             <table className="ElstrAdminTable">
                                 <thead>
-                                    <tr>
-                                        <th>
+                                <tr>
+                                    <th>
                                         {ElstrLangStore.text("Type")}
-                                        </th>
-                                        <th style={maxWidthStyle} >
+                                    </th>
+                                    <th style={maxWidthStyle} >
                                         {ElstrLangStore.text("Name")}
-                                        </th>
-                                        {roles_headers}
-                                    </tr>
+                                    </th>
+                                    {roles_headers}
+                                </tr>
                                 </thead>
                                 <tbody>
-                                        {resources_rows}
+                                {resources_rows}
                                 </tbody>
                             </table>
                         </Col>
