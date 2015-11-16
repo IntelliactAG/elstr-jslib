@@ -47,7 +47,7 @@ var ElstrUserActions = mcFly.createActions({
                 var responseAction = result.action;
                 var responseMessage = null;
                 if (responseAction === "success") {
-                    ElstrUserActions.didLogin(responseAction, result.enterpriseApplicationData, result.isAdmin, result.isAuth, result.resourcesAllowed, result.username, null);
+                    ElstrUserActions.didLogin(responseAction, result.enterpriseApplicationData, result.isAdmin, result.isAuth, result.resourcesAllowed, result.memberOf, result.username, null);
                 } else {
                     if (result.message) {
                         ElstrLog.log(result.message);
@@ -87,7 +87,7 @@ var ElstrUserActions = mcFly.createActions({
      * @param username
      * @returns {{actionType: *, enterpriseApplicationData: *, isAdmin: *, isAuth: *, resourcesAllowed: *, username: *}}
      */
-    didLogin: function(responseAction, enterpriseApplicationData, isAdmin, isAuth, resourcesAllowed, username, message) {
+    didLogin: function(responseAction, enterpriseApplicationData, isAdmin, isAuth, resourcesAllowed, memberOf, username, message) {
         ElstrLog.trace("ElstrUserActions.didLogin");
         var actionType;
         if(responseAction === "success"){
@@ -101,6 +101,7 @@ var ElstrUserActions = mcFly.createActions({
             isAdmin: isAdmin,
             isAuth: isAuth,
             resourcesAllowed: resourcesAllowed,
+            memberOf: memberOf,
             username: username,
             message: message
         };
@@ -126,7 +127,7 @@ var ElstrUserActions = mcFly.createActions({
                 var responseAction = result.action;
                 var responseMessage = null;
                 if (responseAction == "success") {
-                    ElstrUserActions.didLogout({}, false, false, [], result.username, null);
+                    ElstrUserActions.didLogout({}, false, false, [], [],result.username, null);
                 } else {
                     if (result.message) {
                         ElstrLog.log(result.message);
@@ -165,7 +166,7 @@ var ElstrUserActions = mcFly.createActions({
      * @param username
      * @returns {{actionType: *, username: *}}
      */
-    didLogout: function(enterpriseApplicationData, isAdmin, isAuth, resourcesAllowed, username, message) {
+    didLogout: function(enterpriseApplicationData, isAdmin, isAuth, resourcesAllowed, memberOf, username, message) {
         ElstrLog.trace("ElstrUserActions.didLogout");
 
         return {
@@ -174,6 +175,7 @@ var ElstrUserActions = mcFly.createActions({
             isAdmin: isAdmin,
             isAuth: isAuth,
             resourcesAllowed: resourcesAllowed,
+            memberOf: memberOf,
             username: username,
             message: message
         };

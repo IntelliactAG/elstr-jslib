@@ -42,6 +42,7 @@ var ElstrUserStore = mcFly.createStore({
         _isAdmin = window.ELSTR.applicationData.user.isAdmin;
         _resourcesAllowed = window.ELSTR.applicationData.user.resourcesAllowed;
         _enterpriseApplicationData = window.ELSTR.applicationData.user.enterpriseApplicationData;
+        _memberOf = window.ELSTR.applicationData.user.memberOf;
 
         // Remove global ELSTR values after configuration
         window.ELSTR.applicationData.user = null;
@@ -128,7 +129,7 @@ var ElstrUserStore = mcFly.createStore({
      * Returns if the user has allowed access to a resource
      *
      * @method resourceAllowed
-     * @param {string/array} resource Name of a resource
+     * @param {string/array} name of a resource
      * @return {Boolean} If the resource is allowed
      */
     resourceAllowed: function(resource) {
@@ -151,6 +152,21 @@ var ElstrUserStore = mcFly.createStore({
             }
         }
         return isAllowed;
+    },
+
+    /**
+     * Returns if the user is a member of the role
+     *
+     * @method isMemberOf
+     * @param {string} name of a role
+     * @return {Boolean} If the user is member of the role
+     */
+    isMemberOf: function(role) {
+        var isMember = false;
+        if(_memberOf.indexOf(role) >= 0){
+            isMember = true;
+        }
+        return isMember;
     },
 
     /**
@@ -189,6 +205,7 @@ var ElstrUserStore = mcFly.createStore({
                 if (payload.isAuth !== null) _isAuth = payload.isAuth;
                 if (payload.isAdmin !== null) _isAdmin = payload.isAdmin;
                 if (payload.resourcesAllowed !== null) _resourcesAllowed = payload.resourcesAllowed;
+                if (payload.memberOf !== null) _memberOf = payload.memberOf;
                 if (payload.enterpriseApplicationData !== null) _enterpriseApplicationData = payload.enterpriseApplicationData;
                 _message = payload.message; // Change the message anyway
                 _loading = false;
@@ -204,6 +221,7 @@ var ElstrUserStore = mcFly.createStore({
                 if (payload.isAuth !== null) _isAuth = payload.isAuth;
                 if (payload.isAdmin !== null) _isAdmin = payload.isAdmin;
                 if (payload.resourcesAllowed !== null) _resourcesAllowed = payload.resourcesAllowed;
+                if (payload.memberOf !== null) _memberOf = payload.memberOf;
                 if (payload.enterpriseApplicationData !== null) _enterpriseApplicationData = payload.enterpriseApplicationData;
                 _message = payload.message; // Change the message anyway
                 _loading = false;
@@ -223,6 +241,7 @@ var ElstrUserStore = mcFly.createStore({
                 if (payload.isAuth !== null) _isAuth = payload.isAuth;
                 if (payload.isAdmin !== null) _isAdmin = payload.isAdmin;
                 if (payload.resourcesAllowed !== null) _resourcesAllowed = payload.resourcesAllowed;
+                if (payload.memberOf !== null) _memberOf = payload.memberOf;
                 if (payload.enterpriseApplicationData !== null) _enterpriseApplicationData = payload.enterpriseApplicationData;
                 _message = payload.message; // Change the message anyway
                 _loading = false;
