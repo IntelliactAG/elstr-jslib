@@ -51,6 +51,26 @@ var ElstrConfigStore = mcFly.createStore({
 
         return configSubObject;
     },
+
+    /**
+     * Use a simple (i.e.not nested) option that is defined in the config.ini or a default value if the option is missing
+     * @param key
+     * @param defaultValue
+     * @returns {String} configuration value
+     */
+    simpleOptionOrDefault: function(key, defaultValue) {
+        // If called for the first time
+        if (_config === null) {
+            this.initialize();
+        }
+
+        if (typeof _config[key] !== 'undefined'){
+            return _config[key];
+        }else{
+            return defaultValue;
+        }
+    },
+
     /**
      * Get the application env string
      * @returns {String} application environment (development, test, production)
