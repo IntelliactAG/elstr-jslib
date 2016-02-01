@@ -2,13 +2,14 @@
 	"name": "elstr-jslib",
 	"description": "Elstr frontend libs",
 	"author": "Intelliact",
-	"version": "3.0.58",
+	"version": "3.0.59",
 	"license": "MIT",
 	"peerDependencies": {
 		"mcfly": "0.0.x",
 		"keymirror": "*",
 		"flux": "2.0.x",
-        "react-bootstrap": "*"
+        "react-bootstrap": "*",
+		"object-assign": "*"
 	},
 	"devDependencies": {
 		"css-loader": "*",
