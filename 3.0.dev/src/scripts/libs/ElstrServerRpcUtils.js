@@ -1,9 +1,3 @@
-var mcFly = require('../libs/mcFly.js');
-
-var EventEmitter = require('events').EventEmitter;
-
-// var RealTimeActions = require('../../../compare/src/scripts/actions/RealTimeActions');
-
 var ElstrLog = require('../ElstrLog');
 
 /**
