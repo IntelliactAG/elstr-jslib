@@ -1,4 +1,4 @@
-var mcFly = require('../mcFly.js');
+var mcFly = require('./mcFly.js');
 
 /**
  * Helper class lib definition.
