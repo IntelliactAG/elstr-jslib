@@ -53,6 +53,7 @@ var ElstrUrlHashStore = mcFly.createStore({
         hasher.prependHash = ''; //default value is "/"
 
         hasher.init(); //initialize hasher (start listening for history changes)
+		_newHash = hasher.getHash();
 
     },
 
