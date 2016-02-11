@@ -35,12 +35,13 @@ function ElstrFlux (){}
 function createAction(parameters, result,
                       className, methodName, constantWill, constantDid){
 
-    parameters[methodName+"Did"] = function (error, params, data) {
+    parameters[methodName+"Did"] = function (error, params, data, noRpcParams) {
 
         return {
             actionType: constantDid,
             error: error,
             params: params,
+            noRpcParams: noRpcParams,
             data: data
         };
     };
@@ -59,7 +60,7 @@ function createAction(parameters, result,
                 ErrorMessageStore.addError(error);
 //
 
-                result.finalActions[methodName+"Did"](error, params);
+                result.finalActions[methodName+"Did"](error, params, null, noRpcParams);
 
             },
             onSuccess: function (req, res, data) {
@@ -84,7 +85,7 @@ function createAction(parameters, result,
 
                 var error = ServerRpcUtils.validateMessages(data);
 
-                result.finalActions[methodName+"Did"](error, params, data);
+                result.finalActions[methodName+"Did"](error, params, data, noRpcParams);
 
             }
         };
@@ -96,8 +97,10 @@ function createAction(parameters, result,
         }, params);
 
         // We add the nonRpcParameters
-        if (!noRpcParams){
+        if (noRpcParams){
+
             res = assign(res, noRpcParams);
+
         }
 
         return res;
