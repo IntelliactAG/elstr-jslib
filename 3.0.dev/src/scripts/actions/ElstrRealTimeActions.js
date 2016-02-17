@@ -17,6 +17,7 @@ var ElstrConfigStore = require('elstr-jslib/src/scripts/stores/ElstrConfigStore'
 var PouchDB = require("pouchdb");
 
 var db;
+var remoteDb;
 var remoteCouch;
 
 var _localTimes;
@@ -71,17 +72,6 @@ function _compareIdentifiers(identifierA, identifierB) {
     return true;
 }
 
-// http://pouchdb.com/2014/05/01/secondary-indexes-have-landed-in-pouchdb.html
-function createDesignDoc(name, mapFunction) {
-    var ddoc = {
-        _id: '_design/' + name,
-        views: {
-        }
-    };
-    ddoc.views[name] = { map: mapFunction.toString() };
-    return ddoc;
-}
-
 // http://pouchdb.com/2014/06/17/12-pro-tips-for-better-code-with-pouchdb.html
 
 /**
@@ -120,7 +110,6 @@ function _setTime(identifier, timestamp, user, event, data) {
     if (record === null) {
 
         // TODO: find an unique Id
-
         var uniqueId = new Date().getTime() +"X"+ElstrId.create();
 
         record = {
@@ -134,11 +123,9 @@ function _setTime(identifier, timestamp, user, event, data) {
         };
     }
 
-    db.put(record, function callback(err, result) {
+    remoteDb.put(record, function callback(err, result) {
         if (err) {
             ElstrLog.error(err);
-        }else{
-            ElstrLog.log('Successfully updated Times ',result);
         }
     });
 }
@@ -184,40 +171,26 @@ var ElstrRealTimeActions = mcFly.createActions({
         }); // 'clientName'
         remoteCouch = externalUrl; // 'http://127.0.0.1:5984/realtime'
 
-        var filterDb = function(doc){
-
-            // We don't filter now.
-            // Here it comes the real filter
-            // TODO only listen to the events for the current comment / item
-            return true; // doc.target == "comment";
-
-        };
+        remoteDb = new PouchDB(externalUrl);
 
         db.changes({
             since: 'now',
             live: true
-            //, filter: filterDb
         }).on('change', _updateTimes);
 
         function _sync() {
 
-            var filter = function(doc){
+            /*
+             We dont replicate from frontend to backend
+             var opts = {
+             live: true
+             };
 
-                return true; // doc.target == "comment";
-
-            };
-
-
-            var opts = {
-                live: true
-            };
-
-            db.replicate.to(remoteCouch, opts);
-
+             db.replicate.to(remoteCouch, opts);
+             */
 
             var optsFrom = {
                 live: true
-                // , filter: filter
             };
 
             db.replicate.from(remoteCouch, optsFrom);
