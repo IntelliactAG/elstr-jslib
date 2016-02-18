@@ -190,7 +190,8 @@ var ElstrRealTimeActions = mcFly.createActions({
              */
 
             var optsFrom = {
-                live: true
+                live: true,
+                retry: true
             };
 
             db.replicate.from(remoteCouch, optsFrom);
