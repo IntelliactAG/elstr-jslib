@@ -130,28 +130,38 @@ function _setTime(identifier, timestamp, user, event, data) {
     });
 }
 
-function _updateTimes(){
+function _updateTimes(change){
 
-    // We request the updates for the last xxx secs
-    var timemargin = ElstrConfigStore.option("ElstrRealTime","timemargin");
-    var sinceWhen = new Date().getTime() - timemargin;
+    if (change && change.changes && change.changes.length>0){
 
-    db.query({
-        include_docs: true,
-        map: function(doc, emit) {
-            if (doc.timestamp > sinceWhen) {
-                emit(doc, 1);
-            }
-        }}, function(err, doc) {
+        var revs = [];
 
-        if (err){
-            ElstrLog.error(err);
-        }else{
-
-            ElstrRealTimeActions.updateTimes(doc.rows);
-
+        for (var i = 0; i < change.changes.length; i++) {
+            var ch = change.changes[i];
+            revs.push(ch.rev);
         }
-    });
+
+        db.query({
+            include_docs: true,
+            map: function(doc, emit) {
+
+                if (revs.indexOf(doc._rev)>=0){
+                    emit(doc, 1);
+                }
+
+            }}, function(err, doc) {
+
+            if (err){
+                ElstrLog.error(err);
+            }else{
+
+                ElstrRealTimeActions.updateTimes(doc.rows);
+
+            }
+        });
+
+    }
+
 }
 
 
@@ -190,8 +200,7 @@ var ElstrRealTimeActions = mcFly.createActions({
              */
 
             var optsFrom = {
-                live: true,
-                retry: true
+                live: true
             };
 
             db.replicate.from(remoteCouch, optsFrom);
