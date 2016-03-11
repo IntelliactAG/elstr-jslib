@@ -17,7 +17,7 @@ var elstrIo = new ElstrIo({
 
 /**
  * This is the class for actions in Elstr lang
- 
+
  * @class ElstrUserActions
  */
 var ElstrUserActions = mcFly.createActions({
@@ -46,6 +46,7 @@ var ElstrUserActions = mcFly.createActions({
                 var result = res.body.result;
                 var responseAction = result.action;
                 var responseMessage = null;
+
                 if (responseAction === "success") {
                     ElstrUserActions.didLogin(responseAction, result.enterpriseApplicationData, result.isAdmin, result.isAuth, result.resourcesAllowed, result.memberOf, result.username, null);
                 } else {
@@ -57,7 +58,7 @@ var ElstrUserActions = mcFly.createActions({
                             responseMessage = result.message[0];
                         }
                     }
-                    ElstrUserActions.didLogin(responseAction, null, null, null, null, null, responseMessage);
+                    ElstrUserActions.didLogin(responseAction, null, null, null, null, null, null, responseMessage);
                 }
             },
             onError: function(req, error) {
@@ -88,7 +89,7 @@ var ElstrUserActions = mcFly.createActions({
      * @returns {{actionType: *, enterpriseApplicationData: *, isAdmin: *, isAuth: *, resourcesAllowed: *, username: *}}
      */
     didLogin: function(responseAction, enterpriseApplicationData, isAdmin, isAuth, resourcesAllowed, memberOf, username, message) {
-        ElstrLog.trace("ElstrUserActions.didLogin");
+        ElstrLog.trace("ElstrUserActions.didLogin ", message);
         var actionType;
         if(responseAction === "success"){
             actionType = ElstrUserConstants.ELSTR_USER_DID_LOGIN_SUCCESS;
@@ -137,7 +138,7 @@ var ElstrUserActions = mcFly.createActions({
                             responseMessage = result.message[0];
                         }
                     }
-                    ElstrUserActions.didLogout(null, null, null, null, null, responseMessage);
+                    ElstrUserActions.didLogout(null, null, null, null, null, null, responseMessage);
                 }
 
             },

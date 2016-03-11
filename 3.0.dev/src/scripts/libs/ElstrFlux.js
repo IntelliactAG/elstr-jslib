@@ -65,7 +65,7 @@ function createAction(parameters, result,
             },
             onSuccess: function (req, res, data) {
 
-                var ServerRpcUtils = require('./ServerRpcUtils');
+                var ElstrServerRpcUtils = require('./ElstrServerRpcUtils');
                 var ErrorMessageStore = require('../stores/ErrorMessageStore');
                 var i;
                 if (data.result && data.result.messages) {
@@ -83,7 +83,7 @@ function createAction(parameters, result,
 
                 }
 
-                var error = ServerRpcUtils.validateMessages(data);
+                var error = ElstrServerRpcUtils.validateMessages(data);
 
                 result.finalActions[methodName+"Did"](error, params, data, noRpcParams);
 

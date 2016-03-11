@@ -6,6 +6,22 @@ var ElstrLog = require('../ElstrLog');
  */
 function ElstrServerRpcUtils (){}
 
+ElstrServerRpcUtils.parseError = function(errorObject) {
+
+    var errorTxt = "";
+
+    if (errorObject.type){
+        errorTxt = (errorObject.type.toUpperCase()) + ": [" + errorObject.code + "] " + errorObject.message;
+    }else  if (errorObject.message){
+        errorTxt = errorObject.message;
+    }else{
+        errorTxt = (errorObject);
+    }
+
+    return errorTxt;
+
+};
+
 ElstrServerRpcUtils.validateMessages = function(data) {
 
     var error = null;
@@ -15,15 +31,14 @@ ElstrServerRpcUtils.validateMessages = function(data) {
 
         error = " Null data received";
 
+    } else if (data.result && data.result.messages && data.result.messages.length > 0) {
+
+        error = ElstrServerRpcUtils.parseError(data.result.messages[0]);
+
+        /* We check for the base object info */
     } else if (data.messages && data.messages.length > 0) {
 
-        var errorMessages = data.messages;
-
-        if (errorMessages[0].type){
-            error = (errorMessages[0].type.toUpperCase()) + ": [" + errorMessages[0].code + "] " + errorMessages[0].message;
-        }else{
-            error = (errorMessages[0]);
-        }
+        error = ElstrServerRpcUtils.parseError(data.messages[0]);
 
         /* We check for the base object info */
     }
