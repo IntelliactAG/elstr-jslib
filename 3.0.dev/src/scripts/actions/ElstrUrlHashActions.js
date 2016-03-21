@@ -19,7 +19,13 @@ function _serialize(obj) {
     var str = [];
     for(var p in obj)
         if (obj.hasOwnProperty(p)) {
-            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+
+            if (_avoidScapingValues){
+                str.push(p + "=" + obj[p]);
+            }else{
+                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+            }
+
         }
     return str.join("&");
 }
@@ -69,7 +75,16 @@ function _setHashObject( newObject , updateHistory, throwEvent){
     if (!throwEvent) hasher.changed.active = true;
 }
 
+var _avoidScapingValues = false;
+
 var ElstrUrlHashActions = mcFly.createActions({
+
+    init : function(avoidScapingValues) {
+
+        if (avoidScapingValues && avoidScapingValues===true){
+            _avoidScapingValues = true;
+        }
+    },
 
     /**
      * Updates the URL hash WITH event AND history record based in the given object
