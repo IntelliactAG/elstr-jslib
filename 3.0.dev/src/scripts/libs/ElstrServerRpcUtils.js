@@ -7,6 +7,10 @@ var ElstrLog = require('../ElstrLog');
 function ElstrServerRpcUtils (){}
 
 
+ElstrServerRpcUtils.parseError = function(messages) { // this function is for backward compatibility
+	return ElstrServerRpcUtils.parseErrors(messages);
+};
+
 ElstrServerRpcUtils.parseErrors = function(messages) {
 
     var errorTxt = "";
@@ -28,6 +32,10 @@ ElstrServerRpcUtils.parseErrors = function(messages) {
                 else               { errorTxt =  message; }
             }
         }
+    } else if (messages && messages.message !== undefined) { // ElstrException
+        errorTxt = (messages.message);
+    } else if (messages && messages.length == undefined) {
+        errorTxt = (messages);
     }
     return errorTxt;
 
