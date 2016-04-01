@@ -21,8 +21,8 @@ ElstrServerRpcUtils.parseErrors = function(messages) {
 
             if (message.type) {
                 if (message.type=="error") { // only messages of type error are treated as error
-                    var text = error.text;
-                    if (!text) { text = error.message; }
+                    var text = message.text;
+                    if (!text) { text = message.message; }
                     var additionalMessage = (message.type.toUpperCase()) + ": [" + message.code + "] " +text;
                     if (errorTxt!=="") { errorTxt = errorTxt + ", " + additionalMessage; }
                     else               { errorTxt =  additionalMessage; }
@@ -32,9 +32,9 @@ ElstrServerRpcUtils.parseErrors = function(messages) {
                 else               { errorTxt =  message; }
             }
         }
-    } else if (messages && messages.message !== undefined) { // ElstrException
+    } else if (messages && typeof(messages.message) !== "undefined") { // ElstrException //
         errorTxt = (messages.message);
-    } else if (messages && messages.length == undefined) {
+    } else if (messages && !Array.isArray(messages)) {
         errorTxt = (messages);
     }
     return errorTxt;
