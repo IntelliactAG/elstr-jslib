@@ -185,7 +185,8 @@ var ElstrRealTimeActions = mcFly.createActions({
 
         db.changes({
             since: 'now',
-            live: true
+            live: true,
+            retry: true
         }).on('change', _updateTimes);
 
         function _sync() {
@@ -200,7 +201,8 @@ var ElstrRealTimeActions = mcFly.createActions({
              */
 
             var optsFrom = {
-                live: true
+                live: true,
+                retry: true
             };
 
             db.replicate.from(remoteCouch, optsFrom);
