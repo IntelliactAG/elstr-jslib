@@ -173,6 +173,9 @@ var ElstrRealTimeActions = mcFly.createActions({
 
     init : function(localDbName, externalUrl) {
 
+        PouchDB.debug.disable();
+        // PouchDB.debug.enable('*');
+
         db = new PouchDB(localDbName, {
             auth: {
                 username: ElstrConfigStore.option("ElstrRealTime","username"),
