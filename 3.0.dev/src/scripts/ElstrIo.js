@@ -74,7 +74,7 @@ ElstrIo.prototype = {
             maxTimeout = options.maxTimeout;
         }
 
-        var req = request.post('services/' + className)
+        var req = request.post('services/' + className+'?__'+methodName)
             .send(oRequestPost)
             .type('json')
             .timeout(maxTimeout)
@@ -135,10 +135,12 @@ ElstrIo.prototype = {
 
                     }else{
                         ElstrLog.error("Object res.body is not defined. No data argument provided to onSuccess method.");
+
                         ElstrLog.error(res.text);
 
                         callback.onError(req, res, {
-                            message: "Unexpected JSON error",
+                            message: "Unexpected JSON error :: " + (res.text)?
+                                res.text.substr(0, res.text.indexOf("Call Stack")):"",
                             resText: res.text
                         });
                     }

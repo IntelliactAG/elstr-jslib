@@ -8,8 +8,18 @@ function ElstrServerRpcUtils (){}
 
 
 ElstrServerRpcUtils.parseError = function(messages) { // this function is for backward compatibility
-	return ElstrServerRpcUtils.parseErrors(messages);
+    return ElstrServerRpcUtils.parseErrors(messages);
 };
+
+ElstrServerRpcUtils.parseTrace = function(trace) {
+
+    var result = "";
+    if (trace && trace.length>0){
+        result = " - " + trace[0].class + "::" + trace[0].function;
+    }
+    console.log(trace);
+    return result;
+}
 
 ElstrServerRpcUtils.parseErrors = function(messages) {
 
@@ -31,12 +41,23 @@ ElstrServerRpcUtils.parseErrors = function(messages) {
                 if (errorTxt!=="") { errorTxt = errorTxt + ", " + message; }
                 else               { errorTxt =  message; }
             }
+
+            if (message.trace){
+                errorTxt += ElstrServerRpcUtils.parseTrace(message.trace);
+            }
+
         }
     } else if (messages && typeof(messages.message) !== "undefined") { // ElstrException //
         errorTxt = (messages.message);
+
+        if (messages.trace){
+            errorTxt += ElstrServerRpcUtils.parseTrace(messages.trace);
+        }
+
     } else if (messages && !Array.isArray(messages)) {
         errorTxt = (messages);
     }
+
     return errorTxt;
 
 };

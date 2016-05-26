@@ -200,9 +200,9 @@ ElstrFlux.createStore = function(
 
         switch (payload.actionType) {
 
-        /**
-         * User log out
-         */
+            /**
+             * User log out
+             */
             case ElstrUserConstants.ELSTR_USER_DID_LOGOUT:
 
                 // We wait for the user Store.
@@ -213,9 +213,9 @@ ElstrFlux.createStore = function(
 
                 break;
 
-        /**
-         * LOAD
-         */
+            /**
+             * LOAD
+             */
 
             case constantWill:
 
