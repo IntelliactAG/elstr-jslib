@@ -2,7 +2,7 @@
 	"name": "elstr-jslib",
 	"description": "Elstr frontend libs",
 	"author": "Intelliact",
-	"version": "3.0.75",
+	"version": "3.0.76",
 	"license": "MIT",
 	"peerDependencies": {
 		"mcfly": "0.0.x",
@@ -21,7 +21,7 @@
 	},
 	"dependencies": {
 	  	"pouchdb": "*",
-		"superagent": "0.21.x",
+		"superagent": "1.8.x",
 		"node-polyglot": "0.4.x",
 		"signals": "1.0.0",
 		"hasher": "1.2.x",
