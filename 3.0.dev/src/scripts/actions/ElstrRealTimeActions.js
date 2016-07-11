@@ -165,6 +165,27 @@ function _updateTimes(change){
 }
 
 
+function _sync(remoteCouch) {
+
+    /*
+     We dont replicate from frontend to backend
+     var opts = {
+     live: true
+     };
+
+     db.replicate.to(remoteCouch, opts);
+     */
+
+    var optsFrom = {
+        live: true,
+        retry: true
+    };
+
+    db.replicate.from(remoteCouch, optsFrom);
+
+
+}
+
 /**
  * Public methods
  */
@@ -192,29 +213,12 @@ var ElstrRealTimeActions = mcFly.createActions({
             retry: true
         }).on('change', _updateTimes);
 
-        function _sync() {
-
-            /*
-             We dont replicate from frontend to backend
-             var opts = {
-             live: true
-             };
-
-             db.replicate.to(remoteCouch, opts);
-             */
-
-            var optsFrom = {
-                live: true,
-                retry: true
-            };
-
-            db.replicate.from(remoteCouch, optsFrom);
-
-
-        }
-
-        _sync();
+        _sync(remoteCouch);
         _updateTimes();
+
+        return {
+            actionType: "ElstrRealTimeActions.init"
+        };
 
     },
 
@@ -241,6 +245,11 @@ var ElstrRealTimeActions = mcFly.createActions({
             ElstrLog.info("Real time update discarted, realtime currently disabled");
 
         }
+
+        return {
+            actionType: "ElstrRealTimeActions.updateTargetTime"
+        };
+
     },
 
     /**

@@ -84,6 +84,10 @@ var ElstrUrlHashActions = mcFly.createActions({
         if (avoidScapingValues && avoidScapingValues===true){
             _avoidScapingValues = true;
         }
+
+        return {
+            actionType: "ElstrUrlHashActions.init"
+        };
     },
 
     /**
@@ -92,6 +96,10 @@ var ElstrUrlHashActions = mcFly.createActions({
      */
     add: function( object ){
         _updateHashObject(object);
+
+        return {
+            actionType: "ElstrUrlHashActions.add"
+        };
     },
 
     /**
@@ -102,6 +110,10 @@ var ElstrUrlHashActions = mcFly.createActions({
         var updateHistory = true;
         var throwEvent = true;
         _setHashObject(object, updateHistory, throwEvent);
+
+        return {
+            actionType: "ElstrUrlHashActions.set"
+        };
     },
 
     /**
@@ -113,6 +125,9 @@ var ElstrUrlHashActions = mcFly.createActions({
         var throwEvent = false;
         _setHashObject(object, updateHistory, throwEvent);
 
+        return {
+            actionType: "ElstrUrlHashActions.replace"
+        };
     },
 
 
@@ -124,6 +139,10 @@ var ElstrUrlHashActions = mcFly.createActions({
      */
     setWithOptions: function( object, updateHistory, throwEvent ){
         _setHashObject(object, updateHistory, throwEvent);
+
+        return {
+            actionType: "ElstrUrlHashActions.setWithOptions"
+        };
     },
 
 

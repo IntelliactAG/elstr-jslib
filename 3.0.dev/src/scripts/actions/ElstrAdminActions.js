@@ -18,10 +18,10 @@ var AdminActions = mcFly.createActions({
 
 
     /** Get the role list
-    ROLE_LIST_GET: null,
-    ROLE_LIST_WILL_GET: null,
-    ROLE_LIST_DID_GET: null,
-    */
+     ROLE_LIST_GET: null,
+     ROLE_LIST_WILL_GET: null,
+     ROLE_LIST_DID_GET: null,
+     */
 
     getRoleList: function() {
 
@@ -45,9 +45,9 @@ var AdminActions = mcFly.createActions({
 
 
     /** Get the resource list
-    RESOURCE_LIST_GET: null,
-    RESOURCE_LIST_WILL_GET: null,
-    RESOURCE_LIST_DID_GET: null,
+     RESOURCE_LIST_GET: null,
+     RESOURCE_LIST_WILL_GET: null,
+     RESOURCE_LIST_DID_GET: null,
      */
 
     /** Get the resource list  */
@@ -72,9 +72,9 @@ var AdminActions = mcFly.createActions({
     },
 
     /** Update Role
-    ROLE_UPDATE: null,
-    ROLE_WILL_UPDATE: null,
-    ROLE_DID_UPDATE: null,
+     ROLE_UPDATE: null,
+     ROLE_WILL_UPDATE: null,
+     ROLE_DID_UPDATE: null,
      */
 
     /** Update Role    */
@@ -96,9 +96,9 @@ var AdminActions = mcFly.createActions({
 
 
     /** Update Resource
-    RESOURCE_UPDATE: null,
-    RESOURCE_WILL_UPDATE: null,
-    RESOURCE_DID_UPDATE: null,
+     RESOURCE_UPDATE: null,
+     RESOURCE_WILL_UPDATE: null,
+     RESOURCE_DID_UPDATE: null,
      */
 
 
@@ -121,9 +121,9 @@ var AdminActions = mcFly.createActions({
 
 
     /** Update Acess right
-    ACCESS_RIGHT_UPDATE: null,
-    ACCESS_RIGHT_WILL_UPDATE: null,
-    ACCESS_RIGHT_DID_UPDATE: null
+     ACCESS_RIGHT_UPDATE: null,
+     ACCESS_RIGHT_WILL_UPDATE: null,
+     ACCESS_RIGHT_DID_UPDATE: null
      */
 
     /** Update Acess right  */

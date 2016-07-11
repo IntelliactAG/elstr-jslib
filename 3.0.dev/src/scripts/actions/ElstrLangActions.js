@@ -48,6 +48,9 @@ var ElstrLangActions = mcFly.createActions({
             }
         });
 
+        return {
+            actionType: "ElstrLangActions.load"
+        };
     },
 
     /**
