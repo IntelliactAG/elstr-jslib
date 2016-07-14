@@ -65,6 +65,11 @@ var ElstrUserActions = mcFly.createActions({
                 ElstrLog.error(error);
             }
         });
+
+        return {
+            actionType: "ElstrUserActions.login"
+        };
+
     },
 
     /**
