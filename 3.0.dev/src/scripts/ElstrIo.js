@@ -54,7 +54,7 @@ ElstrIo.prototype = {
         var options = this.options;
         var currentJsonRpcRequests = this.currentJsonRpcRequests;
 
-        if (!requestMethod || !isset(requestMethod)){ requestMethod = "POST"; }
+        if (!requestMethod || (typeof requestMethod == 'undefined')){ requestMethod = "POST"; }
         else { requestMethod = requestMethod.toUpperCase(); }
 
         var requestId = ElstrId.create();
