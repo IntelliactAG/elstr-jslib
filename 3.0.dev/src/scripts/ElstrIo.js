@@ -80,7 +80,19 @@ ElstrIo.prototype = {
         var URL = 'services/' + className;
 
         // For debug purposes of default requests
-        if (requestMethod == "POST") URL+='?__'+ methodName;
+        if (requestMethod == "POST" ||
+            requestMethod == "PUT"){
+            URL+='?__'+ methodName;
+
+        }else if (requestMethod == "GET"{
+
+            // When the request is GET
+            URL+='?'+Object.keys(params).map(function(k) {
+                    return encodeURIComponent(k) + "=" + encodeURIComponent(params[k]);
+                }).join('&');
+        }else{
+            console.error("Request unkwon ",requestMethod)
+        }
 
         console.log("requestMethod" , requestMethod);
 
