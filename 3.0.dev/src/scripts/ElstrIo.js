@@ -47,12 +47,15 @@ ElstrIo.prototype = {
      * @param methodName
      * @param params
      * @param callback
+     * @param requestMethod [Optional] POST | GET | PUT, defines the request method to use
      * @returns {Request}
      */
-    requestJsonRpc: function(className, methodName, params, callback) {
+    requestJsonRpc: function(className, methodName, params, callback, requestMethod) {
         var options = this.options;
         var currentJsonRpcRequests = this.currentJsonRpcRequests;
 
+        if (!requestMethod || !isset(requestMethod)){ requestMethod = "POST"; }
+        else { requestMethod = requestMethod.toUpperCase(); }
 
         var requestId = ElstrId.create();
         var oRequestPost = {
@@ -74,7 +77,14 @@ ElstrIo.prototype = {
             maxTimeout = options.maxTimeout;
         }
 
-        var req = request.post('services/' + className+'?__'+methodName)
+        var URL = 'services/' + className;
+
+        // For debug purposes of default requests
+        if (requestMethod == "POST") URL+='?__'+ methodName;
+
+        console.log("requestMethod" , requestMethod);
+
+        var req = request(requestMethod, URL)
             .send(oRequestPost)
             .type('json')
             .timeout(maxTimeout)
