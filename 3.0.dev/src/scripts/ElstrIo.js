@@ -84,7 +84,7 @@ ElstrIo.prototype = {
             requestMethod == "PUT"){
             URL+='?__'+ methodName;
 
-        }else if (requestMethod == "GET"{
+        }else if (requestMethod == "GET"){
 
             // When the request is GET
             URL+='?'+Object.keys(params).map(function(k) {
