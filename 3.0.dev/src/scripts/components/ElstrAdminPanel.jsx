@@ -81,8 +81,6 @@ var ResourceCell = React.createClass({
     },
     onSelect: function(){
 
-        console.log(this.refs.select.value);
-
         var accessRight = this.refs.select.value;
 
         var resourceName = this.props.name;

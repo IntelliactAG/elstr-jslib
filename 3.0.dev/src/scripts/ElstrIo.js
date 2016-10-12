@@ -94,8 +94,6 @@ ElstrIo.prototype = {
             console.error("Request unkwon ",requestMethod)
         }
 
-        console.log("requestMethod" , requestMethod);
-
         var req = request(requestMethod, URL)
             .send(oRequestPost)
             .type('json')

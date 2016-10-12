@@ -17,7 +17,7 @@ ElstrServerRpcUtils.parseTrace = function(trace) {
     if (trace && trace.length>0){
         result = " - " + trace[0].class + "::" + trace[0].function;
     }
-    console.log(trace);
+
     return result;
 }
 

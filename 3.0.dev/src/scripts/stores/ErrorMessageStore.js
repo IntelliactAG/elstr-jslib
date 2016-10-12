@@ -24,7 +24,7 @@ var _messages = [];
 var ErrorMessageStore = mcFly.createStore({
 
     addMessage: function(message) {
-        console.log("addMessage" , message);
+
         if(typeof(message) === 'string'){
             _messages.push({
                 id: ElstrId.createDocumentUnique(),
@@ -48,7 +48,7 @@ var ErrorMessageStore = mcFly.createStore({
     },
 
     addError: function(error) {
-        console.log("addError" , error);
+
         _errors.push({
             id: ElstrId.createDocumentUnique(),
             error: error
@@ -68,7 +68,7 @@ var ErrorMessageStore = mcFly.createStore({
     },
 
     readMessage: function(id) {
-        console.log("readMessage ",id);
+
         for (var i = 0; i < _messages.length; i++) {
             var message = _messages[i];
             if (message.id==id){
@@ -81,7 +81,7 @@ var ErrorMessageStore = mcFly.createStore({
     },
 
     readError: function(id) {
-        console.log("readError ",id);
+
         for (var i = 0; i < _errors.length; i++) {
             var error = _errors[i];
             if (error.id==id){

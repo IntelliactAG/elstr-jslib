@@ -58,7 +58,7 @@ var ElstrUserHandler = React.createClass({
     },
     hideLoginDialog: function() {
         ElstrLog.trace("ElstrUserHandler.hideLoginDialog");
-        console.log("hideLoginDialog");
+        
         if (ElstrUserStore.forceAuthentication() === false){
             this.state.showLoginDialog = false;   
 
