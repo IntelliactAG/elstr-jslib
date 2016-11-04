@@ -44,20 +44,17 @@ ElstrFiles.downloadCsvFile = function(filename, data){
  */
 ElstrFiles.setFileToDownload = function(filename, data, dataType){
 
+	var blobData = new Blob([data], {type: dataType});
+
 	if (navigator.msSaveBlob) {
 
-		console.log("ElstrFiles.setFileToDownload IE ");
-
-		var csvData = new Blob([data], {type: dataType});
-		navigator.msSaveBlob(csvData, filename);
+		navigator.msSaveBlob(blobData, filename);
 
 	} else {
 
-		console.log("ElstrFiles.setFileToDownload Others");
-
 		var element = document.createElement('a');
 
-		var href = 'data:'+dataType+',' + encodeURIComponent(data);
+		var href = URL.createObjectURL(blobData);
 		element.setAttribute('href', href);
 		element.setAttribute('download', filename);
 
@@ -67,6 +64,7 @@ ElstrFiles.setFileToDownload = function(filename, data, dataType){
 		element.click();
 
 		document.body.removeChild(element);
+
 
 	}
 
