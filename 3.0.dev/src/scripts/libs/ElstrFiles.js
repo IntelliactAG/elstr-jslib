@@ -12,8 +12,8 @@ function ElstrFiles() {}
  */
 ElstrFiles.downloadTextFile = function(filename, content){
 
-	var href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(content);
-	ElstrFiles.setFileToDownload(filename, href);
+	var dataType = 'text/plain;charset=utf-8';
+	ElstrFiles.setFileToDownload(filename, content, dataType);
 
 };
 
@@ -24,16 +24,16 @@ ElstrFiles.downloadTextFile = function(filename, content){
  */
 ElstrFiles.downloadCsvFile = function(filename, data){
 
-	var csvContent = "";
+	var dataTxt = "";
 	data.forEach(function(infoArray, index){
 
 		var dataString = "\""+infoArray.join("\";\"")+"\"";
-		csvContent += index < data.length ? dataString+ "\n" : dataString;
+		dataTxt += index < data.length ? dataString+ "\n" : dataString;
 
 	});
 
-	var href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent);
-	ElstrFiles.setFileToDownload(filename, href);
+	var dataType = 'text/csv;charset=utf-8';
+	ElstrFiles.setFileToDownload(filename, dataTxt, dataType);
 
 };
 
@@ -42,19 +42,33 @@ ElstrFiles.downloadCsvFile = function(filename, data){
  * @param filename Name of the file with extension.
  * @param href header to generate the file.
  */
-ElstrFiles.setFileToDownload = function(filename, href){
+ElstrFiles.setFileToDownload = function(filename, data, dataType){
 
-	var element = document.createElement('a');
+	if (navigator.msSaveBlob) {
 
-	element.setAttribute('href', href);
-	element.setAttribute('download', filename);
+		console.log("ElstrFiles.setFileToDownload IE ");
 
-	element.style.display = 'none';
-	document.body.appendChild(element);
+		var csvData = new Blob([data], {type: dataType});
+		navigator.msSaveBlob(csvData, filename);
 
-	element.click();
+	} else {
 
-	document.body.removeChild(element);
+		console.log("ElstrFiles.setFileToDownload Others");
+
+		var element = document.createElement('a');
+
+		var href = 'data:'+dataType+',' + encodeURIComponent(data);
+		element.setAttribute('href', href);
+		element.setAttribute('download', filename);
+
+		element.style.display = 'none';
+		document.body.appendChild(element);
+
+		element.click();
+
+		document.body.removeChild(element);
+
+	}
 
 };
 
