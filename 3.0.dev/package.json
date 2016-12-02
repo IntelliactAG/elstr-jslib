@@ -2,7 +2,7 @@
 	"name": "elstr-jslib",
 	"description": "Elstr frontend libs",
 	"author": "Intelliact",
-	"version": "3.0.89",
+	"version": "3.0.90",
 	"license": "MIT",
 	"peerDependencies": {
 		"mcfly": "0.0.x",
@@ -26,6 +26,7 @@
 		"signals": "1.0.0",
 		"hasher": "1.2.x",
 		"kizzy": "0.0.x",
-		"font-awesome": "4.x"
+		"font-awesome": "4.x",
+		"bluebird": "*"
 	}
 }

@@ -4,6 +4,7 @@
  * Scripts to be browser compatible
  * console - Undefined problems.
  * String startsWith - Undefined problems.
+ * promises - Via Bluebird
  */
 
 
@@ -45,6 +46,6 @@ if(!String.prototype.startsWith){
     }
 }
 
-
-
+/* Make Promises work in IE */
+window.Promise = require("bluebird");
 
