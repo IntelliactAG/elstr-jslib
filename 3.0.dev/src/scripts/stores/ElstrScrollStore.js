@@ -1,6 +1,7 @@
 var mcFly = require('../libs/mcFly.js');
 
 var ElstrLog = require('../ElstrLog');
+require('../libs/limit.js');
 
 var ElstrEditingStates = require('../constants/ElstrEditingStates');
 var ElstrLoadingStates = require('../constants/ElstrLoadingStates');
@@ -18,7 +19,7 @@ var _registeredComponents = {};
  *
  */
 var ElstrScrollStore = mcFly.createStore({
-
+    
     /**
      * Returns the current vertical scroll of the site
      */
@@ -145,6 +146,7 @@ function runOnScroll(){
     ElstrScrollStore.emitChange();
 }
 
-window.addEventListener("scroll", runOnScroll);
+// Improves the scrolling events at every 50 milisecs
+window.addEventListener("scroll", runOnScroll.throttle(50));
 
 module.exports = ElstrScrollStore;
