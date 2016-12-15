@@ -1,7 +1,7 @@
 var mcFly = require('../libs/mcFly.js');
 
 var ElstrLog = require('../ElstrLog');
-require('../libs/limit.js');
+require('../libs/ElstrFunctionsControl.js');
 
 var ElstrEditingStates = require('../constants/ElstrEditingStates');
 var ElstrLoadingStates = require('../constants/ElstrLoadingStates');
