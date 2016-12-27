@@ -19,6 +19,7 @@ var _isAuth = false;
 var _isAdmin = false;
 var _resourcesAllowed = [];
 var _enterpriseApplicationData = {};
+var _clientIp = null;
 
 var _message = null;
 var _loading = false;
@@ -43,6 +44,7 @@ var ElstrUserStore = mcFly.createStore({
         _resourcesAllowed = window.ELSTR.applicationData.user.resourcesAllowed;
         _enterpriseApplicationData = window.ELSTR.applicationData.user.enterpriseApplicationData;
         _memberOf = window.ELSTR.applicationData.user.memberOf;
+        _clientIp = window.ELSTR.applicationData.user.clientIp;
 
         // Remove global ELSTR values after configuration
         window.ELSTR.applicationData.user = null;
@@ -185,6 +187,16 @@ var ElstrUserStore = mcFly.createStore({
             }
         }
         return null;
+    },
+    
+    /**
+     * Returns the client IP adress
+     *
+     * @method getClientIp
+     * @return {String} of the client ip
+     */
+    getClientIp: function() {
+        return _clientIp;
     }
 
 }, function(payload) {
