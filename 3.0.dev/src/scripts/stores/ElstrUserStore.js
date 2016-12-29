@@ -188,7 +188,7 @@ var ElstrUserStore = mcFly.createStore({
         }
         return null;
     },
-    
+
     /**
      * Returns the client IP adress
      *
