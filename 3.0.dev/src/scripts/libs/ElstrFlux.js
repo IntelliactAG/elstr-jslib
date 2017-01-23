@@ -12,11 +12,15 @@ var ElstrLoadingStates = require('../constants/ElstrLoadingStates');
 
 var ElstrIo = require('../ElstrIo');
 
-var elstrIo = new ElstrIo({
-    abortStaleRequests: true
+var assign =   require('object-assign');
+
+var defaultElstrIo;
+
+if (!defaultElstrIo) defaultElstrIo = new ElstrIo({
+    abortStaleRequests: true,
+    maxTimeout: 60000 // 1 Min
 });
 
-var assign =   require('object-assign');
 
 function ElstrFlux (){}
 
@@ -33,7 +37,7 @@ function ElstrFlux (){}
  */
 
 function createAction(parameters, result,
-                      className, methodName, constantWill, constantDid){
+                      className, methodName, constantWill, constantDid, elstrIo){
 
     parameters[methodName+"Did"] = function (error, params, data, noRpcParams) {
 
@@ -108,9 +112,14 @@ function createAction(parameters, result,
 
 }
 
-ElstrFlux.createActions = function(standardRequests,parameters) {
+ElstrFlux.createActions = function(standardRequests,parameters, elstrIo) {
 
     var result = {};
+
+    // If not defined we provide the default
+    if (!elstrIo){
+        elstrIo = defaultElstrIo;
+    }
 
     if (standardRequests){
         for (var i = 0; i < standardRequests.length; i++) {
@@ -121,7 +130,8 @@ ElstrFlux.createActions = function(standardRequests,parameters) {
                 standardRequests[i].className,
                 standardRequests[i].methodName,
                 standardRequests[i].constantWill,
-                standardRequests[i].constantDid);
+                standardRequests[i].constantDid,
+                elstrIo);
 
         }
     }
