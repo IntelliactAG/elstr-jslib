@@ -19,7 +19,7 @@ ElstrServerRpcUtils.parseTrace = function(trace) {
     }
 
     return result;
-}
+};
 
 ElstrServerRpcUtils.parseErrors = function(messages) {
 
