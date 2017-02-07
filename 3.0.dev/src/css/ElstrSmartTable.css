@@ -1,0 +1,119 @@
+.smartTable {
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+    clear: both;
+    position: relative;
+}
+.smartTable table {
+    position: relative;
+    top: 0px;
+    left: 0px;
+    display: table-cell;
+}
+.smartTable .selectedTr td,
+.smartTable tr:hover td {
+    background-color: rgba(3, 22, 255, 0.15) !important;
+
+    border-top: 1px solid rgba(0, 113, 255, 0.80);
+    border-bottom: 1px solid rgba(0, 113, 255, 0.80);
+
+}
+
+
+.smartTable tr:hover {
+    background-color: transparent !important;
+}
+
+.smartTable th {
+    position: relative;
+    left: 0;
+    top: 0;
+}
+
+.smartTable td {
+    border-bottom: 1px solid rgba(0, 0, 0, 0);
+    border-top: 1px solid rgba(0, 0, 0, 0);
+    position: relative;
+    left: 0;
+    top: 0;
+}
+
+.smartTable .selectedTd::after,
+.smartTable td:hover::after {
+    content: "";
+    position: absolute;
+    background-color: rgba(0, 113, 255, 0.50);
+    left: -1px;
+    top: -5000px;
+    height: 10000px;
+    width: 1px;
+    z-index: 12;
+}
+
+.smartTable .selectedTd::before,
+.smartTable td:hover::before {
+    content: "";
+    position: absolute;
+    background-color: rgba(0, 113, 255, 0.50);
+    right: -1px;
+    top: -5000px;
+    height: 10000px;
+    width: 1px;
+    z-index: 12;
+}
+
+.smartTable .scrollRight{
+    width: 75px;
+    position: absolute;
+
+    background: -webkit-linear-gradient(0deg, rgba(0,0,0,0.0) 0, rgba(255, 255, 255, 0.8) 100%);
+    background: -moz-linear-gradient(90deg, rgba(0,0,0,0.0) 0, rgba(255, 255, 255,0.8) 100%);
+    background: linear-gradient(90deg, rgba(0,0,0,0.0) 0, rgba(255, 255, 255,0.8) 100%);
+
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+    z-index: 2500;
+}
+.smartTable .scrollLeft{
+    width: 75px;
+    position: absolute;
+
+    background: -webkit-linear-gradient(0deg, rgba(255, 255, 255, 0.8) 0, rgba(0,0,0,0) 100%);
+    background: -moz-linear-gradient(90deg, rgba(255, 255, 255, 0.8) 0, rgba(0,0,0,0) 100%);
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.8) 0, rgba(0,0,0,0) 100%);
+
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    z-index: 2500;
+
+    background-position: 50% 50%;
+    -webkit-background-origin: padding-box;
+    background-origin: padding-box;
+    -webkit-background-clip: border-box;
+    background-clip: border-box;
+    -webkit-background-size: auto auto;
+    background-size: auto auto;
+
+}
+
+.smartTable .scrollRight:hover{
+    border-right: 2px solid #0a7fc4;
+}
+.smartTable .scrollLeft:hover{
+    border-left: 2px solid #0a7fc4;
+}
+
+.smartTable  .borderlessInput{
+    background-color: transparent !important;
+    border: 0px;
+    padding: 0px;
+    outline: none !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+    top: inherit;
+    width: 100%;
+}
