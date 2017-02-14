@@ -1,3 +1,4 @@
+"use strict";
 /**
  * Copyright 2014, Intelliact AG
  * Copyrights licensed under the New BSD License
@@ -20,6 +21,7 @@ var _isAdmin = false;
 var _resourcesAllowed = [];
 var _enterpriseApplicationData = {};
 var _clientIp = null;
+var _memberOf = null;
 
 var _message = null;
 var _loading = false;

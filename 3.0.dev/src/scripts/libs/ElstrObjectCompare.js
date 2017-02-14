@@ -1,3 +1,4 @@
+"use strict";
 /**
  * Compare javascript objects
  * @author Andrés Sahún

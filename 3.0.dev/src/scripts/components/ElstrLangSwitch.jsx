@@ -1,3 +1,4 @@
+"use strict";
 /**
  * Languaje switch component
  * Allows the user to change the current languaje of the aplication.

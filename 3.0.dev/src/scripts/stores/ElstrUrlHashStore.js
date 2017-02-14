@@ -1,3 +1,4 @@
+"use strict";
 var mcFly = require('../libs/mcFly.js');
 
 var ElstrUrlHashConstants = require('../constants/ElstrUrlHashConstants');

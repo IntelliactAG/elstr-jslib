@@ -1,3 +1,4 @@
+"use strict";
 /*jshint -W083 */
 // We tell link than functions can be created in loops for this file
 var mcFly = require('./mcFly.js');

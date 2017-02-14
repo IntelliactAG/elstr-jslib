@@ -1,3 +1,4 @@
+"use strict";
 /**
  * File generation via Javascript
  * @author Andrés Sahún

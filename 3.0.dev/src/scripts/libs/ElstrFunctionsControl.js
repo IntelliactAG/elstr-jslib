@@ -1,3 +1,4 @@
+"use strict";
 /**
  * Code from:
  * https://github.com/m-gagne/limit.js/blob/master/limit.js

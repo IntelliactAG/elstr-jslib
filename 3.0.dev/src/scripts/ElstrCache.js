@@ -1,3 +1,4 @@
+"use strict";
 /**
  * Created by sahun on 02.12.2014.
  */
@@ -13,10 +14,11 @@ var ElstrLog = require("./ElstrLog");
  *  Private variables
  */
 
-_data = [];
-_mode = ARRAY_MODE;
-_arrayLimit =  0;
-_defaultTimeToExpire = 0;
+var _data = [];
+var _mode = ARRAY_MODE;
+var _arrayLimit =  0;
+var _defaultTimeToExpire = 0;
+var _localStorage = null;
 
 var ElstrCache = {
 

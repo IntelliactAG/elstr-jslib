@@ -1,3 +1,4 @@
+"use strict";
 var ElstrLog = require('../ElstrLog');
 
 /**

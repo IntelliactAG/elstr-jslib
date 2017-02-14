@@ -1,4 +1,4 @@
-
+"use strict";
 var ElstrLangStore = require('../stores/ElstrLangStore');
 
 /**
@@ -11,7 +11,7 @@ var ElstrLangStore = require('../stores/ElstrLangStore');
 function ElstrDelayedFunctions (){}
 
 
-_functions = {};
+var _functions = {};
 
 /**
  * Executes a 'function' after the specified 'time'.

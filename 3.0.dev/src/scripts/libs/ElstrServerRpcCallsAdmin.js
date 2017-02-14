@@ -1,3 +1,4 @@
+"use strict";
 var mcFly = require('../libs/mcFly.js');
 
 var EventEmitter = require('events').EventEmitter;

@@ -1,3 +1,4 @@
+"use strict";
 /**
  * Bom Compare component
  * Contains the 6 tables representing the item information & changes.

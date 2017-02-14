@@ -1,3 +1,4 @@
+"use strict";
 /**
  * Copyright 2015, Intelliact AG
  * Copyrights licensed under the New BSD License
