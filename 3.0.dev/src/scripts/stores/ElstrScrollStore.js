@@ -11,6 +11,9 @@ var ElstrUrlHashConstants = require('../constants/ElstrUrlHashConstants');
 
 var _registeredComponents = {};
 
+// Improves the scrolling events at every 50 milisecs
+var _scrollListener = runOnScroll.throttle(50);
+
 /**
  * Information of the current scroll of the site.
  * Raises an event everytime the scroll changes.
@@ -20,21 +23,59 @@ var _registeredComponents = {};
  *
  */
 var ElstrScrollStore = mcFly.createStore({
-    
+
     /**
      * Returns the current vertical scroll of the site
      */
-    getCurrentScroll: function(){
+    getCurrentScroll: function () {
         return (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
     },
 
     /**
      * Returns the current horizontal scroll of the site
      */
-    getCurrentHorizontalScroll: function(){
+    getCurrentHorizontalScroll: function () {
         return (document.documentElement && document.documentElement.scrollLeft) || document.body.scrollLeft;
     },
 
+    getScrollListener: function () {
+        return _scrollListener;
+    },
+
+    /**
+     * Returns the current horizontal scroll of the site
+     * null -> disable
+     * integer = number of miliseconds
+     */
+    setThrottle: function (throttlePeriodTime) {
+
+        // Remove listener before adding the new one
+        this.removeListener();
+
+        if (throttlePeriodTime === null) {
+            _scrollListener = runOnScroll;
+        } else {
+            _scrollListener = runOnScroll.throttle(throttlePeriodTime);
+        }
+        window.addEventListener("scroll", _scrollListener);
+    },
+
+    /**
+     * simply disable throtteling
+     */
+    disableThrottle: function () {
+        ElstrScrollStore.setThrottle(null);
+    },
+
+    /**
+     * remove the scroll event listener
+     */
+    removeListener: function () {
+
+        if (window.removeEventListener) {
+            window.removeEventListener("scroll", _scrollListener);
+        }
+    },
 
     /**
      * REGISTER COMPONENTS TO TRACK THEIR SCROLL POSITIONS
@@ -44,28 +85,28 @@ var ElstrScrollStore = mcFly.createStore({
     /**
      * Returns the component closer to the scroll position.
      */
-    getCurrentComponent: function(margin, excludedMargin){
+    getCurrentComponent: function (margin, excludedMargin) {
 
         var currentScroll = this.getCurrentScroll();
 
-        var marginCorrected = (!margin)?0:margin;
-        var excludedMarginCorrected = (!excludedMargin)?0:excludedMargin;
+        var marginCorrected = (!margin) ? 0 : margin;
+        var excludedMarginCorrected = (!excludedMargin) ? 0 : excludedMargin;
 
         var minDistance = -99999;
         var currentComp = null;
 
-        for (var index in _registeredComponents){
+        for (var index in _registeredComponents) {
             var obj = _registeredComponents[index];
 
             var scrollDiff = parseInt(obj.verticalScroll) - parseInt(currentScroll);
 
-            if (scrollDiff<(marginCorrected+excludedMarginCorrected) && minDistance<scrollDiff){
+            if (scrollDiff < (marginCorrected + excludedMarginCorrected) && minDistance < scrollDiff) {
 
                 minDistance = scrollDiff;
 
-                if (scrollDiff<marginCorrected){
+                if (scrollDiff < marginCorrected) {
                     currentComp = obj.data;
-                }else{
+                } else {
                     currentComp = null;
                 }
             }
@@ -78,9 +119,9 @@ var ElstrScrollStore = mcFly.createStore({
     /**
      * Call to update the positions of the components
      */
-    updateScrollPositionsDelayed: function(){
+    updateScrollPositionsDelayed: function () {
 
-        for (var index in _registeredComponents){
+        for (var index in _registeredComponents) {
             var obj = _registeredComponents[index];
 
             if (obj.updateScroll)
@@ -93,7 +134,7 @@ var ElstrScrollStore = mcFly.createStore({
     /**
      * Call to update the positions of the components (Delayed to allow them to render)
      */
-    updateScrollPositions: function(){
+    updateScrollPositions: function () {
 
         setTimeout(this.updateScrollPositionsDelayed, 500);
 
@@ -102,17 +143,17 @@ var ElstrScrollStore = mcFly.createStore({
     /**
      * Stop tracking the position of an element
      */
-    cleanComponent: function(key){
+    cleanComponent: function (key) {
         delete _registeredComponents[key];
     },
 
     /**
      * Register a component to trck the scroll
      */
-    registerComponent: function(verticalScroll, key, data, updateScroll){
+    registerComponent: function (verticalScroll, key, data, updateScroll) {
 
         var previousScroll = -1;
-        if (_registeredComponents[key] && _registeredComponents[key].verticalScroll){
+        if (_registeredComponents[key] && _registeredComponents[key].verticalScroll) {
             previousScroll = _registeredComponents[key].verticalScroll;
         }
 
@@ -122,13 +163,13 @@ var ElstrScrollStore = mcFly.createStore({
             updateScroll: updateScroll
         };
 
-        if (previousScroll != verticalScroll){
+        if (previousScroll != verticalScroll) {
             ElstrScrollStore.emitChange();
         }
     }
 
 
-}, function(payload) {
+}, function (payload) {
 
     switch (payload.actionType) {
 
@@ -143,11 +184,10 @@ var ElstrScrollStore = mcFly.createStore({
 
 });
 
-function runOnScroll(){
+function runOnScroll() {
     ElstrScrollStore.emitChange();
 }
 
-// Improves the scrolling events at every 50 milisecs
-window.addEventListener("scroll", runOnScroll.throttle(50));
+window.addEventListener("scroll", _scrollListener);
 
 module.exports = ElstrScrollStore;
