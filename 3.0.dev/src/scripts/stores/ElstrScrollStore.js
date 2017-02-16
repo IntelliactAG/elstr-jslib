@@ -50,7 +50,7 @@ var ElstrScrollStore = mcFly.createStore({
     setThrottle: function (throttlePeriodTime) {
 
         // Remove listener before adding the new one
-        this.removeListener();
+        this.removeEvScrollListener();
 
         if (throttlePeriodTime === null) {
             _scrollListener = runOnScroll;
@@ -70,8 +70,7 @@ var ElstrScrollStore = mcFly.createStore({
     /**
      * remove the scroll event listener
      */
-    removeListener: function () {
-
+    removeEvScrollListener: function () {
         if (window.removeEventListener) {
             window.removeEventListener("scroll", _scrollListener);
         }
