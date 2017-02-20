@@ -53,12 +53,12 @@ var ElstrUserHandler = React.createClass({
 
     showLoginDialog: function(e) {
         e.preventDefault();
-        ElstrLog.trace("ElstrUserHandler.showLoginDialog");
+        ElstrLog.info("ElstrUserHandler.showLoginDialog");
         this.state.showLoginDialog = true;
         this.setState(this.state);
     },
     hideLoginDialog: function() {
-        ElstrLog.trace("ElstrUserHandler.hideLoginDialog");
+        ElstrLog.info("ElstrUserHandler.hideLoginDialog");
         
         if (ElstrUserStore.forceAuthentication() === false){
             this.state.showLoginDialog = false;   
@@ -68,12 +68,12 @@ var ElstrUserHandler = React.createClass({
     },
     logout: function(e) {
         e.preventDefault();
-        ElstrLog.trace("ElstrUserHandler.logout");
+        ElstrLog.info("ElstrUserHandler.logout");
         ElstrUserActions.logout();
     },
     admin: function(e) {
         e.preventDefault();
-        ElstrLog.trace("ElstrUserHandler.admin");
+        ElstrLog.info("ElstrUserHandler.admin");
 
         // Redirect to the admin app
         location.assign("admin");

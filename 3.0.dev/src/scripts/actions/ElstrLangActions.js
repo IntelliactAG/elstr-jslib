@@ -31,7 +31,7 @@ var ElstrLangActions = mcFly.createActions({
      */
     load: function(lang) {
 
-        ElstrLog.trace("ElstrLangActions.load");
+        ElstrLog.info("ElstrLangActions.load");
 
         ElstrLangActions.willLoad();
 
@@ -60,7 +60,7 @@ var ElstrLangActions = mcFly.createActions({
      */
     willLoad: function() {
 
-        ElstrLog.trace("ElstrLangActions.willLoad");
+        ElstrLog.info("ElstrLangActions.willLoad");
 
         return {
             actionType: ElstrLangConstants.ELSTR_LANG_WILL_LOAD
@@ -75,7 +75,7 @@ var ElstrLangActions = mcFly.createActions({
      */
     didLoad: function(lang, translations) {
 
-        ElstrLog.trace("ElstrLangActions.didLoad");
+        ElstrLog.info("ElstrLangActions.didLoad");
 
         return {
             actionType: ElstrLangConstants.ELSTR_LANG_DID_LOAD,

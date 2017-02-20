@@ -33,7 +33,7 @@ var ElstrUserActions = mcFly.createActions({
      */
     login: function(username, password, enterpriseApplication) {
 
-        // Never log any passwords! ElstrLog.trace("ElstrUserActions.login");
+        // Never log any passwords! ElstrLog.info("ElstrUserActions.login");
         ElstrUserActions.willLogin();
 
         var params = {
@@ -78,7 +78,7 @@ var ElstrUserActions = mcFly.createActions({
      * @returns {{actionType: *}}
      */
     willLogin: function() {
-        ElstrLog.trace("ElstrUserActions.willLogin");
+        ElstrLog.info("ElstrUserActions.willLogin");
 
         return {
             actionType: ElstrUserConstants.ELSTR_USER_WILL_LOGIN
@@ -95,7 +95,7 @@ var ElstrUserActions = mcFly.createActions({
      * @returns {{actionType: *, enterpriseApplicationData: *, isAdmin: *, isAuth: *, resourcesAllowed: *, username: *}}
      */
     didLogin: function(responseAction, enterpriseApplicationData, isAdmin, isAuth, resourcesAllowed, memberOf, username, message) {
-        ElstrLog.trace("ElstrUserActions.didLogin ", message);
+        ElstrLog.info("ElstrUserActions.didLogin ", message);
         var actionType;
         if(responseAction === "success"){
             actionType = ElstrUserConstants.ELSTR_USER_DID_LOGIN_SUCCESS;
@@ -120,7 +120,7 @@ var ElstrUserActions = mcFly.createActions({
      */
     logout: function() {
 
-        ElstrLog.trace("ElstrUserActions.logout");
+        ElstrLog.info("ElstrUserActions.logout");
 
         ElstrUserActions.willLogout();
 
@@ -161,7 +161,7 @@ var ElstrUserActions = mcFly.createActions({
      * @returns {{actionType: *}}
      */
     willLogout: function() {
-        ElstrLog.trace("ElstrUserActions.willLogout");
+        ElstrLog.info("ElstrUserActions.willLogout");
 
         return {
             actionType: ElstrUserConstants.ELSTR_USER_WILL_LOGOUT
@@ -174,7 +174,7 @@ var ElstrUserActions = mcFly.createActions({
      * @returns {{actionType: *, username: *}}
      */
     didLogout: function(enterpriseApplicationData, isAdmin, isAuth, resourcesAllowed, memberOf, username, message) {
-        ElstrLog.trace("ElstrUserActions.didLogout");
+        ElstrLog.info("ElstrUserActions.didLogout");
 
         return {
             actionType: ElstrUserConstants.ELSTR_USER_DID_LOGOUT,
