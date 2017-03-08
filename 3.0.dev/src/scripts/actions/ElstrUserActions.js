@@ -154,6 +154,9 @@ var ElstrUserActions = mcFly.createActions({
             }
         });
 
+        return {
+            actionType: "ElstrUserActions.logout"
+        };
     },
 
     /**
