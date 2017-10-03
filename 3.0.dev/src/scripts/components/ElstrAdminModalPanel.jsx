@@ -8,6 +8,7 @@
  */
 
 var React = require('react');
+var createReactClass = require('create-react-class');
 var ElstrLangStore = require('../stores/ElstrLangStore');
 
 
@@ -42,7 +43,7 @@ function _getState(){
 }
 
 
-var AdminModalPanel = React.createClass({
+var AdminModalPanel = createReactClass({
 
     mixins: [ElstrLangStore.mixin],
 

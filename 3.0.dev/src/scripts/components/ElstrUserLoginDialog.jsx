@@ -1,5 +1,6 @@
 "use strict";
 var React = require('react');
+var createReactClass = require('create-react-class');
 
 var ElstrUserStore = require('../stores/ElstrUserStore');
 var ElstrUserActions = require('../actions/ElstrUserActions');
@@ -13,7 +14,7 @@ var Alert = require('react-bootstrap/lib/Alert');
 // Component css
 require('../../css/ElstrUserLoginDialog.css');
 
-var ElstrUserLoginDialog = React.createClass({
+var ElstrUserLoginDialog = createReactClass({
 
     mixins: [ElstrLangStore.mixin],
 

@@ -1,6 +1,7 @@
 "use strict";
 var React = require('react');
 var ReactDom = require('react-dom');
+var createReactClass = require('create-react-class');
 
 var ElstrScrollStore = require('../stores/ElstrScrollStore');
 var ElstrDisplayStore = require('../stores/ElstrDisplayStore');
@@ -13,7 +14,7 @@ require ("../../css/ElstrTableDefaultLayout.css");
  * Renders the content of a single row.
  * If a build function is provided, provides a reload function so the single row updates.
  */
-var ElstrSmartTableContentRow = React.createClass({
+var ElstrSmartTableContentRow = createReactClass({
 
     getInitialState: function(){
         return {};
@@ -110,7 +111,7 @@ function _getHeaderState(component, loaded){
  * Component for the header of the table.
  * The header is designed to stick to the top when scroll
  */
-var ElstrSmartTableHeader = React.createClass({
+var ElstrSmartTableHeader = createReactClass({
 
     mixins: [
         ElstrScrollStore.mixin, ElstrDisplayStore.mixin
@@ -258,7 +259,7 @@ var ElstrSmartTableHeader = React.createClass({
  * Component for the content of the table.
  * The idea is that the content is not always reloaded.
  */
-var ElstrSmartTableContent = React.createClass({
+var ElstrSmartTableContent = createReactClass({
 
     mixins: [
         ElstrScrollStore.mixin,
@@ -478,7 +479,7 @@ var ElstrSmartTableContent = React.createClass({
  * defaultRowsDisplayedPerScreen: [Default: 40]
  *
  */
-var ElstrSmartTable = React.createClass({
+var ElstrSmartTable = createReactClass({
 
     mixins: [
         ElstrDisplayStore.mixin,

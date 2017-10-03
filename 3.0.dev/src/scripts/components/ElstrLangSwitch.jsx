@@ -7,12 +7,13 @@
  */
 
 var React = require('react');
+var createReactClass = require('create-react-class');
 
 var ElstrLangStore = require('../stores/ElstrLangStore');
 var ElstrLangActions = require('../actions/ElstrLangActions');
 var ElstrLog = require('../ElstrLog');
 
-var LangSwitch = React.createClass({
+var LangSwitch = createReactClass({
 
     getDefaultProps: function() {
         return {

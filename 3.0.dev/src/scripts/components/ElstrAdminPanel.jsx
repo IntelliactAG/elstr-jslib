@@ -13,6 +13,7 @@
  */
 
 var React = require('react');
+var createReactClass = require('create-react-class');
 var ElstrLangStore = require('../stores/ElstrLangStore');
 
 /**
@@ -63,7 +64,7 @@ function _getState(){
     };
 }
 
-var ResourceCell = React.createClass({
+var ResourceCell = createReactClass({
 
 
     getInitialState: function(){
@@ -153,7 +154,7 @@ var ResourceCell = React.createClass({
 
 });
 
-var AdminPanel = React.createClass({
+var AdminPanel = createReactClass({
 
     mixins: [
         ElstrLangStore.mixin,

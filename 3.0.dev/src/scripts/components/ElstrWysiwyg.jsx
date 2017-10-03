@@ -25,6 +25,7 @@
  
  
 var React = require('react');
+var createReactClass = require('create-react-class');
 
 var ElstrLog = require('../ElstrLog');
 var ElstrLangStore = require('../stores/ElstrLangStore');
@@ -45,7 +46,7 @@ var ScribePluginCodeLinkPromptCommand = require("scribe-plugin-link-prompt-comma
 require('../../css/ElstrWysiwyg.css');
 require('font-awesome/css/font-awesome.css'); 
 
-var ElstrWysiwyg = React.createClass({
+var ElstrWysiwyg = createReactClass({
 
     mixins: [ElstrLangStore.mixin],
 
