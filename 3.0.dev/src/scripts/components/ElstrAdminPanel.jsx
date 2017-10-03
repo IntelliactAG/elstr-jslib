@@ -24,7 +24,6 @@ var Button = require('react-bootstrap/lib/Button');
 var MenuItem = require('react-bootstrap/lib/MenuItem');
 var Modal = require('react-bootstrap/lib/Modal');
 var ButtonGroup = require('react-bootstrap/lib/ButtonGroup');
-var Input = require('react-bootstrap/lib/Input');
 
 var Row = require('react-bootstrap/lib/Row');
 var Col = require('react-bootstrap/lib/Col');
@@ -432,7 +431,8 @@ var AdminPanel = createReactClass({
                     <div>
                         <div>
                             <ButtonGroup>
-                                <Input ref="roleText" id='elstrAdminConsoleRoleHandlerInput' type='text'
+                                <FormControl  ref="roleText" id='elstrAdminConsoleRoleHandlerInput'
+                                       type="text"
 
                                        value={this.state.rolleText}
                                        onChange={this.changeRolleText}
@@ -483,7 +483,7 @@ var AdminPanel = createReactClass({
                         <Col xs={10}>
                             <ButtonGroup>
 
-                                <Input ref="resourceText" id='elstrAdminConsoleResourceHandlerMode' type='text'
+                                <FormControl ref="resourceText" id='elstrAdminConsoleResourceHandlerMode' type='text'
 
                                        value={this.state.resourceText}
                                        onChange={this.changeResourceText}
