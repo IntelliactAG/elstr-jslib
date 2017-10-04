@@ -2,6 +2,7 @@
 var React = require('react');
 var ReactDom = require('react-dom');
 var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
 var ElstrScrollStore = require('../stores/ElstrScrollStore');
 var ElstrDisplayStore = require('../stores/ElstrDisplayStore');
@@ -486,11 +487,11 @@ var ElstrSmartTable = createReactClass({
     ],
 
     propTypes: {
-        key: React.PropTypes.string,
-        headers: React.PropTypes.array,
-        content: React.PropTypes.array,
-        className: React.PropTypes.any,
-        style: React.PropTypes.any
+        key: PropTypes.string,
+        headers: PropTypes.array,
+        content: PropTypes.array,
+        className: PropTypes.any,
+        style: PropTypes.any
     },
 
     getInitialState: function(){
