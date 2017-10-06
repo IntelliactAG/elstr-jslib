@@ -76,6 +76,7 @@ function _setHashObject( newObject , updateHistory, throwEvent){
     if (!throwEvent) hasher.changed.active = true;
 }
 
+    let baseURI = document.baseURI;
 var _avoidScapingValues = false;
 
 var ElstrUrlHashActions = mcFly.createActions({
@@ -128,6 +129,18 @@ var ElstrUrlHashActions = mcFly.createActions({
 
         return {
             actionType: "ElstrUrlHashActions.replace"
+        };
+    },
+
+    /**
+     * Replaces the URL hash without event or history record based in the given object
+     * @param object
+     */
+    replaceHashWithBasename: function( object ){
+        _setHashObjectWithBasename(object);
+
+        return {
+            actionType: "ElstrUrlHashActions.replaceHashWithBasename"
         };
     },
 
