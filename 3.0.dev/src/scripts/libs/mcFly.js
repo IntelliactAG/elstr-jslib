@@ -9,6 +9,6 @@
  *
  */
 
-var McFly = require('mcfly');
+var McFly = require('./mcFly/McFly');
 var mcFly = new McFly();
 module.exports = mcFly;

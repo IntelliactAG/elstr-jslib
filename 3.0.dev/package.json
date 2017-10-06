@@ -2,12 +2,10 @@
 	"name": "elstr-jslib",
 	"description": "Elstr frontend libs",
 	"author": "Intelliact",
-	"version": "3.0.108",
+	"version": "3.0.110",
 	"license": "MIT",
 	"peerDependencies": {
-		"mcfly": "0.0.x",
 		"keymirror": "*",
-		"flux": "2.0.x",
         "react-bootstrap": "*",
 		"object-assign": "*",
 		"create-react-class": "*"
@@ -22,6 +20,7 @@
 	},
 	"dependencies": {
 	  	"pouchdb": "*",
+		"flux": "2.0.x",
 		"superagent": "1.8.x",
 		"node-polyglot": "0.4.x",
 		"signals": "1.0.0",
