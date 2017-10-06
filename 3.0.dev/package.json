@@ -9,7 +9,8 @@
 		"keymirror": "*",
 		"flux": "2.0.x",
         "react-bootstrap": "*",
-		"object-assign": "*"
+		"object-assign": "*",
+		"create-react-class": "*"
 	},
 	"devDependencies": {
 		"css-loader": "*",
