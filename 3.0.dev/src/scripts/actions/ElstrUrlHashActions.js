@@ -76,7 +76,24 @@ function _setHashObject( newObject , updateHistory, throwEvent){
     if (!throwEvent) hasher.changed.active = true;
 }
 
+function _setHashObjectWithBasename (newObject) {
+
+    let newHash = _serialize(newObject);
+
     let baseURI = document.baseURI;
+    let base = baseURI.split('/');
+    // remove first 3 elements
+    base.splice(0, 3);
+    // remove top element
+    base.pop();
+    // create the string for the base
+    base = `/${base.join('/')}`;
+    // complete basename with the appName
+    base = `${base}/${LIBS.appName}`;
+
+    location.replace(`${base}#${newHash}`);
+}
+
 var _avoidScapingValues = false;
 
 var ElstrUrlHashActions = mcFly.createActions({
