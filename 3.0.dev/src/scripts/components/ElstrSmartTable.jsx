@@ -11,6 +11,9 @@ require('../libs/ElstrFunctionsControl');
 
 require ("../../css/ElstrSmartTable.css");
 require ("../../css/ElstrTableDefaultLayout.css");
+
+React.__spread = Object.assign;
+
 /**
  * Renders the content of a single row.
  * If a build function is provided, provides a reload function so the single row updates.
