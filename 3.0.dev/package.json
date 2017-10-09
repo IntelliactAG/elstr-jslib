@@ -2,7 +2,7 @@
 	"name": "elstr-jslib",
 	"description": "Elstr frontend libs",
 	"author": "Intelliact",
-	"version": "3.0.111",
+	"version": "3.0.112",
 	"license": "MIT",
 	"peerDependencies": {
 		"keymirror": "*",
