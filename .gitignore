@@ -1,2 +1,4 @@
 3.0.dev/src/npm-debug.log
 .idea/workspace.xml
+*.xml
+.idea/elstr-jslib.iml

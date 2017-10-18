@@ -4,12 +4,6 @@
 	"author": "Intelliact",
 	"version": "3.0.112",
 	"license": "MIT",
-	"peerDependencies": {
-		"keymirror": "*",
-        "react-bootstrap": "*",
-		"object-assign": "*",
-		"create-react-class": "*"
-	},
 	"devDependencies": {
 		"css-loader": "*",
 		"jsx-loader": "*",
@@ -19,6 +13,10 @@
         "url-loader": "*"
 	},
 	"dependencies": {
+        "keymirror": "*",
+        "react-bootstrap": "*",
+        "object-assign": "*",
+        "create-react-class": "*",
 	  	"pouchdb": "*",
 		"flux": "2.0.x",
 		"superagent": "1.8.x",
