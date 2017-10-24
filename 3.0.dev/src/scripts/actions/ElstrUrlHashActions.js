@@ -78,10 +78,10 @@ function _setHashObject( newObject , updateHistory, throwEvent){
 
 function _setHashObjectWithBasename (newObject) {
 
-    let newHash = _serialize(newObject);
-    let base = document.location.pathname;
+    var newHash = _serialize(newObject);
+    var base = document.location.pathname;
 
-    location.replace(`${base}#${newHash}`);
+    location.replace(base+`#`+newHash);
 }
 
 var _avoidScapingValues = false;
