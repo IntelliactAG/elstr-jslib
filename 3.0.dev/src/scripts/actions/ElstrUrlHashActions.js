@@ -1,12 +1,13 @@
-"use strict";
+'use strict';
 /**
  * CommentActions
  */
 
 var mcFly = require('../libs/mcFly.js');
 var ElstrUrlHashConstants = require('../constants/ElstrUrlHashConstants');
+var ElstrObjectCompare = require('../libs/ElstrObjectCompare');
 
-var ElstrLog = require("../ElstrLog");
+var ElstrLog = require('../ElstrLog');
 var hasher = require('hasher');
 
 /**
@@ -15,20 +16,20 @@ var hasher = require('hasher');
  * @returns {string}
  * @private
  */
-function _serialize(obj) {
+function _serialize (obj) {
 
     var str = [];
-    for(var p in obj)
+    for (var p in obj)
         if (obj.hasOwnProperty(p)) {
 
-            if (_avoidScapingValues){
-                str.push(p + "=" + obj[p]);
-            }else{
-                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+            if (_avoidScapingValues) {
+                str.push(p + '=' + obj[p]);
+            } else {
+                str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
             }
 
         }
-    return str.join("&");
+    return str.join('&');
 }
 
 /**
@@ -38,12 +39,12 @@ function _serialize(obj) {
  * @returns {string}
  * @private
  */
-function _updateHashObject( newObject ){
+function _updateHashObject (newObject) {
 
     var ElstrUrlHashStore = require('../stores/ElstrUrlHashStore');
-    var hashObject =  ElstrUrlHashStore.get();
+    var hashObject = ElstrUrlHashStore.get();
 
-    for(var i in newObject){
+    for (var i in newObject) {
         hashObject[i] = newObject[i];
     }
 
@@ -59,16 +60,16 @@ function _updateHashObject( newObject ){
  * @param throwEvent - Controls if and event will be raised.
  * @private
  */
-function _setHashObject( newObject , updateHistory, throwEvent){
+function _setHashObject (newObject, updateHistory, throwEvent) {
 
     var newHash = _serialize(newObject);
 
     //disable changed signal
     if (!throwEvent) hasher.changed.active = false;
 
-    if (updateHistory){
+    if (updateHistory) {
         hasher.setHash(newHash);
-    }else{
+    } else {
         hasher.replaceHash(newHash);
     }
 
@@ -81,21 +82,21 @@ function _setHashObjectWithBasename (newObject) {
     var newHash = _serialize(newObject);
     var base = document.location.pathname;
 
-    location.replace(base+`#`+newHash);
+    location.replace(base + `#` + newHash);
 }
 
 var _avoidScapingValues = false;
 
 var ElstrUrlHashActions = mcFly.createActions({
 
-    init : function(avoidScapingValues) {
+    init: function (avoidScapingValues) {
 
-        if (avoidScapingValues && avoidScapingValues===true){
+        if (avoidScapingValues && avoidScapingValues === true) {
             _avoidScapingValues = true;
         }
 
         return {
-            actionType: "ElstrUrlHashActions.init"
+            actionType: 'ElstrUrlHashActions.init'
         };
     },
 
@@ -103,11 +104,11 @@ var ElstrUrlHashActions = mcFly.createActions({
      * Updates the URL hash WITH event AND history record based in the given object
      * @param object
      */
-    add: function( object ){
+    add: function (object) {
         _updateHashObject(object);
 
         return {
-            actionType: "ElstrUrlHashActions.add"
+            actionType: 'ElstrUrlHashActions.add'
         };
     },
 
@@ -115,13 +116,13 @@ var ElstrUrlHashActions = mcFly.createActions({
      * Replaces the URL hash WITH event AND history record based in the given object
      * @param object
      */
-    set: function( object ){
+    set: function (object) {
         var updateHistory = true;
         var throwEvent = true;
         _setHashObject(object, updateHistory, throwEvent);
 
         return {
-            actionType: "ElstrUrlHashActions.set"
+            actionType: 'ElstrUrlHashActions.set'
         };
     },
 
@@ -129,13 +130,13 @@ var ElstrUrlHashActions = mcFly.createActions({
      * Replaces the URL hash without event or history record based in the given object
      * @param object
      */
-    replace: function( object ){
+    replace: function (object) {
         var updateHistory = false;
         var throwEvent = false;
         _setHashObject(object, updateHistory, throwEvent);
 
         return {
-            actionType: "ElstrUrlHashActions.replace"
+            actionType: 'ElstrUrlHashActions.replace'
         };
     },
 
@@ -143,14 +144,13 @@ var ElstrUrlHashActions = mcFly.createActions({
      * Replaces the URL hash without event or history record based in the given object
      * @param object
      */
-    replaceHashWithBasename: function( object ){
+    replaceHashWithBasename: function (object) {
         _setHashObjectWithBasename(object);
 
         return {
-            actionType: "ElstrUrlHashActions.replaceHashWithBasename"
+            actionType: 'ElstrUrlHashActions.replaceHashWithBasename'
         };
     },
-
 
     /**
      * Replaces the URL based in the given object
@@ -158,14 +158,13 @@ var ElstrUrlHashActions = mcFly.createActions({
      * @param boolean updateHistory (If the browser history is updated)
      * @param boolean throwEvent (If fires a url change event)
      */
-    setWithOptions: function( object, updateHistory, throwEvent ){
+    setWithOptions: function (object, updateHistory, throwEvent) {
         _setHashObject(object, updateHistory, throwEvent);
 
         return {
-            actionType: "ElstrUrlHashActions.setWithOptions"
+            actionType: 'ElstrUrlHashActions.setWithOptions'
         };
     },
-
 
     /**
      * Called when the URL Hash changes.
@@ -173,11 +172,54 @@ var ElstrUrlHashActions = mcFly.createActions({
      * newHash: the new hash
      * oldHash: the old hash that has been replaced
      */
-    hashChange: function(newHash, oldHash) {
+    hashChange: function (newHash, oldHash) {
+        ElstrLog.log('newHash:', newHash);
+        ElstrLog.log('oldHash:', oldHash);
+
         return {
             actionType: ElstrUrlHashConstants.URL_HASH_CHANGE,
             newHash: newHash,
             oldHash: oldHash
+        };
+    },
+
+    /**
+     * Used with React-Router
+     * Manually called by a Componenent that is rendered by Route in the Lifecycle methods:
+     * componentWillReceiveProps Method
+     * componentWillMount Method
+     *
+     * ex:
+     * componentWillReceiveProps: function(newProps) {
+     *   ElstrUrlHashActions.setRouteParams(newProps.location.pathname, newProps.match.params);
+     * },
+     *
+     * ex: componentWillMount: function() {
+     *   ElstrUrlHashActions.setRouteParams(this.props.location.pathname, this.props.match.params);
+     * },
+     *
+     */
+    setRouteParams: function (pathname, params) {
+        let ElstrUrlHashStore = require('../stores/ElstrUrlHashStore');
+
+        let storeRouteParams = ElstrUrlHashStore.getRouteParams();
+        let storePathname = ElstrUrlHashStore.getPathname();
+
+        // compare the two objects and only change when route has changed
+        let isEqualRouteParams = ElstrObjectCompare.compare(params, storeRouteParams);
+        let isEqualPathname = ElstrObjectCompare.compare(pathname, storePathname);
+
+        if (!isEqualRouteParams || !isEqualPathname) {
+
+            return {
+                actionType: ElstrUrlHashConstants.URL_ROUTE_CHANGE,
+                pathname: pathname,
+                params: params
+            };
+        }
+
+        return {
+            actionType: 'ElstrUrlHashActions.URL_ROUTE_DID_NOT_CHANGE'
         };
     }
 });

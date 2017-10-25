@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 /**
  * Copyright 2014, Intelliact AG
  * Copyrights licensed under the New BSD License
@@ -12,6 +12,9 @@ var keyMirror = require('keymirror');
 module.exports = keyMirror({
 
     /** About URLS hashes **/
-    URL_HASH_CHANGE: null
+    URL_HASH_CHANGE: null,
+
+    /** About URLS routes **/
+    URL_ROUTE_CHANGE: null
 
 });
