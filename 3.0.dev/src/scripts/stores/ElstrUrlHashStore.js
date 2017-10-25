@@ -5,7 +5,6 @@ var ElstrUrlHashConstants = require('../constants/ElstrUrlHashConstants');
 var ElstrUrlHashActions = require('../actions/ElstrUrlHashActions');
 
 var ElstrLog = require('../ElstrLog');
-var createHistory = require('history').createBrowserHistory;
 
 /**
  *  Private variables
