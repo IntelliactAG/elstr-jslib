@@ -200,14 +200,14 @@ var ElstrUrlHashActions = mcFly.createActions({
      *
      */
     setRouteParams: function (pathname, params) {
-        let ElstrUrlHashStore = require('../stores/ElstrUrlHashStore');
+        var ElstrUrlHashStore = require('../stores/ElstrUrlHashStore');
 
-        let storeRouteParams = ElstrUrlHashStore.getRouteParams();
-        let storePathname = ElstrUrlHashStore.getPathname();
+        var storeRouteParams = ElstrUrlHashStore.getRouteParams();
+        var storePathname = ElstrUrlHashStore.getPathname();
 
         // compare the two objects and only change when route has changed
-        let isEqualRouteParams = ElstrObjectCompare.compare(params, storeRouteParams);
-        let isEqualPathname = ElstrObjectCompare.compare(pathname, storePathname);
+        var isEqualRouteParams = ElstrObjectCompare.compare(params, storeRouteParams);
+        var isEqualPathname = ElstrObjectCompare.compare(pathname, storePathname);
 
         if (!isEqualRouteParams || !isEqualPathname) {
 
