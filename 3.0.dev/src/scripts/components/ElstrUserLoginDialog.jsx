@@ -89,15 +89,18 @@ var ElstrUserLoginDialog = createReactClass({
             submitButton = <Button bsStyle="info" disabled>{ElstrLangStore.text("Checking credentials ...")}</Button>;
         }
 // onClick={this.handleSubmit}
+
+// Removed properties that give warnings in react 16
+// backdrop={false}
+// animation={true}
+// onHide={this.props.hideLoginDialog}
+
         return (
             <div className="elstrUserLoginDialog">
 
                 <div className='static-modal'>
                     <form onSubmit={this.handleSubmit} >
-                        <Modal.Dialog
-                            backdrop={false}
-                            animation={true}
-                            onHide={this.props.hideLoginDialog} >
+                        <Modal.Dialog>
                             <Modal.Header>
                                 <Modal.Title>{ElstrLangStore.text("Login")}</Modal.Title>
                             </Modal.Header>
