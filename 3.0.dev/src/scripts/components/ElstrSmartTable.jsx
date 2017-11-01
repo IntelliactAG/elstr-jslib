@@ -44,13 +44,21 @@ var ElstrSmartTableContentRow = createReactClass({
     render: function(){
 
         var contentRow;
+        let properties = {};
+        for (var property in this.props) {
+            if (this.props.hasOwnProperty(this.property) && property !== "buildContentFunction") {
+                properties[property] = this.props[property];
+            }
+        }
+
         if (this.props.buildContentFunction){
             contentRow = this.props.buildContentFunction(this.props.children, this.reloadFunction);
         }else{
             contentRow = this.props.children;
         }
 
-        return (<tr {...this.props} ref="content">{contentRow}</tr>);
+        return (<tr{...properties} ref="content">{contentRow}</tr>);
+
     }
 });
 
@@ -183,7 +191,7 @@ var ElstrSmartTableHeader = createReactClass({
             if (this.props.headers && this.props.headers.length>0 &&
                 this.props.colsWidth.length>0 && !this.state.loaded){
 
-                    return true;
+                return true;
 
             }else if (this.props.headerFloating){
 
@@ -253,7 +261,7 @@ var ElstrSmartTableHeader = createReactClass({
 
         return (
             <thead style={headerStyle}>
-                {contentHtml}
+            {contentHtml}
             </thead>
         );
     }
@@ -438,7 +446,7 @@ var ElstrSmartTableContent = createReactClass({
                         // key={this.props.contentTrProps[indexTr].key}
                         contentHtml.push((
                             <ElstrSmartTableContentRow {...this.props.contentTrProps[indexTr]}
-                                buildContentFunction={this.props.buildContentFunction} ref={"tr" + indexTr}>
+                                                       buildContentFunction={this.props.buildContentFunction} ref={"tr" + indexTr}>
                                 {this.props.content[indexTr]}
                             </ElstrSmartTableContentRow>
                         ));
@@ -463,9 +471,9 @@ var ElstrSmartTableContent = createReactClass({
 
         return (
             <tbody>
-                {initialSpaceRow}
-                {contentHtml}
-                {finalSpaceRow}
+            {initialSpaceRow}
+            {contentHtml}
+            {finalSpaceRow}
             </tbody>
         );
 
@@ -494,6 +502,7 @@ var ElstrSmartTable = createReactClass({
         headers: PropTypes.array,
         content: PropTypes.array,
         className: PropTypes.any,
+        buildContentFunction: PropTypes.any,
         style: PropTypes.any
     },
 
@@ -817,16 +826,16 @@ var ElstrSmartTable = createReactClass({
         );
 
         if (this.props.content && (this.state.positionTop ||
-            !(this.state._headerFloating || this.state._hideRowsOptimization))){
+                !(this.state._headerFloating || this.state._hideRowsOptimization))){
 
             content1=(
                 <ElstrSmartTableContent
-                                        positionTop={this.state.positionTop} content={this.props.content} buildContentFunction={this.props.buildContentFunction}
-                                        contentTrProps={this.props.contentTrProps} setWidths={this.setWidths}
-                                        hideRowsOptimization={this.state._hideRowsOptimization}
-                                        defaultRowsDisplayedPerScreen={this.state._defaultRowsDisplayedPerScreen}
-                                        tableWidth={this.state.tableWidth}
-                                        contentVersion={contentVersion} />
+                    positionTop={this.state.positionTop} content={this.props.content} buildContentFunction={this.props.buildContentFunction}
+                    contentTrProps={this.props.contentTrProps} setWidths={this.setWidths}
+                    hideRowsOptimization={this.state._hideRowsOptimization}
+                    defaultRowsDisplayedPerScreen={this.state._defaultRowsDisplayedPerScreen}
+                    tableWidth={this.state.tableWidth}
+                    contentVersion={contentVersion} />
             );
         }
 
