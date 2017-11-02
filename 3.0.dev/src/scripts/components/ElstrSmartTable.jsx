@@ -44,7 +44,7 @@ var ElstrSmartTableContentRow = createReactClass({
     render: function(){
 
         var contentRow;
-        let properties = {};
+        var properties = {};
         for (var property in this.props) {
             if (this.props.hasOwnProperty(this.property) && property !== "buildContentFunction") {
                 properties[property] = this.props[property];
