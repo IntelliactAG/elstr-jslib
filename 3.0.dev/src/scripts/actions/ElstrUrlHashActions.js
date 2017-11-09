@@ -173,9 +173,6 @@ var ElstrUrlHashActions = mcFly.createActions({
      * oldHash: the old hash that has been replaced
      */
     hashChange: function (newHash, oldHash) {
-        ElstrLog.log('newHash:', newHash);
-        ElstrLog.log('oldHash:', oldHash);
-
         return {
             actionType: ElstrUrlHashConstants.URL_HASH_CHANGE,
             newHash: newHash,
